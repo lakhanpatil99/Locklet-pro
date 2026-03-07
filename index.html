@@ -1,553 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Locklet Pro — Secure Digital Document Storage</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #0e0c0b;
-      --surface: #161310;
-      --border: #2a2320;
-      --accent: #c8783a;
-      --accent-dim: rgba(200, 120, 58, 0.12);
-      --accent-glow: rgba(200, 120, 58, 0.25);
-      --green: #4caf82;
-      --green-dim: rgba(76, 175, 130, 0.1);
-      --text: #e8ddd5;
-      --text-muted: #7a6e68;
-      --text-faint: #3d3530;
+      --bg: #080608;
+      --s1: #0f0d10;
+      --s2: #141118;
+      --s3: #1c1922;
+      --border: rgba(255,255,255,0.06);
+      --border-hi: rgba(255,255,255,0.11);
+      --gold: #e8b86d;
+      --gold-dim: rgba(232,184,109,0.1);
+      --violet: #9b6dff;
+      --violet-dim: rgba(155,109,255,0.1);
+      --green: #4eca8b;
+      --green-dim: rgba(78,202,139,0.1);
+      --text: #f0eaf8;
+      --t2: #8a8298;
+      --t3: #3d3748;
     }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:'Instrument Sans',sans-serif;min-height:100vh;overflow-x:hidden}
 
-    html, body {
-      min-height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Mono', monospace;
-    }
+    /* BG */
+    .bg-wrap{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+    .orb{position:absolute;border-radius:50%;filter:blur(100px);animation:drift 14s ease-in-out infinite}
+    .orb-a{width:550px;height:550px;background:radial-gradient(circle,rgba(155,109,255,.13),transparent 65%);top:-180px;left:-120px;animation-delay:0s}
+    .orb-b{width:420px;height:420px;background:radial-gradient(circle,rgba(232,184,109,.09),transparent 65%);top:35%;right:-130px;animation-delay:-5s}
+    .orb-c{width:320px;height:320px;background:radial-gradient(circle,rgba(78,202,139,.06),transparent 65%);bottom:5%;left:15%;animation-delay:-9s}
+    @keyframes drift{0%,100%{transform:translate(0,0)}40%{transform:translate(25px,-18px)}70%{transform:translate(-15px,22px)}}
+    .grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 100%)}
 
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      padding: 40px 20px;
-      position: relative;
-      overflow-x: hidden;
-    }
+    /* Layout */
+    .page{position:relative;z-index:1;max-width:460px;margin:0 auto;padding:0 18px 70px}
 
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.6;
-    }
-
-    body::after {
-      content: '';
-      position: fixed;
-      top: -20%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 700px;
-      height: 400px;
-      background: radial-gradient(ellipse, rgba(200,120,58,0.06) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 600px;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      animation: fadeUp 0.6s ease both;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Wordmark / Header */
-    .wordmark {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 36px;
-    }
-
-    .wordmark-icon {
-      width: 32px;
-      height: 32px;
-      background: var(--accent);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .wordmark-icon svg {
-      width: 18px;
-      height: 18px;
-      fill: #fff;
-    }
-
-    .wordmark-text {
-      font-family: 'DM Serif Display', serif;
-      font-size: 18px;
-      color: var(--text);
-      letter-spacing: 0.01em;
-    }
-
-    .wordmark-text span { color: var(--accent); }
+    /* Nav */
+    nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0 18px}
+    .nav-logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+    .gem{width:33px;height:33px;background:linear-gradient(135deg,var(--gold),#b8722a);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(232,184,109,.28),inset 0 1px 0 rgba(255,255,255,.18);position:relative;overflow:hidden}
+    .gem::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.18) 0%,transparent 55%)}
+    .gem svg{width:16px;height:16px;fill:#fff;position:relative;z-index:1}
+    .logo-name{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;letter-spacing:-.02em;color:var(--text)}
+    .logo-name em{font-style:normal;color:var(--gold)}
+    .status-pill{display:flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:11px;font-weight:500;color:var(--t2);letter-spacing:.03em}
+    .pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s ease infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 
     /* Hero */
-    .hero {
-      margin-bottom: 28px;
-    }
+    .hero{padding:32px 0 28px;animation:up .7s cubic-bezier(.16,1,.3,1) both}
+    @keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+    .eyebrow{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(232,184,109,.22);background:rgba(232,184,109,.06);border-radius:30px;padding:5px 13px 5px 7px;font-size:10.5px;font-weight:500;color:var(--gold);letter-spacing:.07em;text-transform:uppercase;margin-bottom:18px}
+    .eyebrow-icon{width:17px;height:17px;background:var(--gold-dim);border-radius:50%;display:flex;align-items:center;justify-content:center}
+    .eyebrow-icon svg{width:9px;height:9px;fill:var(--gold)}
+    h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(34px,8vw,46px);line-height:1.05;letter-spacing:-.04em;margin-bottom:12px}
+    .grad{background:linear-gradient(90deg,var(--gold) 0%,var(--violet) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero p{font-size:13.5px;color:var(--t2);line-height:1.72;font-weight:300;max-width:340px}
 
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--accent-dim);
-      border: 1px solid rgba(200,120,58,0.2);
-      border-radius: 20px;
-      padding: 4px 12px 4px 8px;
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--accent);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
+    /* Cards */
+    .card{background:var(--s1);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:10px;transition:border-color .25s,transform .25s,box-shadow .25s;animation:up .7s cubic-bezier(.16,1,.3,1) both}
+    .card:hover{border-color:rgba(232,184,109,.18);transform:translateY(-2px);box-shadow:0 18px 50px rgba(0,0,0,.45)}
+    .card:nth-child(1){animation-delay:.08s}.card:nth-child(2){animation-delay:.14s}.card:nth-child(3){animation-delay:.2s}.card:nth-child(4){animation-delay:.26s}.card:nth-child(5){animation-delay:.32s}
 
-    .hero-badge svg {
-      width: 13px;
-      height: 13px;
-      fill: var(--accent);
-    }
+    .ct{display:flex;align-items:center;gap:11px;padding:16px 18px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.012)}
+    .ci{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .ci svg{width:14px;height:14px}
+    .ci.g{background:var(--gold-dim);border:1px solid rgba(232,184,109,.18)}.ci.g svg{fill:var(--gold)}
+    .ci.v{background:var(--violet-dim);border:1px solid rgba(155,109,255,.18)}.ci.v svg{fill:var(--violet)}
+    .ci.gr{background:var(--green-dim);border:1px solid rgba(78,202,139,.18)}.ci.gr svg{fill:var(--green)}
+    .cl{font-family:'Syne',sans-serif;font-weight:600;font-size:13px;letter-spacing:-.01em;color:var(--text);flex:1}
 
-    .hero h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 38px;
-      font-weight: 400;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
-    }
+    .cb{padding:16px 18px}
+    .cb p{font-size:13px;color:var(--t2);line-height:1.72;font-weight:300}
 
-    .hero h1 em {
-      font-style: italic;
-      color: var(--accent);
-    }
+    /* Feature grid */
+    .feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+    .fi{background:var(--s2);border:1px solid var(--border);border-radius:11px;padding:11px 12px;transition:border-color .2s,background .2s}
+    .fi:hover{border-color:rgba(232,184,109,.14);background:var(--s3)}
+    .fi-em{font-size:17px;margin-bottom:5px;display:block}
+    .fi-t{font-size:11.5px;color:var(--t2);line-height:1.4;font-weight:400}
 
-    .hero p {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.7;
-      font-weight: 300;
-      max-width: 480px;
-    }
+    /* Plan */
+    .plan-banner{background:linear-gradient(135deg,rgba(232,184,109,.07),rgba(155,109,255,.05));border:1px solid rgba(232,184,109,.14);border-radius:13px;padding:14px;margin-bottom:12px;display:flex;align-items:center;gap:11px}
+    .pi{width:38px;height:38px;background:linear-gradient(135deg,var(--gold),#b8722a);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(232,184,109,.22)}
+    .pi svg{width:18px;height:18px;fill:#fff}
+    .pm{flex:1}
+    .pn{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--text);margin-bottom:1px}
+    .ps{font-size:11px;color:var(--t2);font-weight:300}
+    .pp{font-family:'Syne',sans-serif;font-weight:800;font-size:19px;color:var(--gold);letter-spacing:-.02em}
+    .pp span{font-size:11px;font-weight:400;color:var(--t2)}
+    .perk-list{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+    .perk{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--t2);font-weight:300}
+    .pck{width:17px;height:17px;border-radius:5px;background:var(--green-dim);border:1px solid rgba(78,202,139,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .pck svg{width:9px;height:9px;fill:var(--green)}
+    .btn-soon{width:100%;padding:13px;background:var(--s3);border:1px solid var(--border-hi);border-radius:11px;font-family:'Syne',sans-serif;font-weight:600;font-size:12.5px;color:var(--t2);letter-spacing:.02em;cursor:default;display:flex;align-items:center;justify-content:center;gap:7px}
+    .bsd{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px var(--gold);animation:pulse 2s ease infinite}
 
-    /* Card */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-      margin-bottom: 16px;
-      transition: border-color 0.2s;
-    }
+    /* Legal links */
+    .ll{display:flex;align-items:center;justify-content:space-between;padding:12px 0;text-decoration:none;border-bottom:1px solid var(--border);transition:padding-left .2s}
+    .ll:last-child{border-bottom:none}
+    .ll:hover{padding-left:4px}
+    .ll-l{display:flex;align-items:center;gap:9px}
+    .ll-d{width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:.45}
+    .ll-t{font-size:13px;color:var(--t2);font-weight:400;transition:color .2s}
+    .ll:hover .ll-t{color:var(--gold)}
+    .ll-a svg{width:11px;height:11px;fill:var(--t3)}
 
-    .card:hover { border-color: rgba(200,120,58,0.25); }
+    /* Dev */
+    .dr{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border)}
+    .dr:last-child{border-bottom:none}
+    .dk{font-size:10.5px;color:var(--t3);letter-spacing:.07em;text-transform:uppercase}
+    .dv{font-size:12.5px;color:var(--t2);font-weight:300}
+    .dv a{color:var(--gold);text-decoration:none}
 
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 18px 24px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(255,255,255,0.015);
-    }
-
-    .card-icon {
-      width: 28px;
-      height: 28px;
-      background: var(--accent-dim);
-      border: 1px solid rgba(200,120,58,0.2);
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .card-icon svg {
-      width: 14px;
-      height: 14px;
-      fill: var(--accent);
-    }
-
-    .card-title {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text);
-      letter-spacing: 0.03em;
-    }
-
-    .card-body {
-      padding: 22px 24px;
-    }
-
-    .card-body p {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.7;
-      font-weight: 300;
-    }
-
-    /* Features grid */
-    .features-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .feature-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 12px;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-    }
-
-    .feature-dot {
-      margin-top: 5px;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--accent);
-      flex-shrink: 0;
-      opacity: 0.7;
-    }
-
-    .feature-text {
-      font-size: 12px;
-      color: var(--text-muted);
-      line-height: 1.4;
-      font-weight: 300;
-    }
-
-    /* Subscription */
-    .plan-perks {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-
-    .perk {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 300;
-    }
-
-    .perk-check {
-      width: 16px;
-      height: 16px;
-      border-radius: 4px;
-      background: var(--green-dim);
-      border: 1px solid rgba(76,175,130,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .perk-check svg {
-      width: 9px;
-      height: 9px;
-      fill: var(--green);
-    }
-
-    .price-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-    }
-
-    .price {
-      font-family: 'DM Serif Display', serif;
-      font-size: 28px;
-      color: var(--green);
-      letter-spacing: -0.01em;
-    }
-
-    .price sub {
-      font-family: 'DM Mono', monospace;
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 300;
-    }
-
-    .btn-coming {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 9px 16px;
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-muted);
-      letter-spacing: 0.04em;
-      cursor: default;
-    }
-
-    .btn-coming::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      opacity: 0.6;
-      animation: pulse 2s ease infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 1; }
-    }
-
-    /* Legal & Dev */
-    .link-row {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .link-row a {
-      font-size: 13px;
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 300;
-      transition: opacity 0.2s;
-    }
-
-    .link-row a:hover { opacity: 0.7; }
-
-    .link-sep {
-      color: var(--text-faint);
-      font-size: 13px;
-    }
-
-    .dev-info {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .dev-field {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .dev-label {
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-faint);
-    }
-
-    .dev-value {
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 300;
-    }
-
-    .dev-value a {
-      color: var(--accent);
-      text-decoration: none;
-      transition: opacity 0.2s;
-    }
-
-    .dev-value a:hover { opacity: 0.7; }
-
-    .divider {
-      height: 1px;
-      background: var(--border);
-    }
-
-    footer {
-      margin-top: 24px;
-      text-align: center;
-      font-size: 12px;
-      color: var(--text-faint);
-      letter-spacing: 0.04em;
-    }
-
-    @media (max-width: 480px) {
-      .hero h1 { font-size: 30px; }
-      .features-grid { grid-template-columns: 1fr; }
-    }
+    footer{text-align:center;padding:20px 0 0;font-size:11px;color:var(--t3);letter-spacing:.04em;line-height:2}
+    footer a{color:var(--t3);text-decoration:none;margin:0 5px}
+    footer a:hover{color:var(--gold)}
   </style>
 </head>
 <body>
+<div class="bg-wrap"><div class="orb orb-a"></div><div class="orb orb-b"></div><div class="orb orb-c"></div></div>
+<div class="grid-bg"></div>
+<div class="page">
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <div class="gem"><svg viewBox="0 0 24 24"><path d="M12 1C8.676 1 6 3.676 6 7v1H4v15h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg></div>
+      <span class="logo-name">Locklet<em> Pro</em></span>
+    </a>
+    <div class="status-pill"><div class="pulse-dot"></div>Secure</div>
+  </nav>
 
-<div class="container">
-
-  <!-- Wordmark -->
-  <div class="wordmark">
-    <div class="wordmark-icon">
-      <svg viewBox="0 0 24 24"><path d="M12 1C8.676 1 6 3.676 6 7v1H4v15h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
-    </div>
-    <div class="wordmark-text">Locklet<span> Pro</span></div>
-  </div>
-
-  <!-- Hero -->
   <div class="hero">
-    <div class="hero-badge">
-      <svg viewBox="0 0 24 24"><path d="M12 1C8.676 1 6 3.676 6 7v1H4v15h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
-      Secure Document Storage
-    </div>
-    <h1>Your documents,<br/><em>locked and safe.</em></h1>
-    <p>Locklet Pro is a secure mobile application designed to store and manage personal documents safely — accessible anytime, protected always.</p>
+    <div class="eyebrow"><div class="eyebrow-icon"><svg viewBox="0 0 24 24"><path d="M12 1C8.676 1 6 3.676 6 7v1H4v15h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg></div>Document Vault</div>
+    <h1>Your documents<br/><span class="grad">locked & safe.</span></h1>
+    <p>Advanced biometric security meets beautiful design. Store, access and manage all your personal documents with total peace of mind.</p>
   </div>
 
-  <!-- About -->
   <div class="card">
-    <div class="card-header">
-      <div class="card-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-      </div>
-      <div class="card-title">About Locklet Pro</div>
-    </div>
-    <div class="card-body">
-      <p>Upload, access, and manage your personal documents anytime with advanced security and biometric protection. Built for privacy, designed for ease.</p>
-    </div>
+    <div class="ct"><div class="ci v"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg></div><span class="cl">About Locklet Pro</span></div>
+    <div class="cb"><p>A secure mobile application designed to store and manage personal documents safely. Upload, access and manage your documents anytime — protected by advanced security and biometric authentication.</p></div>
   </div>
 
-  <!-- Features -->
   <div class="card">
-    <div class="card-header">
-      <div class="card-icon">
-        <svg viewBox="0 0 24 24"><path d="M9 11.75A1.25 1.25 0 1 0 9 14.25 1.25 1.25 0 0 0 9 11.75zm6 0A1.25 1.25 0 1 0 15 14.25 1.25 1.25 0 0 0 15 11.75zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
-      </div>
-      <div class="card-title">Features</div>
-    </div>
-    <div class="card-body">
-      <div class="features-grid">
-        <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Secure document storage</div></div>
-        <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Biometric authentication</div></div>
-        <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Cloud sync with Supabase</div></div>
-        <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Offline document access</div></div>
-        <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Premium subscription features</div></div>
-        <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Aadhaar, PAN, License & more</div></div>
+    <div class="ct"><div class="ci g"><svg viewBox="0 0 24 24"><path d="M12 1l2.5 7.5H22l-6.5 4.7 2.5 7.5L12 16.3 6 20.7l2.5-7.5L2 8.5h7.5z"/></svg></div><span class="cl">Features</span></div>
+    <div class="cb">
+      <div class="feat-grid">
+        <div class="fi"><span class="fi-em">🔐</span><div class="fi-t">Secure document storage</div></div>
+        <div class="fi"><span class="fi-em">👆</span><div class="fi-t">Biometric authentication</div></div>
+        <div class="fi"><span class="fi-em">☁️</span><div class="fi-t">Cloud sync via Supabase</div></div>
+        <div class="fi"><span class="fi-em">📂</span><div class="fi-t">Offline document access</div></div>
+        <div class="fi"><span class="fi-em">🚀</span><div class="fi-t">Premium subscription</div></div>
+        <div class="fi"><span class="fi-em">🪪</span><div class="fi-t">Aadhaar, PAN, License</div></div>
       </div>
     </div>
   </div>
 
-  <!-- Subscription -->
   <div class="card">
-    <div class="card-header">
-      <div class="card-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+    <div class="ct"><div class="ci g"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><span class="cl">Premium Plan</span></div>
+    <div class="cb">
+      <div class="plan-banner">
+        <div class="pi"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <div class="pm"><div class="pn">Locklet Pro Premium</div><div class="ps">Upgrade for full access</div></div>
+        <div class="pp">₹10<span>/mo</span></div>
       </div>
-      <div class="card-title">Subscription Plan</div>
-    </div>
-    <div class="card-body">
-      <div class="plan-perks">
-        <div class="perk">
-          <div class="perk-check"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></div>
-          500 MB Secure Cloud Storage
-        </div>
-        <div class="perk">
-          <div class="perk-check"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></div>
-          Offline Access
-        </div>
-        <div class="perk">
-          <div class="perk-check"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></div>
-          Early Access to New Features
-        </div>
-        <div class="perk">
-          <div class="perk-check"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></div>
-          Priority Support
-        </div>
+      <div class="perk-list">
+        <div class="perk"><div class="pck"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div>500 MB Secure Cloud Storage</div>
+        <div class="perk"><div class="pck"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div>Offline Access</div>
+        <div class="perk"><div class="pck"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div>Early Access to New Features</div>
+        <div class="perk"><div class="pck"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div>Priority Support</div>
       </div>
-      <div class="price-row">
-        <div class="price">₹10 <sub>/ month</sub></div>
-        <div class="btn-coming">Coming Soon</div>
-      </div>
+      <div class="btn-soon"><div class="bsd"></div>Coming Soon</div>
     </div>
   </div>
 
-  <!-- Legal -->
   <div class="card">
-    <div class="card-header">
-      <div class="card-icon">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>
-      </div>
-      <div class="card-title">Legal</div>
-    </div>
-    <div class="card-body">
-      <div class="link-row">
-        <a href="privacy.html">Privacy Policy</a>
-        <span class="link-sep">·</span>
-        <a href="terms.html">Terms &amp; Conditions</a>
-        <span class="link-sep">·</span>
-        <a href="delete-account.html">Delete Account</a>
-      </div>
+    <div class="ct"><div class="ci v"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg></div><span class="cl">Legal</span></div>
+    <div class="cb">
+      <a href="privacy.html" class="ll"><div class="ll-l"><div class="ll-d"></div><span class="ll-t">Privacy Policy</span></div><div class="ll-a"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div></a>
+      <a href="terms.html" class="ll"><div class="ll-l"><div class="ll-d"></div><span class="ll-t">Terms &amp; Conditions</span></div><div class="ll-a"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div></a>
+      <a href="delete-account.html" class="ll"><div class="ll-l"><div class="ll-d"></div><span class="ll-t">Delete Account</span></div><div class="ll-a"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div></a>
     </div>
   </div>
 
-  <!-- Developer -->
   <div class="card">
-    <div class="card-header">
-      <div class="card-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
-      </div>
-      <div class="card-title">Developer</div>
-    </div>
-    <div class="card-body">
-      <div class="dev-info">
-        <div class="dev-field">
-          <div class="dev-label">Name</div>
-          <div class="dev-value">Lakhansing Narsing Patil</div>
-        </div>
-        <div class="divider"></div>
-        <div class="dev-field">
-          <div class="dev-label">Email</div>
-          <div class="dev-value"><a href="mailto:lockletpro@gmail.com">lockletpro@gmail.com</a></div>
-        </div>
-      </div>
+    <div class="ct"><div class="ci gr"><svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></div><span class="cl">Developer</span></div>
+    <div class="cb">
+      <div class="dr"><span class="dk">Name</span><span class="dv">Lakhansing Narsing Patil</span></div>
+      <div class="dr"><span class="dk">Email</span><span class="dv"><a href="mailto:lockletpro@gmail.com">lockletpro@gmail.com</a></span></div>
     </div>
   </div>
 
-  <footer>© 2026 Locklet Pro. All rights reserved.</footer>
-
+  <footer>© 2026 Locklet Pro. All rights reserved.<br/><a href="privacy.html">Privacy</a>·<a href="terms.html">Terms</a>·<a href="delete-account.html">Delete Account</a></footer>
 </div>
-
 </body>
 </html>
