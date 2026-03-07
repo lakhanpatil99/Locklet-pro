@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delete Account – Locklet Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0c0b;
+      --surface: #161310;
+      --border: #2a2320;
+      --accent: #c8783a;
+      --accent-dim: rgba(200, 120, 58, 0.12);
+      --accent-glow: rgba(200, 120, 58, 0.25);
+      --danger: #d94f3d;
+      --danger-dim: rgba(217, 79, 61, 0.1);
+      --text: #e8ddd5;
+      --text-muted: #7a6e68;
+      --text-faint: #3d3530;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Subtle grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    /* Radial ambient light */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(200,120,58,0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 560px;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Wordmark */
+    .wordmark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+
+    .wordmark-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .wordmark-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: #fff;
+    }
+
+    .wordmark-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: 18px;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+
+    .wordmark-text span {
+      color: var(--accent);
+    }
+
+    /* Card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 32px 36px 28px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .card-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 36px;
+      right: 36px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    .warning-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--danger-dim);
+      border: 1px solid rgba(217,79,61,0.2);
+      border-radius: 20px;
+      padding: 4px 12px 4px 8px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--danger);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .warning-badge svg {
+      width: 13px;
+      height: 13px;
+      fill: var(--danger);
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .card-body {
+      padding: 32px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* Method blocks */
+    .method {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .method:hover {
+      border-color: rgba(200,120,58,0.3);
+    }
+
+    .method-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .method-num {
+      width: 24px;
+      height: 24px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(200,120,58,0.3);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .method-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: 0.03em;
+    }
+
+    .method-tag {
+      margin-left: auto;
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 7px;
+    }
+
+    .method-body {
+      padding: 20px;
+    }
+
+    /* Steps */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .step:nth-child(1) { animation-delay: 0.1s; }
+    .step:nth-child(2) { animation-delay: 0.15s; }
+    .step:nth-child(3) { animation-delay: 0.2s; }
+    .step:nth-child(4) { animation-delay: 0.25s; }
+
+    .step-dot {
+      margin-top: 5px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .step-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    .step-text code {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      background: rgba(200,120,58,0.1);
+      color: var(--accent);
+      padding: 1px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(200,120,58,0.15);
+    }
+
+    .step-connector {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* Email block */
+    .email-block {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .email-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .field-label {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      font-weight: 500;
+    }
+
+    .field-value {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    .field-value a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .field-value a:hover {
+      opacity: 0.75;
+    }
+
+    .field-value.mono {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 -20px;
+    }
+
+    .email-note {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    .email-note strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    /* Notice */
+    .notice {
+      display: flex;
+      gap: 12px;
+      background: var(--danger-dim);
+      border: 1px solid rgba(217,79,61,0.15);
+      border-radius: 10px;
+      padding: 16px;
+      animation: fadeUp 0.5s ease 0.3s both;
+    }
+
+    .notice-icon {
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .notice-icon svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--danger);
+      opacity: 0.8;
+    }
+
+    .notice-text {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .notice-text strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-faint);
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 480px) {
+      .card-header, .card-body { padding-left: 24px; padding-right: 24px; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="wordmark">
+    <div class="wordmark-icon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 1C8.676 1 6 3.676 6 7v1H4v15h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>
+      </svg>
+    </div>
+    <div class="wordmark-text">Locklet<span> Pro</span></div>
+  </div>
+
+  <div class="card">
+
+    <div class="card-header">
+      <div class="warning-badge">
+        <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.5L20.5 19h-17L12 5.5zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg>
+        Irreversible Action
+      </div>
+      <h1>Delete Your Account</h1>
+      <p class="subtitle">Remove your Locklet Pro account and all associated data permanently. Choose one of the methods below.</p>
+    </div>
+
+    <div class="card-body">
+
+      <!-- Method 1 -->
+      <div class="method">
+        <div class="method-header">
+          <div class="method-num">1</div>
+          <div class="method-title">Inside the App</div>
+          <div class="method-tag">Recommended</div>
+        </div>
+        <div class="method-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-dot"></div>
+              <div class="step-text">Open <code>Locklet Pro</code></div>
+            </div>
+            <div class="step">
+              <div class="step-dot"></div>
+              <div class="step-text">Navigate to <code>Profile</code> → <code>Settings</code></div>
+            </div>
+            <div class="step">
+              <div class="step-dot"></div>
+              <div class="step-text">Tap <code>Delete Account</code></div>
+            </div>
+            <div class="step">
+              <div class="step-dot"></div>
+              <div class="step-text">Confirm the deletion when prompted</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Method 2 -->
+      <div class="method">
+        <div class="method-header">
+          <div class="method-num">2</div>
+          <div class="method-title">Email Request</div>
+          <div class="method-tag">Manual</div>
+        </div>
+        <div class="method-body">
+          <div class="email-block">
+            <div class="email-field">
+              <div class="field-label">Send to</div>
+              <div class="field-value"><a href="mailto:lockletpro@gmail.com?subject=Delete%20My%20Locklet%20Pro%20Account">lockletpro@gmail.com</a></div>
+            </div>
+            <div class="divider"></div>
+            <div class="email-field">
+              <div class="field-label">Subject line</div>
+              <div class="field-value mono">Delete My Locklet Pro Account</div>
+            </div>
+            <div class="divider"></div>
+            <div class="email-note">
+              Include your <strong>registered email address</strong> in the message body so we can locate your account.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Permanent notice -->
+      <div class="notice">
+        <div class="notice-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        </div>
+        <div class="notice-text">
+          Once we receive your request, your account and all stored documents will be <strong>permanently deleted within 48 hours</strong>. This action cannot be undone.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">© Locklet Pro · All rights reserved</div>
+
+</div>
+
+</body>
+</html>
