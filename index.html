@@ -1,153 +1,553 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Locklet Pro — Secure Digital Document Storage</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Locklet Pro — Secure Digital Document Storage</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-```
-<style>
+    :root {
+      --bg: #0e0c0b;
+      --surface: #161310;
+      --border: #2a2320;
+      --accent: #c8783a;
+      --accent-dim: rgba(200, 120, 58, 0.12);
+      --accent-glow: rgba(200, 120, 58, 0.25);
+      --green: #4caf82;
+      --green-dim: rgba(76, 175, 130, 0.1);
+      --text: #e8ddd5;
+      --text-muted: #7a6e68;
+      --text-faint: #3d3530;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+    }
+
     body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #0f172a, #020617);
-        color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      position: relative;
+      overflow-x: hidden;
     }
 
-    header {
-        padding: 40px;
-        text-align: center;
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
     }
 
-    h1 {
-        font-size: 42px;
-        margin-bottom: 10px;
-    }
-
-    .tag {
-        color: #94a3b8;
-        font-size: 18px;
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(200,120,58,0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
     }
 
     .container {
-        max-width: 1000px;
-        margin: auto;
-        padding: 20px;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      animation: fadeUp 0.6s ease both;
     }
 
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Wordmark / Header */
+    .wordmark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 36px;
+    }
+
+    .wordmark-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .wordmark-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: #fff;
+    }
+
+    .wordmark-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: 18px;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+
+    .wordmark-text span { color: var(--accent); }
+
+    /* Hero */
+    .hero {
+      margin-bottom: 28px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(200,120,58,0.2);
+      border-radius: 20px;
+      padding: 4px 12px 4px 8px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .hero-badge svg {
+      width: 13px;
+      height: 13px;
+      fill: var(--accent);
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 38px;
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-weight: 300;
+      max-width: 480px;
+    }
+
+    /* Card */
     .card {
-        background: rgba(255,255,255,0.05);
-        padding: 25px;
-        border-radius: 14px;
-        margin-bottom: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 16px;
+      transition: border-color 0.2s;
     }
 
-    h2 {
-        margin-top: 0;
+    .card:hover { border-color: rgba(200,120,58,0.25); }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.015);
     }
 
-    ul {
-        line-height: 1.8;
+    .card-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(200,120,58,0.2);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .card-icon svg {
+      width: 14px;
+      height: 14px;
+      fill: var(--accent);
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: 0.03em;
+    }
+
+    .card-body {
+      padding: 22px 24px;
+    }
+
+    .card-body p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* Features grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .feature-dot {
+      margin-top: 5px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .feature-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      font-weight: 300;
+    }
+
+    /* Subscription */
+    .plan-perks {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .perk {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    .perk-check {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      background: var(--green-dim);
+      border: 1px solid rgba(76,175,130,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .perk-check svg {
+      width: 9px;
+      height: 9px;
+      fill: var(--green);
+    }
+
+    .price-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
     }
 
     .price {
-        font-size: 28px;
-        color: #22c55e;
-        font-weight: bold;
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      color: var(--green);
+      letter-spacing: -0.01em;
     }
 
-    a {
-        color: #60a5fa;
-        text-decoration: none;
+    .price sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    .btn-coming {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 16px;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      cursor: default;
+    }
+
+    .btn-coming::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.6;
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* Legal & Dev */
+    .link-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .link-row a {
+      font-size: 13px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 300;
+      transition: opacity 0.2s;
+    }
+
+    .link-row a:hover { opacity: 0.7; }
+
+    .link-sep {
+      color: var(--text-faint);
+      font-size: 13px;
+    }
+
+    .dev-info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .dev-field {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .dev-label {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+
+    .dev-value {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    .dev-value a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .dev-value a:hover { opacity: 0.7; }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
     }
 
     footer {
-        text-align: center;
-        padding: 20px;
-        color: #94a3b8;
+      margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-faint);
+      letter-spacing: 0.04em;
     }
 
-    .btn {
-        display: inline-block;
-        padding: 12px 22px;
-        background: linear-gradient(45deg, #6366f1, #8b5cf6);
-        border-radius: 10px;
-        margin-top: 10px;
-        color: white;
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 30px; }
+      .features-grid { grid-template-columns: 1fr; }
     }
-</style>
-```
-
+  </style>
 </head>
-
 <body>
-
-<header>
-    <h1>Locklet Pro</h1>
-    <div class="tag">Secure Digital Document Storage Application</div>
-</header>
 
 <div class="container">
 
-```
-<div class="card">
-    <h2>About Locklet Pro</h2>
-    <p>
-        Locklet Pro is a secure mobile application designed to store and manage personal documents safely.
-        Users can upload, access, and manage their documents anytime with advanced security and biometric protection.
-    </p>
+  <!-- Wordmark -->
+  <div class="wordmark">
+    <div class="wordmark-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 1C8.676 1 6 3.676 6 7v1H4v15h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
+    </div>
+    <div class="wordmark-text">Locklet<span> Pro</span></div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">
+      <svg viewBox="0 0 24 24"><path d="M12 1C8.676 1 6 3.676 6 7v1H4v15h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
+      Secure Document Storage
+    </div>
+    <h1>Your documents,<br/><em>locked and safe.</em></h1>
+    <p>Locklet Pro is a secure mobile application designed to store and manage personal documents safely — accessible anytime, protected always.</p>
+  </div>
+
+  <!-- About -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      </div>
+      <div class="card-title">About Locklet Pro</div>
+    </div>
+    <div class="card-body">
+      <p>Upload, access, and manage your personal documents anytime with advanced security and biometric protection. Built for privacy, designed for ease.</p>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 11.75A1.25 1.25 0 1 0 9 14.25 1.25 1.25 0 0 0 9 11.75zm6 0A1.25 1.25 0 1 0 15 14.25 1.25 1.25 0 0 0 15 11.75zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+      </div>
+      <div class="card-title">Features</div>
+    </div>
+    <div class="card-body">
+      <div class="features-grid">
+        <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Secure document storage</div></div>
+        <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Biometric authentication</div></div>
+        <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Cloud sync with Supabase</div></div>
+        <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Offline document access</div></div>
+        <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Premium subscription features</div></div>
+        <div class="feature-item"><div class="feature-dot"></div><div class="feature-text">Aadhaar, PAN, License & more</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subscription -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </div>
+      <div class="card-title">Subscription Plan</div>
+    </div>
+    <div class="card-body">
+      <div class="plan-perks">
+        <div class="perk">
+          <div class="perk-check"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></div>
+          500 MB Secure Cloud Storage
+        </div>
+        <div class="perk">
+          <div class="perk-check"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></div>
+          Offline Access
+        </div>
+        <div class="perk">
+          <div class="perk-check"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></div>
+          Early Access to New Features
+        </div>
+        <div class="perk">
+          <div class="perk-check"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></div>
+          Priority Support
+        </div>
+      </div>
+      <div class="price-row">
+        <div class="price">₹10 <sub>/ month</sub></div>
+        <div class="btn-coming">Coming Soon</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Legal -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>
+      </div>
+      <div class="card-title">Legal</div>
+    </div>
+    <div class="card-body">
+      <div class="link-row">
+        <a href="privacy.html">Privacy Policy</a>
+        <span class="link-sep">·</span>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <span class="link-sep">·</span>
+        <a href="delete-account.html">Delete Account</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Developer -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+      </div>
+      <div class="card-title">Developer</div>
+    </div>
+    <div class="card-body">
+      <div class="dev-info">
+        <div class="dev-field">
+          <div class="dev-label">Name</div>
+          <div class="dev-value">Lakhansing Narsing Patil</div>
+        </div>
+        <div class="divider"></div>
+        <div class="dev-field">
+          <div class="dev-label">Email</div>
+          <div class="dev-value"><a href="mailto:lockletpro@gmail.com">lockletpro@gmail.com</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>© 2026 Locklet Pro. All rights reserved.</footer>
+
 </div>
-
-<div class="card">
-    <h2>Features</h2>
-    <ul>
-        <li>🔐 Secure document storage</li>
-        <li>📱 Biometric authentication</li>
-        <li>☁️ Cloud sync with Supabase</li>
-        <li>📂 Offline document access</li>
-        <li>🚀 Premium subscription features</li>
-        <li>🪪 Support for Aadhaar, PAN, License, Certificates</li>
-    </ul>
-</div>
-
-<div class="card">
-    <h2>Subscription Plan</h2>
-    <p>Upgrade to Locklet Pro Premium for additional benefits:</p>
-
-    <ul>
-        <li>✔ 500 MB Secure Cloud Storage</li>
-        <li>✔ Offline Access</li>
-        <li>✔ Early Access to New Features</li>
-        <li>✔ Priority Support</li>
-    </ul>
-
-    <div class="price">₹10 / month</div>
-    <div class="btn">Coming Soon</div>
-</div>
-
-<div class="card">
-    <h2>Legal</h2>
-    <p>
-        <a href="privacy.html">Privacy Policy</a> |
-        <a href="terms.html">Terms & Conditions</a>
-    </p>
-</div>
-
-<div class="card">
-    <h2>Developer</h2>
-    <p>
-        Lakhansing Narsing Patil<br>
-        Email: lockletpro@gmail.com
-    </p>
-</div>
-```
-
-</div>
-
-<footer>
-    © 2026 Locklet Pro. All rights reserved.
-</footer>
 
 </body>
 </html>
