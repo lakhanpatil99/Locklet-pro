@@ -1,137 +1,510 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy — Locklet Pro</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Privacy Policy — Locklet Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-```
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        padding: 40px;
-        background: #0f172a;
-        color: white;
-        line-height: 1.7;
+    :root {
+      --bg: #0e0c0b;
+      --surface: #161310;
+      --border: #2a2320;
+      --accent: #c8783a;
+      --accent-dim: rgba(200, 120, 58, 0.12);
+      --text: #e8ddd5;
+      --text-muted: #7a6e68;
+      --text-faint: #3d3530;
     }
 
-    h1, h2 {
-        color: #60a5fa;
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(200,120,58,0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
     }
 
     .container {
-        max-width: 900px;
-        margin: auto;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 620px;
+      animation: fadeUp 0.6s ease both;
     }
-</style>
-```
 
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Wordmark */
+    .wordmark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 40px;
+      text-decoration: none;
+    }
+
+    .wordmark-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .wordmark-icon svg { width: 18px; height: 18px; fill: #fff; }
+
+    .wordmark-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: 18px;
+      color: var(--text);
+    }
+
+    .wordmark-text span { color: var(--accent); }
+
+    /* Page header */
+    .page-header {
+      margin-bottom: 28px;
+    }
+
+    .page-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(200,120,58,0.2);
+      border-radius: 20px;
+      padding: 4px 12px 4px 8px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .page-badge svg { width: 13px; height: 13px; fill: var(--accent); }
+
+    .page-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 34px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .effective-date {
+      font-size: 12px;
+      color: var(--text-faint);
+      letter-spacing: 0.04em;
+    }
+
+    .effective-date span {
+      color: var(--text-muted);
+    }
+
+    /* Intro card */
+    .intro-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* Section cards */
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      transition: border-color 0.2s;
+    }
+
+    .section-card:hover { border-color: rgba(200,120,58,0.25); }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.015);
+    }
+
+    .section-num {
+      width: 22px;
+      height: 22px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(200,120,58,0.25);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--accent);
+      flex-shrink: 0;
+      letter-spacing: 0;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: 0.03em;
+    }
+
+    .section-body {
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .section-body p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* Sub-groups within a section */
+    .sub-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sub-label {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      font-weight: 500;
+    }
+
+    .item-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .item-dot {
+      margin-top: 6px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      opacity: 0.6;
+    }
+
+    .item-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Highlight notice */
+    .notice {
+      display: flex;
+      gap: 10px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(200,120,58,0.18);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .notice svg { width: 14px; height: 14px; fill: var(--accent); flex-shrink: 0; margin-top: 1px; }
+
+    .notice-text {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .notice-text strong { color: var(--text); font-weight: 400; }
+
+    /* Contact */
+    .contact-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 3px; }
+    .field-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); }
+    .field-value { font-size: 13px; color: var(--text-muted); font-weight: 300; }
+    .field-value a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
+    .field-value a:hover { opacity: 0.7; }
+
+    footer {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-faint);
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 480px) {
+      .page-header h1 { font-size: 26px; }
+    }
+  </style>
 </head>
-
 <body>
-
 <div class="container">
 
-<h1>Privacy Policy</h1>
+  <!-- Wordmark -->
+  <a href="index.html" class="wordmark">
+    <div class="wordmark-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 1C8.676 1 6 3.676 6 7v1H4v15h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
+    </div>
+    <div class="wordmark-text">Locklet<span> Pro</span></div>
+  </a>
 
-<p><strong>Effective Date:</strong> 16 February 2026</p>
+  <!-- Page header -->
+  <div class="page-header">
+    <div class="page-badge">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>
+      Legal Document
+    </div>
+    <h1>Privacy Policy</h1>
+    <div class="effective-date">Effective Date: <span>16 February 2026</span></div>
+  </div>
 
-<p>
-Locklet Pro (“we”, “our”, or “us”) is developed and maintained by Lakhansing Narsing Patil.
-This Privacy Policy explains how we collect, use, store, and protect your information when you use the Locklet Pro mobile application.
-</p>
+  <!-- Intro -->
+  <div class="intro-card">
+    Locklet Pro ("we", "our", or "us") is developed and maintained by Lakhansing Narsing Patil. This Privacy Policy explains how we collect, use, store, and protect your information when you use the Locklet Pro mobile application.
+  </div>
 
-<h2>1. Information We Collect</h2>
+  <!-- 1. Information We Collect -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title">Information We Collect</div>
+    </div>
+    <div class="section-body">
+      <div class="sub-group">
+        <div class="sub-label">Personal Information</div>
+        <div class="item-list">
+          <div class="item"><div class="item-dot"></div><div class="item-text">Full Name</div></div>
+          <div class="item"><div class="item-dot"></div><div class="item-text">Email Address</div></div>
+          <div class="item"><div class="item-dot"></div><div class="item-text">Mobile Number</div></div>
+          <div class="item"><div class="item-dot"></div><div class="item-text">Government identification details (Aadhaar, PAN, Driving License, etc.)</div></div>
+          <div class="item"><div class="item-dot"></div><div class="item-text">Profile photo (if provided)</div></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="sub-group">
+        <div class="sub-label">Documents and Files</div>
+        <div class="item-list">
+          <div class="item"><div class="item-dot"></div><div class="item-text">Identity documents uploaded by users</div></div>
+          <div class="item"><div class="item-dot"></div><div class="item-text">Certificates and other files stored in the app</div></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="sub-group">
+        <div class="sub-label">Device and Usage Information</div>
+        <div class="item-list">
+          <div class="item"><div class="item-dot"></div><div class="item-text">Device type and OS version</div></div>
+          <div class="item"><div class="item-dot"></div><div class="item-text">App usage statistics</div></div>
+          <div class="item"><div class="item-dot"></div><div class="item-text">Log data for diagnostics and security</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<h3>Personal Information</h3>
-<ul>
-<li>Full Name</li>
-<li>Email Address</li>
-<li>Mobile Number</li>
-<li>Government identification details (Aadhaar, PAN, Driving License, etc.)</li>
-<li>Profile photo (if provided)</li>
-</ul>
+  <!-- 2. How We Use -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title">How We Use Your Information</div>
+    </div>
+    <div class="section-body">
+      <div class="item-list">
+        <div class="item"><div class="item-dot"></div><div class="item-text">Provide secure document storage services</div></div>
+        <div class="item"><div class="item-dot"></div><div class="item-text">Enable authentication and account access</div></div>
+        <div class="item"><div class="item-dot"></div><div class="item-text">Allow upload and retrieval of documents</div></div>
+        <div class="item"><div class="item-dot"></div><div class="item-text">Improve app functionality</div></div>
+        <div class="item"><div class="item-dot"></div><div class="item-text">Prevent fraud and unauthorized access</div></div>
+      </div>
+      <div class="notice">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        <div class="notice-text"><strong>We do not sell or rent your personal information to third parties.</strong></div>
+      </div>
+    </div>
+  </div>
 
-<h3>Documents and Files</h3>
-<ul>
-<li>Identity documents uploaded by users</li>
-<li>Certificates and other files stored in the app</li>
-</ul>
+  <!-- 3. Data Security -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title">Data Security</div>
+    </div>
+    <div class="section-body">
+      <p>We use secure technologies such as encrypted transmission (HTTPS/SSL), secure cloud infrastructure, and authentication controls to protect your data. However, no system is 100% secure.</p>
+    </div>
+  </div>
 
-<h3>Device and Usage Information</h3>
-<ul>
-<li>Device type and OS version</li>
-<li>App usage statistics</li>
-<li>Log data for diagnostics and security</li>
-</ul>
+  <!-- 4. Data Storage & Retention -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title">Data Storage &amp; Retention</div>
+    </div>
+    <div class="section-body">
+      <p>Your data is stored securely on trusted cloud services (such as Supabase or Firebase). We retain data only as long as necessary to provide services. You may request deletion at any time.</p>
+    </div>
+  </div>
 
-<h2>2. How We Use Your Information</h2>
-<ul>
-<li>Provide secure document storage services</li>
-<li>Enable authentication and account access</li>
-<li>Allow upload and retrieval of documents</li>
-<li>Improve app functionality</li>
-<li>Prevent fraud and unauthorized access</li>
-</ul>
+  <!-- 5. App Permissions -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-title">App Permissions</div>
+    </div>
+    <div class="section-body">
+      <div class="item-list">
+        <div class="item"><div class="item-dot"></div><div class="item-text"><strong style="color:var(--text);font-weight:400">Camera</strong> — for scanning documents</div></div>
+        <div class="item"><div class="item-dot"></div><div class="item-text"><strong style="color:var(--text);font-weight:400">Storage</strong> — for uploading files</div></div>
+        <div class="item"><div class="item-dot"></div><div class="item-text"><strong style="color:var(--text);font-weight:400">Internet</strong> — for cloud connectivity</div></div>
+        <div class="item"><div class="item-dot"></div><div class="item-text"><strong style="color:var(--text);font-weight:400">Biometric</strong> — for secure login (optional)</div></div>
+      </div>
+    </div>
+  </div>
 
-<p>We do NOT sell or rent your personal information to third parties.</p>
+  <!-- 6. Third-Party Services -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-title">Third-Party Services</div>
+    </div>
+    <div class="section-body">
+      <p>We may use third-party services like Firebase, Supabase, or payment providers such as Razorpay. These services operate under their own privacy policies.</p>
+    </div>
+  </div>
 
-<h2>3. Data Security</h2>
-<p>
-We use secure technologies such as encrypted transmission (HTTPS/SSL),
-secure cloud infrastructure, and authentication controls to protect your data.
-However, no system is 100% secure.
-</p>
+  <!-- 7. User Rights -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div class="section-title">User Rights</div>
+    </div>
+    <div class="section-body">
+      <div class="item-list">
+        <div class="item"><div class="item-dot"></div><div class="item-text">Access your data</div></div>
+        <div class="item"><div class="item-dot"></div><div class="item-text">Update information</div></div>
+        <div class="item"><div class="item-dot"></div><div class="item-text">Request deletion</div></div>
+        <div class="item"><div class="item-dot"></div><div class="item-text">Withdraw consent</div></div>
+      </div>
+    </div>
+  </div>
 
-<h2>4. Data Storage & Retention</h2>
-<p>
-Your data is stored securely on trusted cloud services (such as Supabase or Firebase).
-We retain data only as long as necessary to provide services.
-You may request deletion at any time.
-</p>
+  <!-- 8. Children's Privacy -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <div class="section-title">Children's Privacy</div>
+    </div>
+    <div class="section-body">
+      <p>Locklet Pro is not intended for children under 13 years of age.</p>
+    </div>
+  </div>
 
-<h2>5. App Permissions</h2>
-<ul>
-<li>Camera — for scanning documents</li>
-<li>Storage — for uploading files</li>
-<li>Internet — for cloud connectivity</li>
-<li>Biometric — for secure login (optional)</li>
-</ul>
+  <!-- 9. Changes to Policy -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">09</div>
+      <div class="section-title">Changes to Policy</div>
+    </div>
+    <div class="section-body">
+      <p>We may update this Privacy Policy from time to time. Continued use of the app means you accept the changes.</p>
+    </div>
+  </div>
 
-<h2>6. Third-Party Services</h2>
-<p>
-We may use third-party services like Firebase, Supabase, or payment providers such as Razorpay.
-These services operate under their own privacy policies.
-</p>
+  <!-- 10. Contact -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <div class="section-title">Contact Information</div>
+    </div>
+    <div class="section-body">
+      <div class="contact-fields">
+        <div class="field">
+          <div class="field-label">Developer</div>
+          <div class="field-value">Lakhansing Narsing Patil</div>
+        </div>
+        <div class="divider"></div>
+        <div class="field">
+          <div class="field-label">Email</div>
+          <div class="field-value"><a href="mailto:lockletpro@gmail.com">lockletpro@gmail.com</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<h2>7. User Rights</h2>
-You have the right to:
-<ul>
-<li>Access your data</li>
-<li>Update information</li>
-<li>Request deletion</li>
-<li>Withdraw consent</li>
-</ul>
-
-<h2>8. Children’s Privacy</h2>
-<p>
-Locklet Pro is not intended for children under 13 years of age.
-</p>
-
-<h2>9. Changes to Policy</h2>
-<p>
-We may update this Privacy Policy from time to time.
-Continued use means you accept the changes.
-</p>
-
-<h2>10. Contact Information</h2>
-<p>
-Developer: Lakhansing Narsing Patil<br>
-Email: lockletpro@gmail.com
-</p>
+  <footer>© 2026 Locklet Pro. All rights reserved.</footer>
 
 </div>
-
 </body>
 </html>
