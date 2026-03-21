@@ -1329,7 +1329,7 @@
           </div>
         </div>
         <div class="ocr-fields">
-          <div class="ocr-field filled"><div class="ocr-field-label">Full Name</div><div class="ocr-field-val">Lakhansing P.</div></div>
+          <div class="ocr-field filled"><div class="ocr-field-label">Full Name</div><div class="ocr-field-val">ABCD</div></div>
           <div class="ocr-field filled"><div class="ocr-field-label">Date of Birth</div><div class="ocr-field-val">01/01/2000</div></div>
           <div class="ocr-field filled"><div class="ocr-field-label">UID Number</div><div class="ocr-field-val">XXXX XXXX 4821</div></div>
           <div class="ocr-field"><div class="ocr-field-label">Address</div><div class="ocr-field-val typing">Pune, MH</div></div>
@@ -1491,7 +1491,7 @@
     </div>
     <div class="cb">
       <div class="dr"><span class="dk">Name</span><span class="dv">Lakhansing Narsing Patil</span></div>
-      <div class="dr"><span class="dk">Email</span><span class="dv"><a href="mailto:lockletpro@gmail.com">lockletpro@gmail.com</a></span></div>
+      <div class="dr"><span class="dk">Email</span><span class="dv"><a href="/cdn-cgi/l/email-protection#412d2e222a2d243531332e01262c20282d6f222e2c"><span class="__cf_email__" data-cfemail="fe92919d95929b8a8e8c91be99939f9792d09d9193">[email&#160;protected]</span></a></span></div>
     </div>
   </div>
 
@@ -1504,7 +1504,7 @@
 
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── CUSTOM CURSOR ──
   const cur = document.getElementById('cursor');
   const ring = document.getElementById('cursor-ring');
@@ -1569,11 +1569,52 @@
       btn.appendChild(r);
       setTimeout(() => r.remove(), 700);
     });
-  }
 
-  // ── OCR RESTART ON SCROLL ──
-  const ocrDemo = document.querySelector('.ocr-demo');
-  if (ocrDemo) {
-    new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) {
-        ocrDemo.querySelectorAll('.ocr-line')
+  </script>
+  <style>@keyframes rippleOut{to{transform:scale(3);opacity:0}}</style>
+
+  <script>
+  // ════════════════════════════════════════
+  // HAMBURGER MENU — WORKING JS
+  // ════════════════════════════════════════
+  (function() {
+    var hamBtn   = document.getElementById('hamBtn');
+    var drawer   = document.getElementById('menuDrawer');
+    var backdrop = document.getElementById('menuBackdrop');
+    var closeBtn = document.getElementById('drawerClose');
+
+    if (!hamBtn || !drawer || !backdrop) { console.warn('Hamburger: elements not found'); return; }
+
+    function openDrawer() {
+      hamBtn.classList.add('open');
+      drawer.classList.add('open');
+      backdrop.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      hamBtn.classList.remove('open');
+      drawer.classList.remove('open');
+      backdrop.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    hamBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      drawer.classList.contains('open') ? closeDrawer() : openDrawer();
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+    backdrop.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeDrawer(); });
+
+    drawer.querySelectorAll('.drawer-link').forEach(function(link) {
+      if (!(link.getAttribute('href') || '').startsWith('http')) {
+        link.addEventListener('click', function() { setTimeout(closeDrawer, 80); });
+      }
+    });
+
+  })();
+  </script>
+</body>
+</html>
