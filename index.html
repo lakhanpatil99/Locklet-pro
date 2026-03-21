@@ -984,24 +984,25 @@
     .dl-arrow svg { width: 11px; height: 11px; fill: var(--t2); }
 
     /* Download CTA at bottom */
-    .drawer-footer { padding: 16px; border-top: 1px solid var(--border); position: relative; z-index: 1; }
+    .drawer-footer { padding: 10px 14px 14px; border-top: 1px solid var(--border); position: relative; z-index: 1; }
     .drawer-download-btn {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      width: 100%; padding: 14px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 10px 14px;
       background: linear-gradient(135deg, var(--gold3), var(--gold) 50%, var(--gold2));
-      border: none; border-radius: 14px;
-      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13.5px;
+      border: none; border-radius: 11px;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px;
       color: #1a0e00; letter-spacing: .02em; text-decoration: none;
-      box-shadow: 0 6px 24px rgba(232,184,109,.32);
+      box-shadow: 0 4px 16px rgba(232,184,109,.28);
       transition: transform .25s, box-shadow .25s; position: relative; overflow: hidden;
+      white-space: nowrap;
     }
     .drawer-download-btn::before {
       content: ''; position: absolute; inset: 0;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
       animation: sweep 2.5s ease-in-out infinite;
     }
-    .drawer-download-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(232,184,109,.45); }
-    .drawer-download-btn svg { width: 17px; height: 17px; }
+    .drawer-download-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(232,184,109,.42); }
+    .drawer-download-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
 
     /* Stagger animation for links */
     .drawer-link { opacity: 0; transform: translateX(20px); transition: background .22s, transform .22s, border-color .22s, opacity .35s; }
