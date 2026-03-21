@@ -843,6 +843,175 @@
       h1 { font-size: 26px; }
       .page { padding: 0 16px 90px; }
     }
+
+    /* ══════════════════════════════════════
+       HAMBURGER MENU — 2026 STYLE
+    ══════════════════════════════════════ */
+
+    /* Hamburger button */
+    .ham-btn {
+      width: 42px; height: 42px; border-radius: 13px;
+      background: var(--s2); border: 1px solid var(--border);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 5px; cursor: pointer; flex-shrink: 0; z-index: 1001; position: relative;
+      transition: background .25s, border-color .25s, transform .25s;
+    }
+    .ham-btn:hover { background: var(--s3); border-color: rgba(232,184,109,.28); transform: scale(1.06); }
+    .ham-btn.open { background: var(--s3); border-color: rgba(232,184,109,.35); }
+    .ham-line {
+      width: 18px; height: 1.8px; border-radius: 2px; background: var(--text);
+      transition: transform .35s cubic-bezier(.16,1,.3,1), opacity .25s, width .3s;
+      transform-origin: center;
+    }
+    .ham-btn.open .ham-line:nth-child(1) { transform: translateY(6.8px) rotate(45deg); }
+    .ham-btn.open .ham-line:nth-child(2) { opacity: 0; width: 0; }
+    .ham-btn.open .ham-line:nth-child(3) { transform: translateY(-6.8px) rotate(-45deg); }
+
+    /* Overlay backdrop */
+    .menu-backdrop {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(3,2,10,.7);
+      backdrop-filter: blur(8px);
+      opacity: 0; pointer-events: none;
+      transition: opacity .35s ease;
+    }
+    .menu-backdrop.open { opacity: 1; pointer-events: all; }
+
+    /* Drawer panel */
+    .menu-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: min(300px, 82vw);
+      background: linear-gradient(160deg, var(--s1) 0%, rgba(155,109,255,.04) 100%);
+      border-left: 1px solid var(--border);
+      z-index: 1000; display: flex; flex-direction: column;
+      transform: translateX(110%);
+      transition: transform .42s cubic-bezier(.16,1,.3,1);
+      overflow: hidden;
+    }
+    .menu-drawer::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(255,255,255,.022), transparent 55%);
+      pointer-events: none;
+    }
+    .menu-drawer.open { transform: translateX(0); }
+
+    /* Drawer glow orb */
+    .drawer-orb {
+      position: absolute; top: -80px; right: -80px;
+      width: 240px; height: 240px;
+      background: radial-gradient(circle, rgba(155,109,255,.12), transparent 65%);
+      pointer-events: none; animation: luckypulse 4s ease-in-out infinite;
+    }
+
+    /* Drawer header */
+    .drawer-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 22px 20px; border-bottom: 1px solid var(--border);
+      position: relative; z-index: 1;
+    }
+    .drawer-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .drawer-logo img {
+      width: 34px; height: 34px; border-radius: 10px; object-fit: cover;
+      box-shadow: 0 0 14px rgba(155,109,255,.35);
+    }
+    .drawer-logo-name {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px;
+      letter-spacing: -.035em; color: var(--text);
+    }
+    .drawer-logo-name em { font-style: normal; background: linear-gradient(135deg, var(--gold2), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .drawer-close {
+      width: 32px; height: 32px; border-radius: 9px;
+      background: var(--s3); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      transition: background .2s, border-color .2s;
+    }
+    .drawer-close:hover { background: var(--s4); border-color: rgba(248,113,113,.3); }
+    .drawer-close svg { width: 14px; height: 14px; fill: var(--t2); }
+
+    /* Nav links */
+    .drawer-nav { flex: 1; padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; position: relative; z-index: 1; overflow-y: auto; }
+
+    .drawer-section-label {
+      font-size: 8.5px; color: var(--t3); letter-spacing: .16em;
+      text-transform: uppercase; font-weight: 700;
+      padding: 12px 8px 6px; display: flex; align-items: center; gap: 8px;
+    }
+    .drawer-section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--t3), transparent); }
+
+    .drawer-link {
+      display: flex; align-items: center; gap: 13px;
+      padding: 12px 14px; border-radius: 13px; text-decoration: none;
+      transition: background .22s, transform .22s, border-color .22s;
+      border: 1px solid transparent; position: relative; overflow: hidden;
+    }
+    .drawer-link:hover { background: var(--s2); border-color: var(--border); transform: translateX(4px); }
+    .drawer-link::before {
+      content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+      width: 2px; height: 0; border-radius: 2px;
+      transition: height .25s cubic-bezier(.16,1,.3,1);
+    }
+    .drawer-link:hover::before { height: 60%; }
+    .drawer-link.gold::before { background: var(--gold); }
+    .drawer-link.violet::before { background: var(--violet); }
+    .drawer-link.red::before { background: var(--red); }
+    .drawer-link.green::before { background: var(--green); }
+
+    .dl-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .dl-icon svg { width: 16px; height: 16px; }
+    .dl-icon.gold { background: rgba(232,184,109,.1); border: 1px solid rgba(232,184,109,.2); }
+    .dl-icon.gold svg { fill: var(--gold); }
+    .dl-icon.violet { background: rgba(155,109,255,.1); border: 1px solid rgba(155,109,255,.2); }
+    .dl-icon.violet svg { fill: var(--violet); }
+    .dl-icon.red { background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.2); }
+    .dl-icon.red svg { fill: var(--red); }
+    .dl-icon.green { background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.2); }
+    .dl-icon.green svg { fill: var(--green); }
+
+    .dl-text { flex: 1; }
+    .dl-title { font-size: 13.5px; font-weight: 500; color: var(--text); display: block; margin-bottom: 2px; }
+    .dl-sub { font-size: 10px; color: var(--t2); font-weight: 300; }
+
+    .dl-arrow {
+      width: 22px; height: 22px; border-radius: 7px;
+      background: var(--s3); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: background .2s, border-color .2s;
+    }
+    .drawer-link:hover .dl-arrow { background: var(--s4); }
+    .dl-arrow svg { width: 11px; height: 11px; fill: var(--t2); }
+
+    /* Download CTA at bottom */
+    .drawer-footer { padding: 16px; border-top: 1px solid var(--border); position: relative; z-index: 1; }
+    .drawer-download-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, var(--gold3), var(--gold) 50%, var(--gold2));
+      border: none; border-radius: 14px;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13.5px;
+      color: #1a0e00; letter-spacing: .02em; text-decoration: none;
+      box-shadow: 0 6px 24px rgba(232,184,109,.32);
+      transition: transform .25s, box-shadow .25s; position: relative; overflow: hidden;
+    }
+    .drawer-download-btn::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
+      animation: sweep 2.5s ease-in-out infinite;
+    }
+    .drawer-download-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(232,184,109,.45); }
+    .drawer-download-btn svg { width: 17px; height: 17px; }
+
+    /* Stagger animation for links */
+    .drawer-link { opacity: 0; transform: translateX(20px); transition: background .22s, transform .22s, border-color .22s, opacity .35s; }
+    .menu-drawer.open .drawer-link { opacity: 1; transform: translateX(0); }
+    .menu-drawer.open .drawer-link:nth-child(1) { transition-delay: .08s; }
+    .menu-drawer.open .drawer-link:nth-child(2) { transition-delay: .14s; }
+    .menu-drawer.open .drawer-link:nth-child(3) { transition-delay: .20s; }
+    .menu-drawer.open .drawer-link:nth-child(4) { transition-delay: .26s; }
+    .menu-drawer.open .drawer-link:nth-child(5) { transition-delay: .32s; }
+
   </style>
 </head>
 <body>
@@ -863,6 +1032,93 @@
 
 <div class="page">
 
+  <!-- ── BACKDROP ── -->
+  <div class="menu-backdrop" id="menuBackdrop"></div>
+
+  <!-- ── MENU DRAWER ── -->
+  <div class="menu-drawer" id="menuDrawer">
+    <div class="drawer-orb"></div>
+
+    <!-- Header -->
+    <div class="drawer-header">
+      <a href="index.html" class="drawer-logo">
+        <img src="https://raw.githubusercontent.com/lakhanpatil99/Locklet-pro/main/applogos.png" alt="Locklet Pro"/>
+        <span class="drawer-logo-name">Locklet<em> Pro</em></span>
+      </a>
+      <div class="drawer-close" id="drawerClose">
+        <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+
+    <!-- Nav links -->
+    <div class="drawer-nav">
+
+      <div class="drawer-section-label">App</div>
+
+      <a href="https://play.google.com/apps/testing/com.lockletpro" target="_blank" class="drawer-link green">
+        <div class="dl-icon green">
+          <svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>
+        </div>
+        <div class="dl-text">
+          <span class="dl-title">Download App</span>
+          <span class="dl-sub">Get it on Google Play</span>
+        </div>
+        <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+      </a>
+
+      <div class="drawer-section-label">Legal</div>
+
+      <a href="privacy.html" class="drawer-link violet">
+        <div class="dl-icon violet">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+        </div>
+        <div class="dl-text">
+          <span class="dl-title">Privacy Policy</span>
+          <span class="dl-sub">How we handle your data</span>
+        </div>
+        <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+      </a>
+
+      <a href="terms.html" class="drawer-link gold">
+        <div class="dl-icon gold">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>
+        </div>
+        <div class="dl-text">
+          <span class="dl-title">Terms & Conditions</span>
+          <span class="dl-sub">Rules for using Locklet Pro</span>
+        </div>
+        <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+      </a>
+
+      <a href="delete-account.html" class="drawer-link red">
+        <div class="dl-icon red">
+          <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+        </div>
+        <div class="dl-text">
+          <span class="dl-title">Delete Account</span>
+          <span class="dl-sub">Permanently remove your data</span>
+        </div>
+        <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+      </a>
+
+    </div>
+
+    <!-- Footer CTA -->
+    <div class="drawer-footer">
+      <a href="https://play.google.com/apps/testing/com.lockletpro" target="_blank" class="drawer-download-btn">
+        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <path d="M48 421.3V90.7c0-13.5 14.6-21.9 26.3-15.1L416 256 74.3 436.4C62.6 443.2 48 434.8 48 421.3z" fill="#4285F4"/>
+          <path d="M416 256 74.3 75.6 262 201.4z" fill="#EA4335"/>
+          <path d="M416 256 262 310.6 74.3 436.4z" fill="#FBBC04"/>
+          <path d="M262 201.4 416 256 262 310.6z" fill="#34A853"/>
+        </svg>
+        Download on Google Play
+      </a>
+    </div>
+
+  </div>
+
+
   <!-- NAV -->
   <nav>
     <a href="index.html" class="nav-logo">
@@ -871,8 +1127,13 @@
       </div>
       <span class="logo-name">Locklet<em> Pro</em></span>
     </a>
-    <div class="status-pill">
-      <div class="pulse-dot"></div>Secure
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="status-pill"><div class="pulse-dot"></div>Secure</div>
+      <button class="ham-btn" id="hamBtn" aria-label="Open menu">
+        <span class="ham-line"></span>
+        <span class="ham-line"></span>
+        <span class="ham-line"></span>
+      </button>
     </div>
   </nav>
 
