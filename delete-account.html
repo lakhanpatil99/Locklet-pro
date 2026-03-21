@@ -4,104 +4,177 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Delete Account — Locklet Pro</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
   <style>
-    :root{--bg:#080608;--s1:#0f0d10;--s2:#141118;--s3:#1c1922;--border:rgba(255,255,255,.06);--border-hi:rgba(255,255,255,.11);--gold:#e8b86d;--gold-dim:rgba(232,184,109,.1);--violet:#9b6dff;--violet-dim:rgba(155,109,255,.1);--green:#4eca8b;--green-dim:rgba(78,202,139,.1);--red:#ff6b6b;--red-dim:rgba(255,107,107,.1);--red-mid:rgba(255,107,107,.18);--text:#f0eaf8;--t2:#8a8298;--t3:#3d3748}
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--bg);color:var(--text);font-family:'Instrument Sans',sans-serif;min-height:100vh;overflow-x:hidden}
-    .bg-wrap{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-    .orb{position:absolute;border-radius:50%;filter:blur(100px);animation:drift 14s ease-in-out infinite}
-    .orb-a{width:500px;height:500px;background:radial-gradient(circle,rgba(255,107,107,.09),transparent 65%);top:-160px;right:-100px;animation-delay:0s}
-    .orb-b{width:380px;height:380px;background:radial-gradient(circle,rgba(155,109,255,.08),transparent 65%);bottom:10%;left:-80px;animation-delay:-6s}
-    @keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-15px)}}
-    .grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 100%)}
-    .page{position:relative;z-index:1;max-width:460px;margin:0 auto;padding:0 18px 70px}
+    :root {
+      --bg: #03020a; --s1: #080714; --s2: #0d0b1c; --s3: #131126; --s4: #1a1830;
+      --border: rgba(255,255,255,.055); --border-hi: rgba(255,255,255,.1);
+      --gold: #e8b86d; --gold2: #fde68a; --gold-dim: rgba(232,184,109,.07);
+      --violet: #9b6dff; --violet2: #c4b5fd; --violet-dim: rgba(155,109,255,.07);
+      --green: #34d399; --green-dim: rgba(52,211,153,.07);
+      --red: #f87171; --red2: #fca5a5; --red-dim: rgba(248,113,113,.07); --red-mid: rgba(248,113,113,.14);
+      --text: #f1ecfc; --t2: #8b80a8; --t3: #3d3660;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+    body::after {
+      content: ''; position: fixed; inset: 0; z-index: 997; pointer-events: none; opacity: .026;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 160px 160px;
+    }
+    .bg-wrap { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .orb { position: absolute; border-radius: 50%; filter: blur(120px); animation: drift 15s ease-in-out infinite; }
+    .orb-a { width: 580px; height: 580px; background: radial-gradient(circle, rgba(248,113,113,.1), transparent 65%); top: -200px; right: -130px; animation-delay: 0s; }
+    .orb-b { width: 420px; height: 420px; background: radial-gradient(circle, rgba(155,109,255,.09), transparent 65%); bottom: 5%; left: -90px; animation-delay: -7s; }
+    .orb-c { width: 280px; height: 280px; background: radial-gradient(circle, rgba(232,184,109,.06), transparent 65%); top: 45%; left: 45%; animation-delay: -12s; }
+    @keyframes drift { 0%,100% { transform: translate(0,0); } 40% { transform: translate(20px,-16px); } 70% { transform: translate(-14px,20px); } }
+    .grid-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(255,255,255,.013) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.013) 1px, transparent 1px);
+      background-size: 58px 58px;
+      mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 20%, transparent 100%);
+    }
+    .page { position: relative; z-index: 1; max-width: 470px; margin: 0 auto; padding: 0 20px 80px; }
 
-    /* Nav */
-    nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0 18px}
-    .nav-logo{display:flex;align-items:center;gap:9px;text-decoration:none}
-    .gem{width:33px;height:33px;background:linear-gradient(135deg,var(--gold),#b8722a);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(232,184,109,.28),inset 0 1px 0 rgba(255,255,255,.18);position:relative;overflow:hidden}
-    .gem::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.18) 0%,transparent 55%)}
-    .gem svg{width:16px;height:16px;fill:#fff;position:relative;z-index:1}
-    .logo-name{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;letter-spacing:-.02em;color:var(--text)}
-    .logo-name em{font-style:normal;color:var(--gold)}
-    .back-btn{display:flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:11px;font-weight:500;color:var(--t2);letter-spacing:.03em;text-decoration:none;transition:border-color .2s,color .2s}
-    .back-btn:hover{border-color:var(--border-hi);color:var(--text)}
-    .back-btn svg{width:12px;height:12px;fill:currentColor}
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 26px 0 20px; animation: up .8s cubic-bezier(.16,1,.3,1) both; }
+    @keyframes up { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .gem { width: 36px; height: 36px; background: linear-gradient(145deg, #f8d882, #d4932e 48%, #7c3e00); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 22px rgba(232,184,109,.38), inset 0 1px 0 rgba(255,255,255,.26); position: relative; overflow: hidden; transition: transform .3s; }
+    .gem:hover { transform: scale(1.08) rotate(-4deg); }
+    .gem::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,.28) 0%, transparent 52%); }
+    .gem svg { width: 17px; height: 17px; fill: #fff; position: relative; z-index: 1; }
+    .logo-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 17px; letter-spacing: -.04em; color: var(--text); }
+    .logo-name em { font-style: normal; background: linear-gradient(135deg, var(--gold2), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .back-btn { display: flex; align-items: center; gap: 6px; background: var(--s2); border: 1px solid var(--border); border-radius: 20px; padding: 7px 14px; font-size: 11.5px; font-weight: 500; color: var(--t2); letter-spacing: .03em; text-decoration: none; transition: border-color .22s, color .22s, transform .22s; }
+    .back-btn:hover { border-color: var(--border-hi); color: var(--text); transform: translateX(-3px); }
+    .back-btn svg { width: 13px; height: 13px; fill: currentColor; }
 
-    /* Hero */
-    .hero{padding:28px 0 24px;animation:up .7s cubic-bezier(.16,1,.3,1) both}
-    @keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
-    .danger-badge{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(255,107,107,.25);background:rgba(255,107,107,.07);border-radius:30px;padding:5px 13px 5px 7px;font-size:10.5px;font-weight:500;color:var(--red);letter-spacing:.07em;text-transform:uppercase;margin-bottom:18px}
-    .badge-icon{width:17px;height:17px;background:var(--red-dim);border-radius:50%;display:flex;align-items:center;justify-content:center}
-    .badge-icon svg{width:9px;height:9px;fill:var(--red)}
-    h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(30px,7vw,40px);line-height:1.08;letter-spacing:-.04em;margin-bottom:10px}
-    .hero p{font-size:13px;color:var(--t2);line-height:1.72;font-weight:300}
+    .hero { padding: 32px 0 26px; animation: up .8s cubic-bezier(.16,1,.3,1) .06s both; }
+    .danger-badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(248,113,113,.28); background: rgba(248,113,113,.07); border-radius: 30px; padding: 6px 14px 6px 8px; font-size: 10.5px; font-weight: 500; color: var(--red); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 20px; }
+    .badge-icon { width: 18px; height: 18px; background: var(--red-dim); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .badge-icon svg { width: 10px; height: 10px; fill: var(--red); }
+    h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(32px, 8vw, 44px); line-height: 1.06; letter-spacing: -.05em; margin-bottom: 12px; }
+    .grad-red { background: linear-gradient(110deg, var(--text) 30%, var(--red2) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero p { font-size: 13.5px; color: var(--t2); line-height: 1.78; font-weight: 300; }
 
-    /* Cards */
-    .card{background:var(--s1);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:10px;transition:border-color .25s,transform .25s,box-shadow .25s;animation:up .7s cubic-bezier(.16,1,.3,1) both}
-    .card:hover{border-color:rgba(232,184,109,.15);transform:translateY(-2px);box-shadow:0 18px 50px rgba(0,0,0,.4)}
-    .card:nth-child(1){animation-delay:.1s}.card:nth-child(2){animation-delay:.18s}.card:nth-child(3){animation-delay:.26s}
+    .sl { font-size: 9px; color: var(--t3); letter-spacing: .18em; text-transform: uppercase; font-weight: 700; margin: 26px 0 11px 2px; display: flex; align-items: center; gap: 10px; }
+    .sl::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--t3), transparent); }
 
-    .ct{display:flex;align-items:center;gap:11px;padding:16px 18px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.012)}
-    .ci{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .ci svg{width:14px;height:14px}
-    .ci.g{background:var(--gold-dim);border:1px solid rgba(232,184,109,.18)}.ci.g svg{fill:var(--gold)}
-    .ci.r{background:var(--red-dim);border:1px solid rgba(255,107,107,.18)}.ci.r svg{fill:var(--red)}
-    .ci.v{background:var(--violet-dim);border:1px solid rgba(155,109,255,.18)}.ci.v svg{fill:var(--violet)}
-    .cl{font-family:'Syne',sans-serif;font-weight:600;font-size:13px;letter-spacing:-.01em;color:var(--text);flex:1}
-    .c-tag{font-size:10px;color:var(--t2);letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--border);border-radius:5px;padding:2px 8px}
+    .card { background: var(--s1); border: 1px solid var(--border); border-radius: 22px; overflow: hidden; margin-bottom: 10px; opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1), border-color .3s, box-shadow .3s; }
+    .card.in { opacity: 1; transform: translateY(0); }
+    .card:hover { border-color: rgba(232,184,109,.15); box-shadow: 0 20px 55px rgba(0,0,0,.42); }
+    .card.in:hover { transform: translateY(-3px); }
 
-    .cb{padding:16px 18px}
+    .ct { display: flex; align-items: center; gap: 12px; padding: 17px 20px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,.013); }
+    .ci { width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ci svg { width: 15px; height: 15px; }
+    .ci.g { background: var(--gold-dim); border: 1px solid rgba(232,184,109,.2); }
+    .ci.g svg { fill: var(--gold); }
+    .ci.r { background: var(--red-dim); border: 1px solid rgba(248,113,113,.2); }
+    .ci.r svg { fill: var(--red); }
+    .ci.v { background: var(--violet-dim); border: 1px solid rgba(155,109,255,.2); }
+    .ci.v svg { fill: var(--violet); }
+    .cl { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13.5px; letter-spacing: -.02em; color: var(--text); flex: 1; }
+    .c-tag { font-size: 9.5px; color: var(--t2); letter-spacing: .07em; text-transform: uppercase; border: 1px solid var(--border); border-radius: 6px; padding: 3px 9px; }
+    .cb { padding: 18px 20px; }
 
     /* Steps */
-    .steps{display:flex;flex-direction:column;gap:0}
-    .step{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);position:relative}
-    .step:last-child{border-bottom:none}
-    .step-n{width:22px;height:22px;border-radius:6px;background:var(--s3);border:1px solid var(--border-hi);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:10px;color:var(--t2);flex-shrink:0;margin-top:1px}
-    .step-t{font-size:13px;color:var(--t2);line-height:1.5;font-weight:300;flex:1}
-    .step-t code{font-family:'Syne',monospace;font-size:11.5px;background:rgba(232,184,109,.09);color:var(--gold);padding:1px 6px;border-radius:4px;border:1px solid rgba(232,184,109,.14);font-weight:600;letter-spacing:-.01em}
+    .steps { display: flex; flex-direction: column; }
+    .step { display: flex; align-items: flex-start; gap: 13px; padding: 11px 0; border-bottom: 1px solid var(--border); transition: padding-left .22s; }
+    .step:last-child { border-bottom: none; }
+    .step:hover { padding-left: 5px; }
+    .step-n { width: 24px; height: 24px; border-radius: 7px; background: var(--s3); border: 1px solid var(--border-hi); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 10.5px; color: var(--t2); flex-shrink: 0; margin-top: 1px; transition: background .22s, border-color .22s; }
+    .step:hover .step-n { background: var(--s4); border-color: rgba(232,184,109,.2); color: var(--gold); }
+    .step-t { font-size: 13.5px; color: var(--t2); line-height: 1.55; font-weight: 300; flex: 1; }
+    .step-t code { font-family: 'Syne', monospace; font-size: 12px; background: rgba(232,184,109,.09); color: var(--gold); padding: 2px 8px; border-radius: 5px; border: 1px solid rgba(232,184,109,.16); font-weight: 600; letter-spacing: -.01em; }
 
     /* Email fields */
-    .email-fields{display:flex;flex-direction:column;gap:0}
-    .ef{padding:11px 0;border-bottom:1px solid var(--border)}
-    .ef:last-child{border-bottom:none;padding-bottom:0}
-    .ef-label{font-size:10px;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
-    .ef-val{font-size:13px;color:var(--t2);font-weight:300}
-    .ef-val a{color:var(--gold);text-decoration:none}
-    .ef-val.mono{font-family:'Syne',monospace;font-size:12px;color:var(--text);font-weight:500;letter-spacing:-.01em}
+    .email-fields { display: flex; flex-direction: column; }
+    .ef { padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .ef:last-child { border-bottom: none; padding-bottom: 0; }
+    .ef-label { font-size: 9.5px; color: var(--t3); letter-spacing: .09em; text-transform: uppercase; margin-bottom: 5px; font-weight: 600; }
+    .ef-val { font-size: 13.5px; color: var(--t2); font-weight: 300; }
+    .ef-val a { color: var(--gold); text-decoration: none; transition: opacity .2s; }
+    .ef-val a:hover { opacity: .72; }
+    .ef-val.mono { font-family: 'Syne', monospace; font-size: 12.5px; color: var(--text); font-weight: 600; letter-spacing: -.01em; background: var(--s3); border: 1px solid var(--border); border-radius: 7px; padding: 6px 10px; display: inline-block; margin-top: 3px; }
 
-    /* Warning notice */
-    .warn-card{background:linear-gradient(135deg,rgba(255,107,107,.06),rgba(155,109,255,.03));border:1px solid rgba(255,107,107,.18);border-radius:16px;padding:18px;display:flex;gap:12px;animation:up .7s cubic-bezier(.16,1,.3,1) .34s both}
-    .warn-icon{width:34px;height:34px;background:var(--red-dim);border:1px solid rgba(255,107,107,.2);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .warn-icon svg{width:16px;height:16px;fill:var(--red)}
-    .warn-body{}
-    .warn-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--text);margin-bottom:5px}
-    .warn-text{font-size:12.5px;color:var(--t2);line-height:1.65;font-weight:300}
-    .warn-text strong{color:var(--text);font-weight:400}
+    /* Warning card */
+    .warn-card {
+      background: linear-gradient(138deg, rgba(248,113,113,.07), rgba(155,109,255,.03));
+      border: 1px solid rgba(248,113,113,.2); border-radius: 20px; padding: 20px;
+      display: flex; gap: 14px;
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
+      position: relative; overflow: hidden;
+    }
+    .warn-card::before {
+      content: ''; position: absolute; top: -60px; right: -60px;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(248,113,113,.08), transparent 70%);
+      pointer-events: none; animation: warnpulse 4s ease-in-out infinite;
+    }
+    @keyframes warnpulse { 0%,100% { opacity:.5; transform:scale(1); } 50% { opacity:1; transform:scale(1.1); } }
+    .warn-card.in { opacity: 1; transform: translateY(0); }
+    .warn-icon { width: 38px; height: 38px; background: var(--red-dim); border: 1px solid rgba(248,113,113,.22); border-radius: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; animation: iconpulse 2.5s ease-in-out infinite; }
+    @keyframes iconpulse { 0%,100% { box-shadow: 0 0 0 0 rgba(248,113,113,0); } 50% { box-shadow: 0 0 0 6px rgba(248,113,113,.1); } }
+    .warn-icon svg { width: 18px; height: 18px; fill: var(--red); }
+    .warn-body { position: relative; z-index: 1; }
+    .warn-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 6px; }
+    .warn-text { font-size: 13px; color: var(--t2); line-height: 1.68; font-weight: 300; }
+    .warn-text strong { color: var(--red2); font-weight: 500; }
 
-    footer{text-align:center;padding:20px 0 0;font-size:11px;color:var(--t3);letter-spacing:.04em;line-height:2}
-    footer a{color:var(--t3);text-decoration:none;margin:0 5px}
-    footer a:hover{color:var(--gold)}
+    /* Timeline dots connector */
+    .steps-visual { display: flex; flex-direction: column; gap: 0; position: relative; }
+    .steps-visual::before { content: ''; position: absolute; left: 11px; top: 24px; bottom: 0; width: 1px; background: linear-gradient(180deg, var(--border-hi), transparent); pointer-events: none; }
+
+    footer { text-align: center; padding: 24px 0 0; font-size: 11px; color: var(--t3); letter-spacing: .05em; line-height: 2.2; }
+    footer a { color: var(--t3); text-decoration: none; margin: 0 6px; transition: color .2s; }
+    footer a:hover { color: var(--gold); }
+
+    .real-logo {
+      width: 36px; height: 36px; border-radius: 11px;
+      object-fit: cover;
+      box-shadow: 0 0 18px rgba(155,109,255,.42), 0 5px 14px rgba(0,0,0,.5);
+      transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s;
+      display: block;
+    }
+    .nav-logo:hover .real-logo {
+      transform: scale(1.1) rotate(-5deg);
+      box-shadow: 0 0 32px rgba(155,109,255,.62), 0 8px 22px rgba(0,0,0,.6);
+    }
   </style>
 </head>
 <body>
-<div class="bg-wrap"><div class="orb orb-a"></div><div class="orb orb-b"></div></div>
+<div class="bg-wrap">
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
+  <div class="orb orb-c"></div>
+</div>
 <div class="grid-bg"></div>
 <div class="page">
+
   <nav>
     <a href="index.html" class="nav-logo">
-      <div class="gem"><svg viewBox="0 0 24 24"><path d="M12 1C8.676 1 6 3.676 6 7v1H4v15h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg></div>
+      <img src="https://raw.githubusercontent.com/lakhanpatil99/Locklet-pro/main/applogos.png" alt="Locklet Pro" class="real-logo"/>
       <span class="logo-name">Locklet<em> Pro</em></span>
     </a>
-    <a href="index.html" class="back-btn"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Back</a>
+    <a href="index.html" class="back-btn">
+      <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      Back
+    </a>
   </nav>
 
   <div class="hero">
-    <div class="danger-badge"><div class="badge-icon"><svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.5L20.5 19h-17L12 5.5zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg></div>Irreversible Action</div>
-    <h1>Delete Your<br/>Account</h1>
+    <div class="danger-badge">
+      <div class="badge-icon"><svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.5L20.5 19h-17L12 5.5zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg></div>
+      Irreversible Action
+    </div>
+    <h1><span class="grad-red">Delete Your<br/>Account</span></h1>
     <p>Permanently remove your Locklet Pro account and all associated data. Choose one of the two methods below.</p>
   </div>
+
+  <div class="sl">Deletion Methods</div>
 
   <!-- Method 1 -->
   <div class="card">
@@ -111,11 +184,23 @@
       <span class="c-tag">Recommended</span>
     </div>
     <div class="cb">
-      <div class="steps">
-        <div class="step"><div class="step-n">1</div><div class="step-t">Open <code>Locklet Pro</code></div></div>
-        <div class="step"><div class="step-n">2</div><div class="step-t">Navigate to <code>Profile</code> → <code>Settings</code></div></div>
-        <div class="step"><div class="step-n">3</div><div class="step-t">Tap <code>Delete Account</code></div></div>
-        <div class="step"><div class="step-n">4</div><div class="step-t">Confirm the deletion when prompted</div></div>
+      <div class="steps steps-visual">
+        <div class="step">
+          <div class="step-n">1</div>
+          <div class="step-t">Open <code>Locklet Pro</code> on your device</div>
+        </div>
+        <div class="step">
+          <div class="step-n">2</div>
+          <div class="step-t">Navigate to <code>Profile</code> → <code>Settings</code></div>
+        </div>
+        <div class="step">
+          <div class="step-n">3</div>
+          <div class="step-t">Tap <code>Delete Account</code></div>
+        </div>
+        <div class="step">
+          <div class="step-n">4</div>
+          <div class="step-t">Confirm the deletion when prompted</div>
+        </div>
       </div>
     </div>
   </div>
@@ -129,9 +214,18 @@
     </div>
     <div class="cb">
       <div class="email-fields">
-        <div class="ef"><div class="ef-label">Send to</div><div class="ef-val"><a href="mailto:lockletpro@gmail.com?subject=Delete%20My%20Locklet%20Pro%20Account">lockletpro@gmail.com</a></div></div>
-        <div class="ef"><div class="ef-label">Subject line</div><div class="ef-val mono">Delete My Locklet Pro Account</div></div>
-        <div class="ef"><div class="ef-label">Include in body</div><div class="ef-val">Your registered email address so we can locate your account</div></div>
+        <div class="ef">
+          <div class="ef-label">Send Email To</div>
+          <div class="ef-val"><a href="/cdn-cgi/l/email-protection#2e42414d45424b5a5e5c416e49434f4742004d4143115d5b4c444b4d5a136a4b424b5a4b0b1c1e63570b1c1e62414d45424b5a0b1c1e7e5c410b1c1e6f4d4d415b405a"><span class="__cf_email__" data-cfemail="3a56555951565f4e4a48557a5d575b535614595557">[email&#160;protected]</span></a></div>
+        </div>
+        <div class="ef">
+          <div class="ef-label">Use this Subject Line</div>
+          <div class="ef-val mono">Delete My Locklet Pro Account</div>
+        </div>
+        <div class="ef">
+          <div class="ef-label">Include in body</div>
+          <div class="ef-val">Your registered email address so we can locate and permanently delete your account</div>
+        </div>
       </div>
     </div>
   </div>
@@ -140,12 +234,17 @@
   <div class="warn-card">
     <div class="warn-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
     <div class="warn-body">
-      <div class="warn-title">Permanent deletion</div>
-      <div class="warn-text">Once we receive your request, your account and all stored documents will be <strong>permanently deleted within 48 hours.</strong> This action cannot be undone.</div>
+      <div class="warn-title">⚠️ Permanent deletion — no recovery</div>
+      <div class="warn-text">Once we receive your request, your account and all stored documents will be <strong>permanently deleted within 48 hours.</strong> This action cannot be undone. Download any important documents before requesting deletion.</div>
     </div>
   </div>
 
-  <footer>© 2026 Locklet Pro. All rights reserved.<br/><a href="privacy.html">Privacy</a>·<a href="terms.html">Terms</a>·<a href="index.html">Home</a></footer>
+  <footer>
+    © 2026 Locklet Pro. All rights reserved.<br/>
+    <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="index.html">Home</a>
+  </footer>
 </div>
-</body>
-</html>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const io = new IntersectionObserver(entries => {
+    entries.forE
