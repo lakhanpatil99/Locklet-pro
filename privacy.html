@@ -90,12 +90,11 @@
       background: var(--s1); border: 1px solid var(--border); border-radius: 22px;
       overflow: hidden; margin-bottom: 9px;
       transition: border-color .3s, transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s;
-      opacity: 0; transform: translateY(22px);
-      transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1), border-color .3s, box-shadow .3s;
+      animation: cardReveal .7s cubic-bezier(.16,1,.3,1) both;
     }
-    .sec.in { opacity: 1; transform: translateY(0); }
+
     .sec:hover { border-color: rgba(155,109,255,.18); transform: translateY(-3px); box-shadow: 0 20px 55px rgba(0,0,0,.45); }
-    .sec.in:hover { transform: translateY(-3px); }
+    .sec:hover { transform: translateY(-3px); }
 
     .sh {
       display: flex; align-items: center; gap: 11px;
@@ -161,6 +160,10 @@
     .nav-logo:hover .real-logo {
       transform: scale(1.1) rotate(-5deg);
       box-shadow: 0 0 32px rgba(155,109,255,.62), 0 8px 22px rgba(0,0,0,.6);
+    }
+    @keyframes cardReveal {
+      from { opacity:0; transform:translateY(26px); }
+      to   { opacity:1; transform:translateY(0); }
     }
   </style>
 </head>
