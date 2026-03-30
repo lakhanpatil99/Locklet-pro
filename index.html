@@ -798,6 +798,91 @@
 
     @keyframes rippleOut { to { transform:scale(3); opacity:0; } }
 
+    /* ── HOW IT WORKS ── */
+    .hiw-steps { display: flex; flex-direction: column; gap: 0; position: relative; }
+    .hiw-steps::before { content: ''; position: absolute; left: 23px; top: 38px; bottom: 38px; width: 2px; background: linear-gradient(180deg, var(--gold), var(--violet), var(--green)); border-radius: 2px; z-index: 0; }
+    .hiw-step {
+      display: flex; align-items: flex-start; gap: 18px; padding: 14px 0; position: relative; z-index: 1;
+    }
+    .hiw-num {
+      width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.4);
+      transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s;
+    }
+    .hiw-step:hover .hiw-num { transform: scale(1.1) rotate(-5deg); }
+    .hiw-num.n1 { background: linear-gradient(135deg, rgba(232,184,109,.2), rgba(232,184,109,.08)); border: 1px solid rgba(232,184,109,.3); color: var(--gold); }
+    .hiw-num.n2 { background: linear-gradient(135deg, rgba(155,109,255,.2), rgba(155,109,255,.08)); border: 1px solid rgba(155,109,255,.3); color: var(--violet); }
+    .hiw-num.n3 { background: linear-gradient(135deg, rgba(52,211,153,.2), rgba(52,211,153,.08)); border: 1px solid rgba(52,211,153,.3); color: var(--green); }
+    .hiw-num.n4 { background: linear-gradient(135deg, rgba(96,165,250,.2), rgba(96,165,250,.08)); border: 1px solid rgba(96,165,250,.3); color: var(--blue); }
+    .hiw-content { flex: 1; padding-top: 4px; }
+    .hiw-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: var(--text); margin-bottom: 4px; letter-spacing: -.02em; }
+    .hiw-desc { font-size: 12.5px; color: var(--t2); line-height: 1.65; font-weight: 300; }
+
+    /* ── TESTIMONIALS ── */
+    .testi-slider { position: relative; overflow: hidden; }
+    .testi-track { display: flex; transition: transform .5s cubic-bezier(.16,1,.3,1); }
+    .testi-card {
+      min-width: 100%; padding: 22px;
+      background: var(--s2); border: 1px solid var(--border);
+      border-radius: 18px; position: relative; overflow: hidden;
+    }
+    .testi-card::before { content: '"'; position: absolute; top: -10px; right: 16px; font-size: 120px; font-family: 'Syne', serif; color: rgba(232,184,109,.06); line-height: 1; pointer-events: none; }
+    .testi-stars { display: flex; gap: 3px; margin-bottom: 12px; }
+    .testi-stars svg { width: 14px; height: 14px; fill: var(--gold); }
+    .testi-text { font-size: 13.5px; color: var(--t2); line-height: 1.78; font-weight: 300; margin-bottom: 16px; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 12px; }
+    .testi-avatar {
+      width: 38px; height: 38px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 14px;
+    }
+    .testi-avatar.t1 { background: linear-gradient(135deg, rgba(232,184,109,.25), rgba(232,184,109,.08)); color: var(--gold); border: 1px solid rgba(232,184,109,.3); }
+    .testi-avatar.t2 { background: linear-gradient(135deg, rgba(155,109,255,.25), rgba(155,109,255,.08)); color: var(--violet); border: 1px solid rgba(155,109,255,.3); }
+    .testi-avatar.t3 { background: linear-gradient(135deg, rgba(52,211,153,.25), rgba(52,211,153,.08)); color: var(--green); border: 1px solid rgba(52,211,153,.3); }
+    .testi-avatar.t4 { background: linear-gradient(135deg, rgba(96,165,250,.25), rgba(96,165,250,.08)); color: var(--blue); border: 1px solid rgba(96,165,250,.3); }
+    .testi-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; color: var(--text); }
+    .testi-role { font-size: 10.5px; color: var(--t2); font-weight: 300; }
+    .testi-dots {
+      display: flex; justify-content: center; gap: 8px; margin-top: 16px;
+    }
+    .testi-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--s4); border: 1px solid var(--border);
+      cursor: pointer; transition: background .25s, border-color .25s, transform .25s;
+    }
+    .testi-dot.active { background: var(--gold); border-color: var(--gold); transform: scale(1.3); box-shadow: 0 0 8px rgba(232,184,109,.4); }
+    .testi-nav { display: flex; justify-content: center; gap: 10px; margin-top: 12px; }
+    .testi-btn {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--s3); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background .22s, border-color .22s, transform .22s;
+    }
+    .testi-btn:hover { background: var(--s4); border-color: rgba(232,184,109,.3); transform: translateY(-2px); }
+    .testi-btn svg { width: 14px; height: 14px; fill: var(--t2); }
+
+    /* ── BACK TO TOP ── */
+    .btt {
+      position: fixed; bottom: 28px; right: 28px; z-index: 998;
+      width: 46px; height: 46px; border-radius: 14px;
+      background: linear-gradient(135deg, var(--gold3), var(--gold));
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 24px rgba(232,184,109,.35), 0 2px 8px rgba(0,0,0,.4);
+      opacity: 0; pointer-events: none; transform: translateY(20px);
+      transition: opacity .35s, transform .35s cubic-bezier(.16,1,.3,1), box-shadow .25s;
+    }
+    .btt.visible { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .btt:hover { box-shadow: 0 10px 32px rgba(232,184,109,.55), 0 4px 12px rgba(0,0,0,.4); transform: translateY(-3px); }
+    .btt svg { width: 20px; height: 20px; fill: #1a0e00; }
+
+    /* ── SCROLL REVEAL (observer) ── */
+    .sr { opacity: 0; transform: translateY(32px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+    .sr.visible { opacity: 1; transform: translateY(0); }
+
+
     /* ── FLOATING LABELS BADGE ── */
     .float-badge {
       position: absolute; right: -8px; top: -8px;
@@ -1071,6 +1156,52 @@
         <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
       </a>
 
+      <div class="drawer-section-label">Explore</div>
+
+      <a href="features.html" class="drawer-link gold">
+        <div class="dl-icon gold">
+          <svg viewBox="0 0 24 24"><path d="M12 1l2.5 7.5H22l-6.5 4.7 2.5 7.5L12 16.3 6 20.7l2.5-7.5L2 8.5h7.5z"/></svg>
+        </div>
+        <div class="dl-text">
+          <span class="dl-title">Features</span>
+          <span class="dl-sub">Explore all capabilities</span>
+        </div>
+        <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+      </a>
+
+      <a href="about.html" class="drawer-link violet">
+        <div class="dl-icon violet">
+          <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+        </div>
+        <div class="dl-text">
+          <span class="dl-title">About</span>
+          <span class="dl-sub">Our story & mission</span>
+        </div>
+        <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+      </a>
+
+      <a href="faq.html" class="drawer-link green">
+        <div class="dl-icon green">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+        </div>
+        <div class="dl-text">
+          <span class="dl-title">FAQ</span>
+          <span class="dl-sub">Common questions answered</span>
+        </div>
+        <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+      </a>
+
+      <a href="contact.html" class="drawer-link gold">
+        <div class="dl-icon gold">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        </div>
+        <div class="dl-text">
+          <span class="dl-title">Contact</span>
+          <span class="dl-sub">Get in touch with us</span>
+        </div>
+        <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+      </a>
+
       <div class="drawer-section-label">Legal</div>
 
       <a href="privacy.html" class="drawer-link violet">
@@ -1089,7 +1220,7 @@
           <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>
         </div>
         <div class="dl-text">
-          <span class="dl-title">Terms & Conditions</span>
+          <span class="dl-title">Terms &amp; Conditions</span>
           <span class="dl-sub">Rules for using Locklet Pro</span>
         </div>
         <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
@@ -1202,6 +1333,48 @@
       <div class="test-badge">
         <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
         Early Access · Currently in Testing Phase
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="sl">How It Works</div>
+  <div class="card sr">
+    <div class="ct">
+      <div class="ci g"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
+      <span class="cl">Get Started in 4 Steps</span>
+      <span class="cbadge new">Easy</span>
+    </div>
+    <div class="cb">
+      <div class="hiw-steps">
+        <div class="hiw-step">
+          <div class="hiw-num n1">1</div>
+          <div class="hiw-content">
+            <div class="hiw-title">Download & Install</div>
+            <div class="hiw-desc">Get Locklet Pro from Google Play Store. Set up your account with email or Google sign-in in seconds.</div>
+          </div>
+        </div>
+        <div class="hiw-step">
+          <div class="hiw-num n2">2</div>
+          <div class="hiw-content">
+            <div class="hiw-title">Enable Biometric Lock</div>
+            <div class="hiw-desc">Secure your vault with fingerprint or face recognition. Choose app-level or per-document locks.</div>
+          </div>
+        </div>
+        <div class="hiw-step">
+          <div class="hiw-num n3">3</div>
+          <div class="hiw-content">
+            <div class="hiw-title">Scan & Store Documents</div>
+            <div class="hiw-desc">Use AI-powered OCR to scan Aadhaar, PAN, Driving License and more. Lucky auto-fills all your details.</div>
+          </div>
+        </div>
+        <div class="hiw-step">
+          <div class="hiw-num n4">4</div>
+          <div class="hiw-content">
+            <div class="hiw-title">Access Anywhere</div>
+            <div class="hiw-desc">Sync to cloud or access offline. Your documents are encrypted, safe, and always available.</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1455,6 +1628,64 @@
     </div>
   </div>
 
+  <!-- TESTIMONIALS -->
+  <div class="sl">What Users Say</div>
+  <div class="card sr">
+    <div class="ct">
+      <div class="ci g"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+      <span class="cl">User Reviews</span>
+      <span class="cbadge new">★ 5.0</span>
+    </div>
+    <div class="cb">
+      <div class="testi-slider" id="testiSlider">
+        <div class="testi-track" id="testiTrack">
+          <div class="testi-card">
+            <div class="testi-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+            <div class="testi-text">"Locklet Pro is a game-changer! I finally feel safe storing my Aadhaar and PAN cards digitally. The OCR scanning is incredibly fast and the biometric locks give me peace of mind."</div>
+            <div class="testi-author">
+              <div class="testi-avatar t1">RP</div>
+              <div><div class="testi-name">Rahul P.</div><div class="testi-role">Software Engineer, Pune</div></div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <div class="testi-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+            <div class="testi-text">"Lucky AI is like having a personal assistant. It scanned my driving licence and filled in everything automatically. The screenshot blocking feature is brilliant!"</div>
+            <div class="testi-author">
+              <div class="testi-avatar t2">SM</div>
+              <div><div class="testi-name">Sneha M.</div><div class="testi-role">CA Student, Mumbai</div></div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <div class="testi-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+            <div class="testi-text">"Best document storage app I've used. The per-document biometric lock is amazing — my family can use the phone but can't access my documents. Premium is totally worth ₹10/month!"</div>
+            <div class="testi-author">
+              <div class="testi-avatar t3">AK</div>
+              <div><div class="testi-name">Amit K.</div><div class="testi-role">Business Owner, Delhi</div></div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <div class="testi-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+            <div class="testi-text">"The cloud sync works flawlessly across devices. I can access all my important documents even without internet. The dark UI is stunning and very easy on the eyes."</div>
+            <div class="testi-author">
+              <div class="testi-avatar t4">PD</div>
+              <div><div class="testi-name">Priya D.</div><div class="testi-role">College Student, Bangalore</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-dots" id="testiDots">
+        <div class="testi-dot active" data-idx="0"></div>
+        <div class="testi-dot" data-idx="1"></div>
+        <div class="testi-dot" data-idx="2"></div>
+        <div class="testi-dot" data-idx="3"></div>
+      </div>
+      <div class="testi-nav">
+        <button class="testi-btn" id="testiPrev"><svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
+        <button class="testi-btn" id="testiNext"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+      </div>
+    </div>
+  </div>
+
   <!-- LEGAL -->
   <div class="sl">Legal</div>
   <div class="card reveal">
@@ -1502,12 +1733,20 @@
 
   <footer>
     © 2026 Locklet Pro. All rights reserved.<br/>
+    <a href="features.html">Features</a><span class="fsep"> · </span>
+    <a href="about.html">About</a><span class="fsep"> · </span>
+    <a href="faq.html">FAQ</a><span class="fsep"> · </span>
+    <a href="contact.html">Contact</a><span class="fsep"> · </span>
     <a href="privacy.html">Privacy</a><span class="fsep"> · </span>
-    <a href="terms.html">Terms</a><span class="fsep"> · </span>
-    <a href="delete-account.html">Delete Account</a>
+    <a href="terms.html">Terms</a>
   </footer>
 
 </div>
+
+<!-- BACK TO TOP -->
+<button class="btt" id="bttBtn" aria-label="Back to top">
+  <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+</button>
 
 <script>
   // ── CUSTOM CURSOR ──
@@ -1574,9 +1813,49 @@
       btn.appendChild(r);
       setTimeout(() => r.remove(), 700);
     });
+  }
+
+  // ── BACK TO TOP ──
+  const bttBtn = document.getElementById('bttBtn');
+  if (bttBtn) {
+    window.addEventListener('scroll', () => {
+      bttBtn.classList.toggle('visible', window.scrollY > 400);
+    });
+    bttBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // ── SCROLL REVEAL OBSERVER ──
+  const srObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); srObserver.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.sr').forEach(el => srObserver.observe(el));
+
+  // ── TESTIMONIALS SLIDER ──
+  (function() {
+    const track = document.getElementById('testiTrack');
+    const dots = document.querySelectorAll('#testiDots .testi-dot');
+    const prevBtn = document.getElementById('testiPrev');
+    const nextBtn = document.getElementById('testiNext');
+    if (!track || !dots.length) return;
+    let current = 0;
+    const total = dots.length;
+    function goTo(idx) {
+      current = (idx + total) % total;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+    dots.forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.idx))));
+    if (prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
+    if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
+    // Auto-slide every 5s
+    setInterval(() => goTo(current + 1), 5000);
+  })();
 
   </script>
-  <style>@keyframes rippleOut{to{transform:scale(3);opacity:0}}</style>
 
   <script>
   // ════════════════════════════════════════
