@@ -370,9 +370,14 @@
     .mailto-subject-btn {
       display: flex !important; text-decoration: none !important;
     }
+    /* Mobile Tactile & Transition */
+    .cta-btn:active, .back-btn:active, .card:active, .drawer-link:active, .drawer-download-btn:active, .accordion-btn:active, .btn-primary:active, .btn-ghost:active { transform: scale(0.96) !important; transition: transform 0.1s cubic-bezier(0.16,1,0.3,1) !important; }
+    #pb { position: fixed; inset: 0; background: var(--bg); z-index: 9999; pointer-events: none; opacity: 1; transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1); }
+    #pb.loaded { opacity: 0; }
   </style>
 </head>
 <body>
+<div id="pb"></div>
 <div class="bg-wrap">
   <div class="orb orb-a"></div>
   <div class="orb orb-b"></div>
@@ -608,6 +613,18 @@
     b.addEventListener('click',x);
     document.addEventListener('keydown',function(e){if(e.key==='Escape')x();});
   })();
+</script>
+<script>
+  window.addEventListener('load', () => { setTimeout(() => { document.getElementById('pb')?.classList.add('loaded'); }, 50); });
+  document.querySelectorAll('a[href]').forEach(a => {
+    a.addEventListener('click', e => {
+      const href = a.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('mailto:') || a.target === '_blank') return;
+      e.preventDefault();
+      document.getElementById('pb')?.classList.remove('loaded');
+      setTimeout(() => window.location.href = href, 250);
+    });
+  });
 </script>
 </body>
 </html>
