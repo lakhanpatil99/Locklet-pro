@@ -58,13 +58,13 @@
     .stat:hover{background:rgba(232,184,109,.04)}
     .stat-n{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:var(--gold);display:block;line-height:1;margin-bottom:4px}
     .stat-l{font-size:9px;color:var(--t2);letter-spacing:.06em;text-transform:uppercase;font-weight:500}
-    .timeline{display:flex;flex-direction:column;gap:0;position:relative}
-    .timeline::before{content:'';position:absolute;left:15px;top:24px;bottom:24px;width:2px;background:linear-gradient(180deg,var(--violet),var(--gold),var(--green));border-radius:2px}
+    .timeline{display:flex;flex-direction:column;gap:0;position:relative;z-index:1}
+    .timeline::before{content:'';position:absolute;left:15px;top:24px;bottom:24px;width:2px;background:linear-gradient(180deg,var(--violet),var(--gold),var(--green));border-radius:2px;z-index:-1}
     .tl-item{display:flex;align-items:flex-start;gap:14px;padding:12px 0;position:relative;z-index:1}
-    .tl-dot{width:32px;height:32px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px}
-    .tl-dot.v{background:rgba(155,109,255,.12);border:1px solid rgba(155,109,255,.25)}
-    .tl-dot.g{background:rgba(232,184,109,.12);border:1px solid rgba(232,184,109,.25)}
-    .tl-dot.gr{background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.25)}
+    .tl-dot{width:32px;height:32px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;background-color:var(--s1)}
+    .tl-dot.v{background-image:linear-gradient(135deg,rgba(155,109,255,.12),rgba(155,109,255,.12));border:1px solid rgba(155,109,255,.25)}
+    .tl-dot.g{background-image:linear-gradient(135deg,rgba(232,184,109,.12),rgba(232,184,109,.12));border:1px solid rgba(232,184,109,.25)}
+    .tl-dot.gr{background-image:linear-gradient(135deg,rgba(52,211,153,.12),rgba(52,211,153,.12));border:1px solid rgba(52,211,153,.25)}
     .tl-content{flex:1;min-width:0;padding-top:4px}
     .tl-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--text);margin-bottom:2px}
     .tl-desc{font-size:11.5px;color:var(--t2);font-weight:300;line-height:1.6;overflow-wrap:break-word;word-wrap:break-word}
