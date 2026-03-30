@@ -137,9 +137,23 @@
     .drawer-download-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent); animation: sweep 2.5s ease-in-out infinite; }
     .drawer-download-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(232,184,109,.45); }
     .drawer-download-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+    /* Mobile Tactile & Transition */
+    .cta-btn:active, .back-btn:active, .card:active, .drawer-link:active, .drawer-download-btn:active, .accordion-btn:active { transform: scale(0.96) !important; transition: transform 0.1s cubic-bezier(0.16,1,0.3,1) !important; }
+    #pb { position: fixed; inset: 0; background: var(--bg); z-index: 9999; pointer-events: none; opacity: 1; transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1); }
+    #pb.loaded { opacity: 0; }
+    /* Sticky Bottom CTA */
+    .sticky-cta { position: fixed; bottom: -100px; left: 0; right: 0; padding: 16px 20px; z-index: 995; transition: bottom 0.5s cubic-bezier(0.16,1,0.3,1); pointer-events: none; }
+    .sticky-cta.visible { bottom: 0; pointer-events: auto; }
+    .sticky-cta-content { max-width: 430px; margin: 0 auto; background: rgba(13,11,28,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06); }
+    .sticky-cta-text { display: flex; flex-direction: column; gap: 2px; }
+    .sticky-cta-text strong { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: #f1ecfc; }
+    .sticky-cta-text span { font-size: 11px; color: #8b80a8; font-weight: 300; }
+    .sticky-cta-btn { background: linear-gradient(135deg, #e8b86d, #d4932e); color: #131126; font-size: 12.5px; font-weight: 700; padding: 10px 18px; border-radius: 12px; text-decoration: none; box-shadow: 0 4px 15px rgba(232,184,109,0.25); transition: transform 0.2s; }
+    .sticky-cta-btn:active { transform: scale(0.95); }
   </style>
 </head>
 <body>
+<div id="pb"></div>
 <div class="bg-wrap"><div class="orb orb-a"></div><div class="orb orb-b"></div><div class="orb orb-c"></div></div>
 <div class="grid-bg"></div>
 <div class="page">
@@ -281,12 +295,47 @@
   </footer>
 </div>
 
+<!-- Sticky Bottom CTA -->
+<div class="sticky-cta" id="stickyCta">
+  <div class="sticky-cta-content">
+    <div class="sticky-cta-text">
+      <strong>Get Locklet Pro</strong>
+      <span>Secure your documents today</span>
+    </div>
+    <a href="https://play.google.com/apps/testing/com.lockletpro" target="_blank" class="sticky-cta-btn">Download Free</a>
+  </div>
+</div>
+
 <script>
   // Scroll reveal
   const srObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); srObs.unobserve(e.target); } }); }, { threshold: 0.12 });
   document.querySelectorAll('.sr').forEach(el => srObs.observe(el));
   // Hamburger menu
   (function(){var h=document.getElementById('hamBtn'),d=document.getElementById('menuDrawer'),b=document.getElementById('menuBackdrop'),c=document.getElementById('drawerClose');if(!h||!d||!b)return;function o(){h.classList.add('open');d.classList.add('open');b.classList.add('open');document.body.style.overflow='hidden';}function x(){h.classList.remove('open');d.classList.remove('open');b.classList.remove('open');document.body.style.overflow='';}h.addEventListener('click',function(e){e.stopPropagation();d.classList.contains('open')?x():o();});if(c)c.addEventListener('click',x);b.addEventListener('click',x);document.addEventListener('keydown',function(e){if(e.key==='Escape')x();});})();
+
+  // Sticky CTA
+  const stickyCta = document.getElementById('stickyCta');
+  if (stickyCta) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300 && window.scrollY < document.body.scrollHeight - window.innerHeight - 80) {
+        stickyCta.classList.add('visible');
+      } else {
+        stickyCta.classList.remove('visible');
+      }
+    });
+  }
+</script>
+<script>
+  window.addEventListener('load', () => { setTimeout(() => { document.getElementById('pb')?.classList.add('loaded'); }, 50); });
+  document.querySelectorAll('a[href]').forEach(a => {
+    a.addEventListener('click', e => {
+      const href = a.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('mailto:') || a.target === '_blank') return;
+      e.preventDefault();
+      document.getElementById('pb')?.classList.remove('loaded');
+      setTimeout(() => window.location.href = href, 250);
+    });
+  });
 </script>
 </body>
 </html>
