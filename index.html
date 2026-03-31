@@ -718,6 +718,166 @@
     @keyframes sweep { 0% { transform:translateX(-100%); } 100% { transform:translateX(100%); } }
     .bsd { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 9px var(--gold); animation: pulse 2s ease infinite; }
 
+    /* ══════════════════════════════════════
+       FREE vs PRO COMPARISON TABLE
+    ══════════════════════════════════════ */
+    .comp-outer { position: relative; }
+
+    /* Animated gold border on the whole card when hovered */
+    .comp-card-wrap {
+      position: relative; border-radius: var(--radius-card); overflow: hidden;
+    }
+    .comp-card-wrap::before {
+      content: ''; position: absolute; inset: 0; border-radius: var(--radius-card);
+      background: conic-gradient(from var(--comp-angle, 0deg), rgba(232,184,109,.0), rgba(232,184,109,.55), rgba(155,109,255,.4), rgba(52,211,153,.3), rgba(232,184,109,.0));
+      opacity: 0; transition: opacity .4s; z-index: 0;
+      animation: compBorderSpin 5s linear infinite;
+    }
+    @property --comp-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+    @keyframes compBorderSpin { to { --comp-angle: 360deg; } }
+    .comp-card-wrap:hover::before { opacity: 1; }
+    .comp-card-inner {
+      position: relative; z-index: 1; margin: 1.5px;
+      background: var(--s1); border-radius: calc(var(--radius-card) - 1px); overflow: hidden;
+    }
+
+    .comp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+    }
+
+    /* Column headers */
+    .comp-head-free, .comp-head-pro {
+      padding: 18px 14px 16px; text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .comp-head-free {
+      background: rgba(255,255,255,.016);
+      border-right: 1px solid var(--border);
+    }
+    .comp-head-pro {
+      background: linear-gradient(160deg, rgba(232,184,109,.09), rgba(232,184,109,.03));
+      position: relative; overflow: hidden;
+    }
+    .comp-head-pro::before {
+      content: ''; position: absolute; top: -40px; right: -40px;
+      width: 120px; height: 120px;
+      background: radial-gradient(circle, rgba(232,184,109,.18), transparent 70%);
+      pointer-events: none;
+      animation: proOrb 4s ease-in-out infinite;
+    }
+    @keyframes proOrb { 0%,100%{opacity:.6;transform:scale(1)} 50%{opacity:1;transform:scale(1.15)} }
+
+    .comp-col-label {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13.5px;
+      letter-spacing: -.02em; display: block; margin-bottom: 5px;
+    }
+    .comp-col-label.free-lbl { color: var(--t2); }
+    .comp-col-label.pro-lbl { color: var(--gold); }
+    .comp-price {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px;
+      letter-spacing: -.04em; display: block; line-height: 1; margin-bottom: 6px;
+    }
+    .comp-price.free-price { color: var(--text); }
+    .comp-price.pro-price { color: var(--gold); }
+    .comp-price sub { font-size: 10px; font-weight: 400; color: var(--t2); vertical-align: middle; }
+    .comp-pro-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: linear-gradient(135deg, var(--gold3), var(--gold));
+      color: #1a0e00; font-family: 'Syne', sans-serif;
+      font-size: 7.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+      border-radius: 6px; padding: 3px 9px;
+      box-shadow: 0 3px 12px rgba(232,184,109,.35);
+      animation: badgePop 2.5s ease-in-out infinite;
+    }
+    @keyframes badgePop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+    .comp-pro-badge svg { width: 8px; height: 8px; fill: currentColor; }
+
+    /* Section divider rows */
+    .comp-section-free, .comp-section-pro {
+      padding: 7px 14px;
+      font-size: 8px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase;
+      background: rgba(255,255,255,.014);
+    }
+    .comp-section-free {
+      color: var(--t3); border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .comp-section-pro {
+      color: rgba(232,184,109,.45);
+      background: rgba(232,184,109,.025);
+      border-bottom: 1px solid rgba(232,184,109,.12);
+    }
+
+    /* Feature rows */
+    .comp-cell-free, .comp-cell-pro {
+      padding: 10px 14px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
+      transition: background .2s;
+      position: relative;
+    }
+    .comp-cell-free {
+      border-right: 1px solid var(--border);
+    }
+    .comp-cell-pro {
+      background: rgba(232,184,109,.018);
+    }
+    /* Hover highlight pairs — JS-driven via .row-hover */
+    .comp-cell-free.row-hover { background: rgba(255,255,255,.022); }
+    .comp-cell-pro.row-hover { background: rgba(232,184,109,.055); }
+
+    /* Last row: no bottom border */
+    .comp-last-free, .comp-last-pro { border-bottom: none; }
+
+    .cell-text { flex: 1; font-size: 11.5px; color: var(--t2); font-weight: 300; line-height: 1.3; }
+    .cell-text.pro-text { color: var(--text); }
+    .cell-val-badge {
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 10.5px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .cell-val-badge.dim { color: var(--t3); }
+    .cell-val-badge.bright { color: var(--gold); }
+
+    /* Check / Cross icons */
+    .comp-check {
+      width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .comp-check.yes {
+      background: var(--green-dim); border: 1px solid rgba(52,211,153,.28);
+      animation: checkPop .4s cubic-bezier(.16,1,.3,1) both;
+    }
+    .comp-check.yes svg { width: 11px; height: 11px; fill: var(--green); }
+    .comp-check.gold {
+      background: rgba(232,184,109,.1); border: 1px solid rgba(232,184,109,.3);
+      animation: checkPop .4s cubic-bezier(.16,1,.3,1) both;
+    }
+    .comp-check.gold svg { width: 11px; height: 11px; fill: var(--gold); }
+    .comp-check.no {
+      background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.07);
+    }
+    .comp-check.no svg { width: 10px; height: 10px; stroke: var(--t3); }
+    @keyframes checkPop { from{transform:scale(0) rotate(-20deg)} to{transform:scale(1) rotate(0deg)} }
+
+    /* Row stagger animation */
+    .comp-row-pair { display: contents; }
+    .comp-row-pair .comp-cell-free,
+    .comp-row-pair .comp-cell-pro {
+      opacity: 0; transform: translateY(10px);
+      transition: opacity .5s cubic-bezier(.16,1,.3,1), transform .5s cubic-bezier(.16,1,.3,1), background .2s;
+    }
+    .comp-row-pair.revealed .comp-cell-free,
+    .comp-row-pair.revealed .comp-cell-pro {
+      opacity: 1; transform: translateY(0);
+    }
+
+    /* CTA at bottom of comparison */
+    .comp-cta-wrap {
+      padding: 16px 22px 0;
+    }
+
     /* ── LEGAL LINKS ── */
     .ll {
       display: flex; align-items: center; justify-content: space-between;
@@ -760,11 +920,35 @@
     /* ── FOOTER ── */
     footer {
       text-align: center; padding: 32px 0 0;
-      font-size: 11px; color: var(--t3); letter-spacing: .06em; line-height: 2.4;
+      font-size: 11px; color: var(--t3); letter-spacing: .06em; line-height: 2.8;
     }
     footer a { color: var(--t3); text-decoration: none; margin: 0 7px; transition: color .22s; }
     footer a:hover { color: var(--gold); }
     .fsep { opacity: .3; }
+
+    /* Instagram footer link */
+    .footer-insta {
+      display: inline-flex; align-items: center; gap: 5px;
+      color: var(--t3); text-decoration: none; margin: 0 7px;
+      transition: color .25s, transform .25s;
+      vertical-align: middle;
+    }
+    .footer-insta:hover {
+      color: #e1306c;
+      transform: translateY(-1px);
+    }
+    .footer-insta svg {
+      width: 13px; height: 13px; flex-shrink: 0;
+      transition: filter .25s;
+    }
+    .footer-insta:hover svg {
+      filter: drop-shadow(0 0 5px rgba(225,48,108,.6));
+    }
+    .footer-insta-row {
+      margin-top: 8px;
+      display: flex; align-items: center; justify-content: center; gap: 4px;
+      font-size: 10.5px;
+    }
 
     /* ── SCROLL REVEAL ── */
     .reveal {
@@ -785,14 +969,11 @@
     .reveal:nth-child(9){animation-delay:.61s}
 
     /* ── ANIMATED GRADIENT BORDER CARDS ── */
-    .glow-card {
-      position: relative;
-    }
+    .glow-card { position: relative; }
     .glow-card::after {
       content: ''; position: absolute; inset: -1px; border-radius: calc(var(--radius-card) + 1px);
       background: linear-gradient(var(--border-angle, 0deg), var(--violet), var(--gold), var(--green), var(--violet));
-      z-index: -1; opacity: 0;
-      transition: opacity .4s;
+      z-index: -1; opacity: 0; transition: opacity .4s;
     }
     .glow-card:hover::after { opacity: .35; }
 
@@ -801,9 +982,7 @@
     /* ── HOW IT WORKS ── */
     .hiw-steps { display: flex; flex-direction: column; gap: 0; position: relative; z-index: 1; }
     .hiw-steps::before { content: ''; position: absolute; left: 23px; top: 38px; bottom: 38px; width: 2px; background: linear-gradient(180deg, var(--gold), var(--violet), var(--green)); border-radius: 2px; z-index: -1; pointer-events: none; }
-    .hiw-step {
-      display: flex; align-items: flex-start; gap: 18px; padding: 14px 0; position: relative; z-index: 1;
-    }
+    .hiw-step { display: flex; align-items: flex-start; gap: 18px; padding: 14px 0; position: relative; z-index: 1; }
     .hiw-num {
       width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
@@ -845,9 +1024,7 @@
     .testi-avatar.t4 { background: linear-gradient(135deg, rgba(96,165,250,.25), rgba(96,165,250,.08)); color: var(--blue); border: 1px solid rgba(96,165,250,.3); }
     .testi-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; color: var(--text); }
     .testi-role { font-size: 10.5px; color: var(--t2); font-weight: 300; }
-    .testi-dots {
-      display: flex; justify-content: center; gap: 8px; margin-top: 16px;
-    }
+    .testi-dots { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
     .testi-dot {
       width: 8px; height: 8px; border-radius: 50%;
       background: var(--s4); border: 1px solid var(--border);
@@ -883,7 +1060,6 @@
     .sr { opacity: 0; transform: translateY(32px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
     .sr.visible { opacity: 1; transform: translateY(0); }
 
-
     /* ── FLOATING LABELS BADGE ── */
     .float-badge {
       position: absolute; right: -8px; top: -8px;
@@ -906,16 +1082,12 @@
     @keyframes dotBounce { 0%,60%,100% { transform:translateY(0); } 30% { transform:translateY(-6px); } }
 
     /* Shimmer loading bar */
-    .shimmer-bar {
-      height: 3px; border-radius: 2px; overflow: hidden;
-      background: var(--s3); margin-top: 14px;
-    }
+    .shimmer-bar { height: 3px; border-radius: 2px; overflow: hidden; background: var(--s3); margin-top: 14px; }
     .shimmer-fill {
       height: 100%; border-radius: 2px;
       background: linear-gradient(90deg, var(--violet), var(--gold), var(--green));
       background-size: 200% 100%;
-      animation: shimmerBar 2s ease-in-out infinite;
-      width: 70%;
+      animation: shimmerBar 2s ease-in-out infinite; width: 70%;
     }
     @keyframes shimmerBar { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } }
 
@@ -932,13 +1104,13 @@
       .stat-l { font-size: 6.5px; letter-spacing: .03em; }
       h1 { font-size: 26px; }
       .page { padding: 0 16px 90px; }
+      .cell-text { font-size: 10.5px; }
+      .comp-price { font-size: 17px; }
     }
 
     /* ══════════════════════════════════════
        HAMBURGER MENU — 2026 STYLE
     ══════════════════════════════════════ */
-
-    /* Hamburger button */
     .ham-btn {
       width: 42px; height: 42px; border-radius: 13px;
       background: var(--s2); border: 1px solid var(--border);
@@ -957,17 +1129,13 @@
     .ham-btn.open .ham-line:nth-child(2) { opacity: 0; width: 0; }
     .ham-btn.open .ham-line:nth-child(3) { transform: translateY(-6.8px) rotate(-45deg); }
 
-    /* Overlay backdrop */
     .menu-backdrop {
       position: fixed; inset: 0; z-index: 999;
-      background: rgba(3,2,10,.7);
-      backdrop-filter: blur(8px);
-      opacity: 0; pointer-events: none;
-      transition: opacity .35s ease;
+      background: rgba(3,2,10,.7); backdrop-filter: blur(8px);
+      opacity: 0; pointer-events: none; transition: opacity .35s ease;
     }
     .menu-backdrop.open { opacity: 1; pointer-events: all; }
 
-    /* Drawer panel */
     .menu-drawer {
       position: fixed; top: 0; right: 0; bottom: 0;
       width: min(300px, 82vw);
@@ -985,7 +1153,6 @@
     }
     .menu-drawer.open { transform: translateX(0); }
 
-    /* Drawer glow orb */
     .drawer-orb {
       position: absolute; top: -80px; right: -80px;
       width: 240px; height: 240px;
@@ -993,21 +1160,14 @@
       pointer-events: none; animation: luckypulse 4s ease-in-out infinite;
     }
 
-    /* Drawer header */
     .drawer-header {
       display: flex; align-items: center; justify-content: space-between;
       padding: 24px 22px 20px; border-bottom: 1px solid var(--border);
       position: relative; z-index: 1;
     }
     .drawer-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .drawer-logo img {
-      width: 34px; height: 34px; border-radius: 10px; object-fit: cover;
-      box-shadow: 0 0 14px rgba(155,109,255,.35);
-    }
-    .drawer-logo-name {
-      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px;
-      letter-spacing: -.035em; color: var(--text);
-    }
+    .drawer-logo img { width: 34px; height: 34px; border-radius: 10px; object-fit: cover; box-shadow: 0 0 14px rgba(155,109,255,.35); }
+    .drawer-logo-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px; letter-spacing: -.035em; color: var(--text); }
     .drawer-logo-name em { font-style: normal; background: linear-gradient(135deg, var(--gold2), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .drawer-close {
       width: 32px; height: 32px; border-radius: 9px;
@@ -1018,7 +1178,6 @@
     .drawer-close:hover { background: var(--s4); border-color: rgba(248,113,113,.3); }
     .drawer-close svg { width: 14px; height: 14px; fill: var(--t2); }
 
-    /* Nav links */
     .drawer-nav { flex: 1; padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; position: relative; z-index: 1; overflow-y: auto; }
 
     .drawer-section-label {
@@ -1046,10 +1205,7 @@
     .drawer-link.red::before { background: var(--red); }
     .drawer-link.green::before { background: var(--green); }
 
-    .dl-icon {
-      width: 36px; height: 36px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
+    .dl-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .dl-icon svg { width: 16px; height: 16px; }
     .dl-icon.gold { background: rgba(232,184,109,.1); border: 1px solid rgba(232,184,109,.2); }
     .dl-icon.gold svg { fill: var(--gold); }
@@ -1064,16 +1220,10 @@
     .dl-title { font-size: 13.5px; font-weight: 500; color: var(--text); display: block; margin-bottom: 2px; }
     .dl-sub { font-size: 10px; color: var(--t2); font-weight: 300; }
 
-    .dl-arrow {
-      width: 22px; height: 22px; border-radius: 7px;
-      background: var(--s3); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-      transition: background .2s, border-color .2s;
-    }
+    .dl-arrow { width: 22px; height: 22px; border-radius: 7px; background: var(--s3); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .2s, border-color .2s; }
     .drawer-link:hover .dl-arrow { background: var(--s4); }
     .dl-arrow svg { width: 11px; height: 11px; fill: var(--t2); }
 
-    /* Download CTA at bottom */
     .drawer-footer { padding: 10px 14px 14px; border-top: 1px solid var(--border); position: relative; z-index: 1; }
     .drawer-download-btn {
       display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -1094,7 +1244,6 @@
     .drawer-download-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(232,184,109,.42); }
     .drawer-download-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
 
-    /* Stagger animation for links */
     .drawer-link { opacity: 0; transform: translateX(20px); transition: background .22s, transform .22s, border-color .22s, opacity .35s; }
     .menu-drawer.open .drawer-link { opacity: 1; transform: translateX(0); }
     .menu-drawer.open .drawer-link:nth-child(1) { transition-delay: .08s; }
@@ -1103,19 +1252,11 @@
     .menu-drawer.open .drawer-link:nth-child(4) { transition-delay: .26s; }
     .menu-drawer.open .drawer-link:nth-child(5) { transition-delay: .32s; }
 
-    /* Mobile Tactile & Transition */
+    /* Mobile Tactile */
     .cta-btn:active, .back-btn:active, .card:active, .drawer-link:active, .drawer-download-btn:active, .accordion-btn:active, .gem:active, .hiw-num:active { transform: scale(0.96) !important; transition: transform 0.1s cubic-bezier(0.16,1,0.3,1) !important; }
     #pb { position: fixed; inset: 0; background: var(--bg); z-index: 9999; pointer-events: none; opacity: 1; transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1); }
     #pb.loaded { opacity: 0; }
-    /* Sticky Bottom CTA */
-    .sticky-cta { position: fixed; bottom: -100px; left: 0; right: 0; padding: 16px 20px; z-index: 995; transition: bottom 0.5s cubic-bezier(0.16,1,0.3,1); pointer-events: none; }
-    .sticky-cta.visible { bottom: 0; pointer-events: auto; }
-    .sticky-cta-content { max-width: 430px; margin: 0 auto; background: rgba(13,11,28,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06); }
-    .sticky-cta-text { display: flex; flex-direction: column; gap: 2px; }
-    .sticky-cta-text strong { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: #f1ecfc; }
-    .sticky-cta-text span { font-size: 11px; color: #8b80a8; font-weight: 300; }
-    .sticky-cta-btn { background: linear-gradient(135deg, #e8b86d, #d4932e); color: #131126; font-size: 12.5px; font-weight: 700; padding: 10px 18px; border-radius: 12px; text-decoration: none; box-shadow: 0 4px 15px rgba(232,184,109,0.25); transition: transform 0.2s; }
-    .sticky-cta-btn:active { transform: scale(0.95); }
+
     /* Sticky Bottom CTA */
     .sticky-cta { position: fixed; bottom: -100px; left: 0; right: 0; padding: 16px 20px; z-index: 995; transition: bottom 0.5s cubic-bezier(0.16,1,0.3,1); pointer-events: none; }
     .sticky-cta.visible { bottom: 0; pointer-events: auto; }
@@ -1146,14 +1287,11 @@
 
 <div class="page">
 
-  <!-- ── BACKDROP ── -->
   <div class="menu-backdrop" id="menuBackdrop"></div>
 
-  <!-- ── MENU DRAWER ── -->
+  <!-- MENU DRAWER -->
   <div class="menu-drawer" id="menuDrawer">
     <div class="drawer-orb"></div>
-
-    <!-- Header -->
     <div class="drawer-header">
       <a href="index.html" class="drawer-logo">
         <img src="https://raw.githubusercontent.com/lakhanpatil99/Locklet-pro/main/applogos.png" alt="Locklet Pro"/>
@@ -1163,120 +1301,57 @@
         <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
       </div>
     </div>
-
-    <!-- Nav links -->
     <div class="drawer-nav">
-
       <div class="drawer-section-label">App</div>
-
       <a href="https://play.google.com/apps/testing/com.lockletpro" target="_blank" class="drawer-link green">
-        <div class="dl-icon green">
-          <svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>
-        </div>
-        <div class="dl-text">
-          <span class="dl-title">Download App</span>
-          <span class="dl-sub">Get it on Google Play</span>
-        </div>
+        <div class="dl-icon green"><svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg></div>
+        <div class="dl-text"><span class="dl-title">Download App</span><span class="dl-sub">Get it on Google Play</span></div>
         <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
       </a>
-
       <div class="drawer-section-label">Explore</div>
-
       <a href="features.html" class="drawer-link gold">
-        <div class="dl-icon gold">
-          <svg viewBox="0 0 24 24"><path d="M12 1l2.5 7.5H22l-6.5 4.7 2.5 7.5L12 16.3 6 20.7l2.5-7.5L2 8.5h7.5z"/></svg>
-        </div>
-        <div class="dl-text">
-          <span class="dl-title">Features</span>
-          <span class="dl-sub">Explore all capabilities</span>
-        </div>
+        <div class="dl-icon gold"><svg viewBox="0 0 24 24"><path d="M12 1l2.5 7.5H22l-6.5 4.7 2.5 7.5L12 16.3 6 20.7l2.5-7.5L2 8.5h7.5z"/></svg></div>
+        <div class="dl-text"><span class="dl-title">Features</span><span class="dl-sub">Explore all capabilities</span></div>
         <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
       </a>
-
       <a href="about.html" class="drawer-link violet">
-        <div class="dl-icon violet">
-          <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
-        </div>
-        <div class="dl-text">
-          <span class="dl-title">About</span>
-          <span class="dl-sub">Our story & mission</span>
-        </div>
+        <div class="dl-icon violet"><svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></div>
+        <div class="dl-text"><span class="dl-title">About</span><span class="dl-sub">Our story &amp; mission</span></div>
         <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
       </a>
-
       <a href="faq.html" class="drawer-link green">
-        <div class="dl-icon green">
-          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
-        </div>
-        <div class="dl-text">
-          <span class="dl-title">FAQ</span>
-          <span class="dl-sub">Common questions answered</span>
-        </div>
+        <div class="dl-icon green"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg></div>
+        <div class="dl-text"><span class="dl-title">FAQ</span><span class="dl-sub">Common questions answered</span></div>
         <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
       </a>
-
       <a href="contact.html" class="drawer-link gold">
-        <div class="dl-icon gold">
-          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-        </div>
-        <div class="dl-text">
-          <span class="dl-title">Contact</span>
-          <span class="dl-sub">Get in touch with us</span>
-        </div>
+        <div class="dl-icon gold"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+        <div class="dl-text"><span class="dl-title">Contact</span><span class="dl-sub">Get in touch with us</span></div>
         <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
       </a>
-
       <div class="drawer-section-label">Account</div>
-
       <a href="edit-account.html" class="drawer-link gold">
-        <div class="dl-icon gold">
-          <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-        </div>
-        <div class="dl-text">
-          <span class="dl-title">Edit Account</span>
-          <span class="dl-sub">Profile &amp; settings</span>
-        </div>
+        <div class="dl-icon gold"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></div>
+        <div class="dl-text"><span class="dl-title">Edit Account</span><span class="dl-sub">Profile &amp; settings</span></div>
         <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
       </a>
-
       <a href="delete-account.html" class="drawer-link red">
-        <div class="dl-icon red">
-          <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-        </div>
-        <div class="dl-text">
-          <span class="dl-title">Delete Account</span>
-          <span class="dl-sub">Permanently remove your data</span>
-        </div>
+        <div class="dl-icon red"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></div>
+        <div class="dl-text"><span class="dl-title">Delete Account</span><span class="dl-sub">Permanently remove your data</span></div>
         <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
       </a>
-
       <div class="drawer-section-label">Legal</div>
-
       <a href="privacy.html" class="drawer-link violet">
-        <div class="dl-icon violet">
-          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-        </div>
-        <div class="dl-text">
-          <span class="dl-title">Privacy Policy</span>
-          <span class="dl-sub">How we handle your data</span>
-        </div>
+        <div class="dl-icon violet"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
+        <div class="dl-text"><span class="dl-title">Privacy Policy</span><span class="dl-sub">How we handle your data</span></div>
         <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
       </a>
-
       <a href="terms.html" class="drawer-link gold">
-        <div class="dl-icon gold">
-          <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>
-        </div>
-        <div class="dl-text">
-          <span class="dl-title">Terms &amp; Conditions</span>
-          <span class="dl-sub">Rules for using Locklet Pro</span>
-        </div>
+        <div class="dl-icon gold"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg></div>
+        <div class="dl-text"><span class="dl-title">Terms &amp; Conditions</span><span class="dl-sub">Rules for using Locklet Pro</span></div>
         <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
       </a>
-
     </div>
-
-    <!-- Footer CTA -->
     <div class="drawer-footer">
       <a href="https://play.google.com/apps/testing/com.lockletpro" target="_blank" class="drawer-download-btn">
         <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
@@ -1288,9 +1363,7 @@
         Download on Google Play
       </a>
     </div>
-
   </div>
-
 
   <!-- NAV -->
   <nav>
@@ -1338,7 +1411,6 @@
       </div>
     </div>
 
-    <!-- PLAY STORE BUTTON -->
     <div class="play-wrap">
       <a class="play-btn" href="https://play.google.com/apps/testing/com.lockletpro" target="_blank" rel="noopener">
         <div class="ps-icon-box">
@@ -1387,7 +1459,7 @@
         <div class="hiw-step">
           <div class="hiw-num n1">1</div>
           <div class="hiw-content">
-            <div class="hiw-title">Download & Install</div>
+            <div class="hiw-title">Download &amp; Install</div>
             <div class="hiw-desc">Get Locklet Pro from Google Play Store. Set up your account with email or Google sign-in in seconds.</div>
           </div>
         </div>
@@ -1401,7 +1473,7 @@
         <div class="hiw-step">
           <div class="hiw-num n3">3</div>
           <div class="hiw-content">
-            <div class="hiw-title">Scan & Store Documents</div>
+            <div class="hiw-title">Scan &amp; Store Documents</div>
             <div class="hiw-desc">Use AI-powered OCR to scan Aadhaar, PAN, Driving License and more. Lucky auto-fills all your details.</div>
           </div>
         </div>
@@ -1518,7 +1590,7 @@
   </div>
 
   <!-- OCR + AUTO-FILL -->
-  <div class="sl">OCR & Auto-Fill</div>
+  <div class="sl">OCR &amp; Auto-Fill</div>
   <div class="card reveal">
     <div class="ct">
       <div class="ci c"><svg viewBox="0 0 24 24"><path d="M9.5 6.5v3h-3v-3h3M11 5H5v6h6V5zm-1.5 9.5v3h-3v-3h3M11 13H5v6h6v-6zm6.5-6.5v3h-3v-3h3M19 5h-6v6h6V5zm-6 8h1.5v1.5H13V13zm1.5 1.5H16V16h-1.5v-1.5zM16 13h1.5v1.5H16V13zm-3 3h1.5v1.5H13V16zm1.5 1.5H16V19h-1.5v-1.5zM16 16h1.5v1.5H16V16zm1.5-1.5H19V16h-1.5v-1.5zM19 13h-1.5v-1.5H19V13z"/></svg></div>
@@ -1565,7 +1637,7 @@
   <div class="sl">Biometric Security</div>
   <div class="card reveal">
     <div class="ct">
-      <div class="ci gr"><svg viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 14 3 12.01 3c-1.98 0-3.86.47-5.57 1.41-.24.13-.54.04-.68-.2-.13-.24-.04-.55.2-.68C7.82 2.52 9.86 2 12.01 2c2.13 0 3.99.47 6.03 1.52.25.13.34.43.21.67-.09.18-.26.28-.44.28zM3.5 9.72a.499.499 0 01-.41-.79C4.54 7.12 6 5.97 7.8 5.24 11.39 3.79 15.16 3.8 18.78 5.29c1.8.76 3.26 1.94 4.73 3.72.19.23.15.58-.08.77-.23.19-.57.15-.77-.08-1.37-1.66-2.72-2.74-4.41-3.44-3.35-1.4-6.83-1.41-10.2-.02-1.69.7-3.05 1.8-4.4 3.44-.12.14-.28.04-.15.04z"/></svg></div>
+      <div class="ci gr"><svg viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 14 3 12.01 3c-1.98 0-3.86.47-5.57 1.41-.24.13-.54.04-.68-.2-.13-.24-.04-.55.2-.68C7.82 2.52 9.86 2 12.01 2c2.13 0 3.99.47 6.03 1.52.25.13.34.43.21.67-.09.18-.26.28-.44.28z"/></svg></div>
       <span class="cl">Biometric Locks</span>
       <span class="cbadge new">Multi-Layer</span>
     </div>
@@ -1665,6 +1737,127 @@
     </div>
   </div>
 
+  <!-- ══════════════════════════════════
+       FREE vs PRO COMPARISON TABLE
+  ══════════════════════════════════ -->
+  <div class="sl">Free vs Pro</div>
+  <div class="card reveal">
+    <div class="ct">
+      <div class="ci g"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg></div>
+      <span class="cl">Plan Comparison</span>
+      <span class="cbadge">Side by Side</span>
+    </div>
+    <div class="cb" style="padding:16px 16px 20px;">
+
+      <p style="font-size:12.5px;color:var(--t2);font-weight:300;margin-bottom:16px;line-height:1.7;">See exactly what you get — no hidden fees, no confusion. Upgrade anytime inside the app.</p>
+
+      <!-- Animated conic border wrap -->
+      <div class="comp-card-wrap" id="compCardWrap">
+        <div class="comp-card-inner">
+
+          <div class="comp-grid" id="compGrid">
+
+            <!-- ── Column Headers ── -->
+            <div class="comp-head-free">
+              <span class="comp-col-label free-lbl">Free</span>
+              <span class="comp-price free-price">₹0 <sub>/forever</sub></span>
+            </div>
+            <div class="comp-head-pro">
+              <span class="comp-col-label pro-lbl">⚡ Pro</span>
+              <span class="comp-price pro-price">₹10 <sub>/month</sub></span>
+              <div class="comp-pro-badge">
+                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                Best Value
+              </div>
+            </div>
+
+            <!-- ── STORAGE ── -->
+            <div class="comp-section-free">Storage</div>
+            <div class="comp-section-pro">Storage</div>
+
+            <div class="comp-row-pair" data-pair="1">
+              <div class="comp-cell-free"><span class="cell-text">Cloud Storage</span><span class="cell-val-badge dim">50 MB</span></div>
+              <div class="comp-cell-pro"><span class="cell-text pro-text">Cloud Storage</span><span class="cell-val-badge bright">500 MB</span></div>
+            </div>
+            <div class="comp-row-pair" data-pair="2">
+              <div class="comp-cell-free"><span class="cell-text">Offline Access</span>
+                <div class="comp-check yes"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div>
+              </div>
+              <div class="comp-cell-pro"><span class="cell-text pro-text">Offline Access</span>
+                <div class="comp-check gold"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div>
+              </div>
+            </div>
+
+            <!-- ── AI FEATURES ── -->
+            <div class="comp-section-free">AI Features</div>
+            <div class="comp-section-pro">AI Features</div>
+
+            <div class="comp-row-pair" data-pair="3">
+              <div class="comp-cell-free"><span class="cell-text">OCR Scans</span><span class="cell-val-badge dim">5/month</span></div>
+              <div class="comp-cell-pro"><span class="cell-text pro-text">OCR Scans</span><span class="cell-val-badge bright">Unlimited</span></div>
+            </div>
+            <div class="comp-row-pair" data-pair="4">
+              <div class="comp-cell-free"><span class="cell-text">Auto-Fill</span><span class="cell-val-badge dim">5/month</span></div>
+              <div class="comp-cell-pro"><span class="cell-text pro-text">Auto-Fill</span><span class="cell-val-badge bright">Unlimited</span></div>
+            </div>
+            <div class="comp-row-pair" data-pair="5">
+              <div class="comp-cell-free"><span class="cell-text">Lucky AI Chat</span><span class="cell-val-badge dim">10/day</span></div>
+              <div class="comp-cell-pro"><span class="cell-text pro-text">Lucky AI Chat</span><span class="cell-val-badge bright">Unlimited</span></div>
+            </div>
+
+            <!-- ── SECURITY ── -->
+            <div class="comp-section-free">Security</div>
+            <div class="comp-section-pro">Security</div>
+
+            <div class="comp-row-pair" data-pair="6">
+              <div class="comp-cell-free"><span class="cell-text">App Biometric Lock</span>
+                <div class="comp-check yes"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div>
+              </div>
+              <div class="comp-cell-pro"><span class="cell-text pro-text">App Biometric Lock</span>
+                <div class="comp-check gold"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div>
+              </div>
+            </div>
+            <div class="comp-row-pair" data-pair="7">
+              <div class="comp-cell-free"><span class="cell-text">Per-Doc Lock</span>
+                <div class="comp-check no"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg></div>
+              </div>
+              <div class="comp-cell-pro"><span class="cell-text pro-text">Per-Doc Lock</span>
+                <div class="comp-check gold"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div>
+              </div>
+            </div>
+            <div class="comp-row-pair" data-pair="8">
+              <div class="comp-cell-free"><span class="cell-text">Screenshot Block</span>
+                <div class="comp-check yes"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div>
+              </div>
+              <div class="comp-cell-pro"><span class="cell-text pro-text">Screenshot Block</span>
+                <div class="comp-check gold"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div>
+              </div>
+            </div>
+
+            <!-- ── SUPPORT ── -->
+            <div class="comp-section-free">Support</div>
+            <div class="comp-section-pro">Support</div>
+
+            <div class="comp-row-pair comp-last-free comp-last-pro" data-pair="9">
+              <div class="comp-cell-free comp-last-free"><span class="cell-text">Support</span><span class="cell-val-badge dim">Community</span></div>
+              <div class="comp-cell-pro comp-last-pro"><span class="cell-text pro-text">Support</span><span class="cell-val-badge bright">Priority 24/7</span></div>
+            </div>
+
+          </div><!-- /comp-grid -->
+        </div><!-- /comp-card-inner -->
+      </div><!-- /comp-card-wrap -->
+
+      <!-- CTA -->
+      <div class="comp-cta-wrap">
+        <a class="btn-upgrade" href="https://play.google.com/apps/testing/com.lockletpro" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+          Upgrade to Pro — Only ₹10/month
+        </a>
+      </div>
+
+    </div>
+  </div>
+
   <!-- TESTIMONIALS -->
   <div class="sl">What Users Say</div>
   <div class="card sr">
@@ -1679,34 +1872,22 @@
           <div class="testi-card">
             <div class="testi-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
             <div class="testi-text">"Locklet Pro is a game-changer! I finally feel safe storing my Aadhaar and PAN cards digitally. The OCR scanning is incredibly fast and the biometric locks give me peace of mind."</div>
-            <div class="testi-author">
-              <div class="testi-avatar t1">RP</div>
-              <div><div class="testi-name">Rahul P.</div><div class="testi-role">Software Engineer, Pune</div></div>
-            </div>
+            <div class="testi-author"><div class="testi-avatar t1">RP</div><div><div class="testi-name">Rahul P.</div><div class="testi-role">Software Engineer, Pune</div></div></div>
           </div>
           <div class="testi-card">
             <div class="testi-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
             <div class="testi-text">"Lucky AI is like having a personal assistant. It scanned my driving licence and filled in everything automatically. The screenshot blocking feature is brilliant!"</div>
-            <div class="testi-author">
-              <div class="testi-avatar t2">SM</div>
-              <div><div class="testi-name">Sneha M.</div><div class="testi-role">CA Student, Mumbai</div></div>
-            </div>
+            <div class="testi-author"><div class="testi-avatar t2">SM</div><div><div class="testi-name">Sneha M.</div><div class="testi-role">CA Student, Mumbai</div></div></div>
           </div>
           <div class="testi-card">
             <div class="testi-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
             <div class="testi-text">"Best document storage app I've used. The per-document biometric lock is amazing — my family can use the phone but can't access my documents. Premium is totally worth ₹10/month!"</div>
-            <div class="testi-author">
-              <div class="testi-avatar t3">AK</div>
-              <div><div class="testi-name">Amit K.</div><div class="testi-role">Business Owner, Delhi</div></div>
-            </div>
+            <div class="testi-author"><div class="testi-avatar t3">AK</div><div><div class="testi-name">Amit K.</div><div class="testi-role">Business Owner, Delhi</div></div></div>
           </div>
           <div class="testi-card">
             <div class="testi-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
             <div class="testi-text">"The cloud sync works flawlessly across devices. I can access all my important documents even without internet. The dark UI is stunning and very easy on the eyes."</div>
-            <div class="testi-author">
-              <div class="testi-avatar t4">PD</div>
-              <div><div class="testi-name">Priya D.</div><div class="testi-role">College Student, Bangalore</div></div>
-            </div>
+            <div class="testi-author"><div class="testi-avatar t4">PD</div><div><div class="testi-name">Priya D.</div><div class="testi-role">College Student, Bangalore</div></div></div>
           </div>
         </div>
       </div>
@@ -1724,11 +1905,11 @@
   </div>
 
   <!-- LEGAL & ACCOUNT -->
-  <div class="sl">Legal & Account</div>
+  <div class="sl">Legal &amp; Account</div>
   <div class="card reveal">
     <div class="ct">
       <div class="ci v"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg></div>
-      <span class="cl">Legal & Account</span>
+      <span class="cl">Legal &amp; Account</span>
     </div>
     <div class="cb">
       <a href="edit-account.html" class="ll">
@@ -1775,6 +1956,7 @@
     </div>
   </div>
 
+  <!-- FOOTER -->
   <footer>
     © 2026 Locklet Pro. All rights reserved.<br/>
     <a href="features.html">Features</a><span class="fsep"> · </span>
@@ -1784,6 +1966,17 @@
     <a href="edit-account.html">Edit Account</a><span class="fsep"> · </span>
     <a href="privacy.html">Privacy</a><span class="fsep"> · </span>
     <a href="terms.html">Terms</a>
+    <div class="footer-insta-row">
+      <a href="https://www.instagram.com/locklet.app?igsh=MXNvMGY0Y2Voc25qOA==" target="_blank" rel="noopener" class="footer-insta">
+        <!-- Instagram SVG logo -->
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="currentColor" stroke-width="1.8"/>
+          <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/>
+          <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor"/>
+        </svg>
+        @locklet.app
+      </a>
+    </div>
   </footer>
 
 </div>
@@ -1846,9 +2039,7 @@
   }
   drawDots();
 
-
-
-  // ── COUNT UP STATS ON SCROLL ──
+  // ── COUNT UP STATS ──
   const countObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -1857,19 +2048,13 @@
         if(isNaN(target)) return;
         const prefix = el.dataset.prefix || '';
         const suffix = el.dataset.suffix || '';
-        const duration = 1500;
-        const stepTime = 16;
-        const steps = duration / stepTime;
+        const duration = 1500, stepTime = 16, steps = duration / stepTime;
         const increment = target / steps;
         let current = 0;
         const step = () => {
           current += increment;
-          if (current >= target) {
-            el.textContent = prefix + target + suffix;
-          } else {
-            el.textContent = prefix + Math.ceil(current) + suffix;
-            requestAnimationFrame(step);
-          }
+          if (current >= target) { el.textContent = prefix + target + suffix; }
+          else { el.textContent = prefix + Math.ceil(current) + suffix; requestAnimationFrame(step); }
         };
         requestAnimationFrame(step);
         countObs.unobserve(el);
@@ -1894,19 +2079,13 @@
   // ── BACK TO TOP ──
   const bttBtn = document.getElementById('bttBtn');
   if (bttBtn) {
-    window.addEventListener('scroll', () => {
-      bttBtn.classList.toggle('visible', window.scrollY > 400);
-    });
-    bttBtn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    window.addEventListener('scroll', () => { bttBtn.classList.toggle('visible', window.scrollY > 400); });
+    bttBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
   }
 
   // ── SCROLL REVEAL OBSERVER ──
   const srObserver = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); srObserver.unobserve(e.target); }
-    });
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); srObserver.unobserve(e.target); } });
   }, { threshold: 0.12 });
   document.querySelectorAll('.sr').forEach(el => srObserver.observe(el));
 
@@ -1927,55 +2106,65 @@
     dots.forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.idx))));
     if (prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
     if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
-    // Auto-slide every 5s
     setInterval(() => goTo(current + 1), 5000);
   })();
 
-  </script>
+  // ── COMPARISON TABLE — ROW STAGGER + HOVER PAIRS ──
+  (function() {
+    const pairs = document.querySelectorAll('.comp-row-pair');
 
-  <script>
-  // ════════════════════════════════════════
-  // HAMBURGER MENU — WORKING JS
-  // ════════════════════════════════════════
+    // Stagger reveal on scroll
+    const compObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const pair = e.target;
+          const idx = parseInt(pair.dataset.pair) || 1;
+          const cells = pair.querySelectorAll('.comp-cell-free, .comp-cell-pro');
+          cells.forEach((cell, i) => {
+            cell.style.transitionDelay = (idx * 0.055 + i * 0.025) + 's';
+          });
+          pair.classList.add('revealed');
+          compObs.unobserve(pair);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    pairs.forEach(p => compObs.observe(p));
+
+    // Paired hover highlight
+    pairs.forEach(pair => {
+      const cells = pair.querySelectorAll('.comp-cell-free, .comp-cell-pro');
+      cells.forEach(cell => {
+        cell.addEventListener('mouseenter', () => cells.forEach(c => c.classList.add('row-hover')));
+        cell.addEventListener('mouseleave', () => cells.forEach(c => c.classList.remove('row-hover')));
+      });
+    });
+  })();
+
+</script>
+
+<script>
+  // ── HAMBURGER MENU ──
   (function() {
     var hamBtn   = document.getElementById('hamBtn');
     var drawer   = document.getElementById('menuDrawer');
     var backdrop = document.getElementById('menuBackdrop');
     var closeBtn = document.getElementById('drawerClose');
-
     if (!hamBtn || !drawer || !backdrop) { console.warn('Hamburger: elements not found'); return; }
-
-    function openDrawer() {
-      hamBtn.classList.add('open');
-      drawer.classList.add('open');
-      backdrop.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeDrawer() {
-      hamBtn.classList.remove('open');
-      drawer.classList.remove('open');
-      backdrop.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    hamBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      drawer.classList.contains('open') ? closeDrawer() : openDrawer();
-    });
-
+    function openDrawer() { hamBtn.classList.add('open'); drawer.classList.add('open'); backdrop.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeDrawer() { hamBtn.classList.remove('open'); drawer.classList.remove('open'); backdrop.classList.remove('open'); document.body.style.overflow = ''; }
+    hamBtn.addEventListener('click', function(e) { e.stopPropagation(); drawer.classList.contains('open') ? closeDrawer() : openDrawer(); });
     if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
     backdrop.addEventListener('click', closeDrawer);
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeDrawer(); });
-
     drawer.querySelectorAll('.drawer-link').forEach(function(link) {
       if (!(link.getAttribute('href') || '').startsWith('http')) {
         link.addEventListener('click', function() { setTimeout(closeDrawer, 80); });
       }
     });
-
   })();
-  </script>
+</script>
+
 <script>
   window.addEventListener('load', () => { setTimeout(() => { document.getElementById('pb')?.classList.add('loaded'); }, 50); });
   document.querySelectorAll('a[href]').forEach(a => {
@@ -1988,5 +2177,6 @@
     });
   });
 </script>
+
 </body>
 </html>
