@@ -604,6 +604,17 @@
       left: 160%;
     }
 
+    .play-btn.ocr-btn:hover {
+      border-color: rgba(34, 211, 238, .6) !important;
+      box-shadow: 0 22px 60px rgba(0, 0, 0, .65), 0 0 44px rgba(34, 211, 238, .2), inset 0 1px 0 rgba(255, 255, 255, .12);
+    }
+    .play-btn.ocr-btn::before {
+      background: linear-gradient(115deg, rgba(34, 211, 238, .1), rgba(155, 109, 255, .05));
+    }
+    .play-btn.ocr-btn:hover .play-dl {
+      background: rgba(34, 211, 238, .25) !important;
+    }
+
     .play-btn:active {
       transform: translateY(-2px);
     }
@@ -2253,15 +2264,18 @@
       .comp-grid {
         grid-template-columns: 1fr 1fr;
       }
+
       .comp-head-label {
         display: none;
       }
+
       .comp-cell-label {
         grid-column: span 2;
         background: rgba(255, 255, 255, 0.05);
         justify-content: center;
         font-weight: 600;
       }
+
       .comp-section-label {
         display: none;
       }
@@ -2271,10 +2285,12 @@
       position: relative;
       cursor: help;
     }
+
     [data-tip]:hover::after {
       content: attr(data-tip);
       position: absolute;
-      bottom: 100%; left: 50%;
+      bottom: 100%;
+      left: 50%;
       transform: translateX(-50%);
       background: rgba(20, 16, 36, 0.95);
       border: 1px solid var(--gold);
@@ -2285,12 +2301,20 @@
       white-space: nowrap;
       z-index: 100;
       pointer-events: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
       animation: tipFade 0.2s forwards;
     }
+
     @keyframes tipFade {
-      from { opacity: 0; transform: translate(-50%, 5px); }
-      to { opacity: 1; transform: translate(-50%, -5px); }
+      from {
+        opacity: 0;
+        transform: translate(-50%, 5px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translate(-50%, -5px);
+      }
     }
 
     /* Column headers */
@@ -2301,36 +2325,58 @@
       text-align: center;
       border-bottom: 1px solid var(--border);
     }
+
     .comp-head-label {
       background: transparent;
       border-right: 1px solid var(--border);
     }
+
     .comp-head-free {
       background: rgba(255, 255, 255, .016);
       border-right: 1px solid var(--border);
     }
+
     .comp-head-pro {
       background: linear-gradient(160deg, rgba(232, 184, 109, .09), rgba(232, 184, 109, .03));
       position: relative;
       overflow: hidden;
       animation: proColGlow 3s ease-in-out infinite alternate;
     }
+
     @keyframes proColGlow {
-      from { box-shadow: inset 0 0 0px rgba(232, 184, 109, 0.0); }
-      to { box-shadow: inset 0 0 40px rgba(232, 184, 109, 0.15); }
+      from {
+        box-shadow: inset 0 0 0px rgba(232, 184, 109, 0.0);
+      }
+
+      to {
+        box-shadow: inset 0 0 40px rgba(232, 184, 109, 0.15);
+      }
     }
+
     .comp-head-pro::before {
       content: '';
       position: absolute;
-      top: -40px; right: -40px;
-      width: 120px; height: 120px;
+      top: -40px;
+      right: -40px;
+      width: 120px;
+      height: 120px;
       background: radial-gradient(circle, rgba(232, 184, 109, .18), transparent 70%);
       pointer-events: none;
       animation: proOrb 4s ease-in-out infinite;
     }
+
     @keyframes proOrb {
-      0%, 100% { opacity: .6; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.15); }
+
+      0%,
+      100% {
+        opacity: .6;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.15);
+      }
     }
 
     .comp-col-label {
@@ -2341,8 +2387,14 @@
       display: block;
       margin-bottom: 5px;
     }
-    .comp-col-label.free-lbl { color: var(--t2); }
-    .comp-col-label.pro-lbl { color: var(--gold); }
+
+    .comp-col-label.free-lbl {
+      color: var(--t2);
+    }
+
+    .comp-col-label.pro-lbl {
+      color: var(--gold);
+    }
 
     .comp-price {
       font-family: 'Syne', sans-serif;
@@ -2353,9 +2405,21 @@
       line-height: 1;
       margin-bottom: 6px;
     }
-    .comp-price.free-price { color: var(--text); }
-    .comp-price.pro-price { color: var(--gold); }
-    .comp-price sub { font-size: 10px; font-weight: 400; color: var(--t2); vertical-align: middle; }
+
+    .comp-price.free-price {
+      color: var(--text);
+    }
+
+    .comp-price.pro-price {
+      color: var(--gold);
+    }
+
+    .comp-price sub {
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--t2);
+      vertical-align: middle;
+    }
 
     .comp-pro-badge {
       display: inline-flex;
@@ -2373,11 +2437,24 @@
       box-shadow: 0 3px 12px rgba(232, 184, 109, .35);
       animation: badgePop 2.5s ease-in-out infinite;
     }
+
     @keyframes badgePop {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
     }
-    .comp-pro-badge svg { width: 8px; height: 8px; fill: currentColor; }
+
+    .comp-pro-badge svg {
+      width: 8px;
+      height: 8px;
+      fill: currentColor;
+    }
 
     /* Section divider rows */
     .comp-section-label,
@@ -2390,16 +2467,19 @@
       text-transform: uppercase;
       background: rgba(255, 255, 255, .014);
     }
+
     .comp-section-label {
       color: var(--t3);
       border-right: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
+
     .comp-section-free {
       color: var(--t3);
       border-right: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
+
     .comp-section-pro {
       color: rgba(232, 184, 109, .45);
       background: rgba(232, 184, 109, .025);
@@ -2418,21 +2498,29 @@
       transition: background .2s;
       position: relative;
     }
+
     .comp-cell-label {
       border-right: 1px solid var(--border);
       font-size: 12px;
       color: #f1ecfc !important;
       font-weight: 500;
     }
+
     .comp-cell-label svg {
-      width: 14px; height: 14px; fill: var(--gold); opacity: 0.8; flex-shrink: 0;
+      width: 14px;
+      height: 14px;
+      fill: var(--gold);
+      opacity: 0.8;
+      flex-shrink: 0;
     }
+
     .comp-cell-free {
       border-right: 1px solid var(--border);
       font-size: 11.5px;
       color: #cbd5e1 !important;
       font-weight: 400;
     }
+
     .comp-cell-pro {
       background: rgba(232, 184, 109, .018);
       font-size: 11.5px;
@@ -2441,18 +2529,30 @@
       position: relative;
       overflow: hidden;
     }
+
     .comp-cell-pro::after {
       content: '';
       position: absolute;
-      top: 0; left: -100%;
-      width: 50%; height: 100%;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
       background: linear-gradient(90deg, transparent, rgba(232, 184, 109, 0.1), transparent);
       animation: scanGlow 3s ease-in-out infinite;
     }
+
     @keyframes scanGlow {
-      0% { left: -100%; }
-      50% { left: 150%; }
-      100% { left: 150%; }
+      0% {
+        left: -100%;
+      }
+
+      50% {
+        left: 150%;
+      }
+
+      100% {
+        left: 150%;
+      }
     }
 
     /* Check / Cross icons */
@@ -2463,19 +2563,23 @@
       margin-right: 4px;
       fill: currentColor;
     }
+
     .c-icon.yes {
       fill: var(--green);
       filter: drop-shadow(0 0 4px var(--green));
     }
+
     .c-icon.no {
       stroke: var(--red);
       fill: none;
       opacity: 0.7;
     }
+
     .c-icon.gold-check {
       fill: var(--gold);
       filter: drop-shadow(0 0 6px var(--gold));
     }
+
     .faded-text {
       opacity: 0.6;
       color: #888 !important;
@@ -2492,29 +2596,37 @@
     .comp-cell-free.row-hover {
       background: rgba(255, 255, 255, .05);
     }
+
     .comp-cell-pro.row-hover {
       background: rgba(232, 184, 109, .08);
     }
 
     /* Row hover effect */
-    .comp-row-pair:hover > div {
+    .comp-row-pair:hover>div {
       background: rgba(255, 255, 255, 0.02);
     }
-    .comp-row-pair:hover > .comp-cell-pro {
+
+    .comp-row-pair:hover>.comp-cell-pro {
       background: rgba(232, 184, 109, .06);
     }
 
     /* Last row: no bottom border */
-    .comp-last { border-bottom: none !important; }
+    .comp-last {
+      border-bottom: none !important;
+    }
 
     /* Row stagger animation */
-    .comp-row-pair { display: contents; }
-    .comp-row-pair > div {
+    .comp-row-pair {
+      display: contents;
+    }
+
+    .comp-row-pair>div {
       opacity: 0;
       transform: translateY(10px);
       transition: opacity .5s cubic-bezier(.16, 1, .3, 1), transform .5s cubic-bezier(.16, 1, .3, 1), background .2s;
     }
-    .comp-row-pair.revealed > div {
+
+    .comp-row-pair.revealed>div {
       opacity: 1 !important;
       transform: translateY(0) !important;
       visibility: visible !important;
@@ -3862,6 +3974,17 @@
             </svg></div>
         </a>
         <div class="drawer-section-label">Explore</div>
+        <a href="tryocr.html" class="drawer-link cyan">
+          <div class="dl-icon cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16v16H4z"/>
+              <path d="M8 8h8M8 12h8M8 16h4"/>
+            </svg></div>
+          <div class="dl-text"><span class="dl-title" style="display:flex;align-items:center;">Try OCR Scanner <span class="test-badge" style="display:inline-flex; border-radius:8px; padding:2px 6px; font-size:8px; margin-left:6px; margin-top:0; border: 1px solid rgba(34, 211, 238, .3); background: rgba(34, 211, 238, .07); color: var(--cyan);">NEW</span></span><span class="dl-sub">AI Document Scanner</span>
+          </div>
+          <div class="dl-arrow"><svg viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" fill="currentColor"/>
+            </svg></div>
+        </a>
         <a href="features.html" class="drawer-link gold">
           <div class="dl-icon gold"><svg viewBox="0 0 24 24">
               <path d="M12 1l2.5 7.5H22l-6.5 4.7 2.5 7.5L12 16.3 6 20.7l2.5-7.5L2 8.5h7.5z" />
@@ -4057,6 +4180,26 @@
             <div class="play-dl">
               Download
               <svg viewBox="0 0 24 24">
+                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+              </svg>
+            </div>
+          </div>
+        </a>
+        <a class="play-btn ocr-btn" href="tryocr.html" rel="noopener" style="margin-top: 12px; border-color: rgba(34, 211, 238, .28);">
+          <div class="ps-icon-box" style="background: linear-gradient(150deg, rgba(34, 211, 238, .1), rgba(34, 211, 238, .03)); border-color: rgba(34, 211, 238, .13);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px; height:20px; z-index:1;">
+              <path d="M4 4h16v16H4z"/>
+              <path d="M8 8h8M8 12h8M8 16h4"/>
+            </svg>
+          </div>
+          <div class="play-mid">
+            <div class="play-sub-txt" style="color:var(--cyan);">AI Feature</div>
+            <div class="play-main-txt">Try OCR Now</div>
+          </div>
+          <div class="play-right">
+            <div class="play-dl" style="background: rgba(34, 211, 238, .13); border-color: rgba(34, 211, 238, .3); color: var(--cyan);">
+              Launch
+              <svg viewBox="0 0 24 24" style="fill: var(--cyan);">
                 <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
               </svg>
             </div>
@@ -4524,7 +4667,9 @@
 
               <div class="comp-row-pair" data-pair="1">
                 <div class="comp-cell-label" data-tip="Total space for your encrypted documents">
-                  <svg viewBox="0 0 24 24"><path d="M4 4h16v4H4zm0 6h16v4H4zm0 6h16v4H4zm2-10h2v2H6zm0 6h2v2H6zm0 6h2v2H6z" stroke="none"/></svg>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M4 4h16v4H4zm0 6h16v4H4zm0 6h16v4H4zm2-10h2v2H6zm0 6h2v2H6zm0 6h2v2H6z" stroke="none" />
+                  </svg>
                   Cloud Storage
                 </div>
                 <div class="comp-cell-free">100 MB Storage</div>
@@ -4538,7 +4683,10 @@
 
               <div class="comp-row-pair" data-pair="2">
                 <div class="comp-cell-label" data-tip="Ask Lucky AI questions about your documents">
-                  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/></svg>
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z" />
+                  </svg>
                   Lucky AI Chat
                 </div>
                 <div class="comp-cell-free">Limited AI (5 chats/day)</div>
@@ -4552,7 +4700,9 @@
 
               <div class="comp-row-pair" data-pair="3">
                 <div class="comp-cell-label" data-tip="Extract text from ID cards and auto-fill forms">
-                  <svg viewBox="0 0 24 24"><path d="M3 4V1h3v3H3zm15-3v3h3V1h-3zM3 23v-3h3v3H3zm15-3v3h3v-3h-3zM8 8h8v8H8z"/></svg>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M3 4V1h3v3H3zm15-3v3h3V1h-3zM3 23v-3h3v3H3zm15-3v3h3v-3h-3zM8 8h8v8H8z" />
+                  </svg>
                   Auto-scan &amp; Fill
                 </div>
                 <div class="comp-cell-free">5 scans/day</div>
@@ -4566,7 +4716,10 @@
 
               <div class="comp-row-pair" data-pair="4">
                 <div class="comp-cell-label" data-tip="Lock individual documents with fingerprint/face">
-                  <svg viewBox="0 0 24 24"><path d="M12 1C8.676 1 6 3.676 6 7v1H4v15h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 1C8.676 1 6 3.676 6 7v1H4v15h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4z" />
+                  </svg>
                   App/Doc Lock
                 </div>
                 <div class="comp-cell-free">Basic app lock</div>
@@ -4580,11 +4733,17 @@
 
               <div class="comp-row-pair" data-pair="5">
                 <div class="comp-cell-label" data-tip="Access encrypted documents without internet">
-                  <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                  </svg>
                   Works offline
                 </div>
-                <div class="comp-cell-free faded-text"><svg class="c-icon no" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-width="2.2" stroke-linecap="round"/></svg> Not available</div>
-                <div class="comp-cell-pro"><svg class="c-icon gold-check" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Available</div>
+                <div class="comp-cell-free faded-text"><svg class="c-icon no" viewBox="0 0 24 24">
+                    <path d="M18 6L6 18M6 6l12 12" stroke-width="2.2" stroke-linecap="round" />
+                  </svg> Not available</div>
+                <div class="comp-cell-pro"><svg class="c-icon gold-check" viewBox="0 0 24 24">
+                    <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+                  </svg> Available</div>
               </div>
 
               <!-- ── PRIVACY ── -->
@@ -4594,11 +4753,17 @@
 
               <div class="comp-row-pair" data-pair="6">
                 <div class="comp-cell-label" data-tip="Prevent taking screenshots of sensitive docs">
-                  <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
+                  </svg>
                   Anti-Screenshot List
                 </div>
-                <div class="comp-cell-free faded-text"><svg class="c-icon no" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-width="2.2" stroke-linecap="round"/></svg> Allowed</div>
-                <div class="comp-cell-pro"><svg class="c-icon gold-check" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Blocked (Ultra-secure)</div>
+                <div class="comp-cell-free faded-text"><svg class="c-icon no" viewBox="0 0 24 24">
+                    <path d="M18 6L6 18M6 6l12 12" stroke-width="2.2" stroke-linecap="round" />
+                  </svg> Allowed</div>
+                <div class="comp-cell-pro"><svg class="c-icon gold-check" viewBox="0 0 24 24">
+                    <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+                  </svg> Blocked (Ultra-secure)</div>
               </div>
 
               <!-- ── SHARING ── -->
@@ -4608,11 +4773,18 @@
 
               <div class="comp-row-pair" data-pair="7">
                 <div class="comp-cell-label" data-tip="Share encrypted documents with a secure link">
-                  <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z" />
+                  </svg>
                   Secure Sharing
                 </div>
-                <div class="comp-cell-free faded-text"><svg class="c-icon no" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-width="2.2" stroke-linecap="round"/></svg> Limited</div>
-                <div class="comp-cell-pro"><svg class="c-icon gold-check" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Encrypted links</div>
+                <div class="comp-cell-free faded-text"><svg class="c-icon no" viewBox="0 0 24 24">
+                    <path d="M18 6L6 18M6 6l12 12" stroke-width="2.2" stroke-linecap="round" />
+                  </svg> Limited</div>
+                <div class="comp-cell-pro"><svg class="c-icon gold-check" viewBox="0 0 24 24">
+                    <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+                  </svg> Encrypted links</div>
               </div>
 
               <!-- ── SUPPORT ── -->
@@ -4622,11 +4794,16 @@
 
               <div class="comp-row-pair comp-last" data-pair="8">
                 <div class="comp-cell-label comp-last" data-tip="Get help when you need it">
-                  <svg viewBox="0 0 24 24"><path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zm0 2c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM11 15h2v2h-2zm0-8h2v6h-2z"/></svg>
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zm0 2c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM11 15h2v2h-2zm0-8h2v6h-2z" />
+                  </svg>
                   Assistance
                 </div>
                 <div class="comp-cell-free comp-last">Email support</div>
-                <div class="comp-cell-pro comp-last"><svg class="c-icon gold-check" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Priority support 24/7</div>
+                <div class="comp-cell-pro comp-last"><svg class="c-icon gold-check" viewBox="0 0 24 24">
+                    <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+                  </svg> Priority support 24/7</div>
               </div>
 
             </div><!-- /comp-grid -->
