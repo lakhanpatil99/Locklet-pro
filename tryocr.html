@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Locklet Pro — OCR Scanner</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/tesseract.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050810;
+    --surface: rgba(12, 18, 35, 0.85);
+    --glass: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+    --accent: #00e5ff;
+    --accent2: #7c3aed;
+    --accent3: #06ffa5;
+    --text: #f0f4ff;
+    --muted: rgba(240,244,255,0.45);
+    --scan-line: rgba(0,229,255,0.7);
+    --danger: #ff4d6d;
+    --warn: #ffd166;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Background ── */
+  .bg-layer {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 70% 50% at 15% 20%, rgba(0,229,255,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 60% at 85% 80%, rgba(124,58,237,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(6,255,165,0.03) 0%, transparent 70%);
+  }
+  .grid-overlay {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  /* ── Header ── */
+  header {
+    position: relative; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    background: rgba(5,8,16,0.6);
+  }
+  .logo {
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem;
+  }
+  .logo-icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 0 20px rgba(0,229,255,0.4);
+  }
+  .logo span { color: var(--accent); }
+  .badge {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+    padding: 4px 10px; border-radius: 20px;
+    background: linear-gradient(90deg, rgba(0,229,255,0.15), rgba(124,58,237,0.15));
+    border: 1px solid rgba(0,229,255,0.3);
+    color: var(--accent); letter-spacing: 1px; text-transform: uppercase;
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  @keyframes pulse-glow {
+    0%,100% { box-shadow: 0 0 10px rgba(0,229,255,0.2); }
+    50% { box-shadow: 0 0 20px rgba(0,229,255,0.5); }
+  }
+
+  /* ── Main Layout ── */
+  main {
+    position: relative; z-index: 5;
+    max-width: 1300px; margin: 0 auto;
+    padding: 40px 30px;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    grid-template-rows: auto 1fr;
+    gap: 28px;
+  }
+
+  /* ── Page Title ── */
+  .page-title {
+    grid-column: 1 / -1;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .page-title h1 {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    line-height: 1.1;
+  }
+  .page-title h1 span {
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .page-title p {
+    font-size: 0.9rem; color: var(--muted); margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .caps { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cap {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.75rem; color: var(--muted);
+    padding: 6px 12px; border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--glass);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .cap .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent3); animation: blink 1.5s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  /* ── Scanner Panel ── */
+  .scanner-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    backdrop-filter: blur(30px);
+    display: flex; flex-direction: column;
+  }
+  .panel-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .panel-title {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .panel-title .icon { color: var(--accent); font-size: 1.1rem; }
+  .status-indicator {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+    padding: 4px 10px; border-radius: 20px;
+    border: 1px solid; letter-spacing: 0.5px;
+    transition: all 0.3s;
+  }
+  .status-idle { border-color: rgba(240,244,255,0.2); color: var(--muted); background: var(--glass); }
+  .status-scanning { border-color: var(--accent); color: var(--accent); background: rgba(0,229,255,0.1); }
+  .status-done { border-color: var(--accent3); color: var(--accent3); background: rgba(6,255,165,0.1); }
+  .status-error { border-color: var(--danger); color: var(--danger); background: rgba(255,77,109,0.1); }
+
+  /* ── Drop Zone ── */
+  .drop-zone {
+    flex: 1; min-height: 380px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 30px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .drop-zone.drag-over { background: rgba(0,229,255,0.05); }
+  #fileInput { display: none; }
+
+  /* ── Frame corners ── */
+  .frame-corners {
+    position: absolute; inset: 20px;
+    pointer-events: none;
+    transition: all 0.5s;
+  }
+  .frame-corners::before,
+  .frame-corners::after,
+  .frame-corners span::before,
+  .frame-corners span::after {
+    content: ''; position: absolute;
+    width: 28px; height: 28px;
+    border-color: var(--accent); border-style: solid;
+    transition: all 0.5s;
+  }
+  .frame-corners::before  { top: 0; left: 0;     border-width: 2px 0 0 2px; border-radius: 4px 0 0 0; }
+  .frame-corners::after   { top: 0; right: 0;    border-width: 2px 2px 0 0; border-radius: 0 4px 0 0; }
+  .frame-corners span::before { bottom: 0; left: 0;  border-width: 0 0 2px 2px; border-radius: 0 0 0 4px; }
+  .frame-corners span::after  { bottom: 0; right: 0; border-width: 0 2px 2px 0; border-radius: 0 0 4px 0; }
+
+  /* ── Preview image ── */
+  .preview-wrapper {
+    position: relative; width: 100%; max-height: 340px;
+    border-radius: 10px; overflow: hidden;
+    display: none;
+  }
+  .preview-wrapper.visible { display: block; }
+  #previewImg {
+    width: 100%; max-height: 340px;
+    object-fit: contain;
+    border-radius: 10px;
+    display: block;
+  }
+
+  /* ── Scan line animation ── */
+  .scan-line {
+    position: absolute; left: 0; right: 0; top: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--scan-line), transparent);
+    box-shadow: 0 0 12px var(--scan-line), 0 0 30px rgba(0,229,255,0.3);
+    animation: scan 2s linear infinite;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .scan-line.active { opacity: 1; }
+  @keyframes scan {
+    0% { top: 0%; }
+    100% { top: 100%; }
+  }
+
+  /* ── Drop prompt ── */
+  .drop-prompt {
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .drop-icon {
+    width: 80px; height: 80px; border-radius: 20px;
+    background: linear-gradient(135deg, rgba(0,229,255,0.1), rgba(124,58,237,0.1));
+    border: 1.5px solid rgba(0,229,255,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; margin: 0 auto 20px;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)}
+  }
+  .drop-prompt h3 {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+  .drop-prompt p { color: var(--muted); font-size: 0.85rem; margin-bottom: 20px; }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 22px; border-radius: 10px;
+    font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.9rem;
+    cursor: pointer; border: none; transition: all 0.25s;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), #0099cc);
+    color: #050810;
+    box-shadow: 0 4px 20px rgba(0,229,255,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,229,255,0.45); }
+  .btn-secondary {
+    background: var(--glass); color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.08); }
+  .btn-success {
+    background: linear-gradient(135deg, var(--accent3), #00cc7a);
+    color: #050810;
+    box-shadow: 0 4px 20px rgba(6,255,165,0.3);
+  }
+  .btn-success:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(6,255,165,0.45); }
+  .btn-danger {
+    background: rgba(255,77,109,0.15); color: var(--danger);
+    border: 1px solid rgba(255,77,109,0.3);
+  }
+  .btn-danger:hover { background: rgba(255,77,109,0.25); }
+
+  /* ── Scan controls ── */
+  .scan-controls {
+    padding: 18px 24px;
+    border-top: 1px solid var(--border);
+    display: flex; gap: 10px; flex-wrap: wrap;
+    align-items: center; justify-content: space-between;
+  }
+  .scan-controls-left { display: flex; gap: 10px; }
+  .scan-mode-select {
+    background: var(--glass); border: 1px solid var(--border);
+    color: var(--text); border-radius: 10px;
+    padding: 10px 14px; font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem; cursor: pointer;
+    outline: none;
+  }
+  .scan-mode-select:focus { border-color: var(--accent); }
+
+  /* ── Progress ── */
+  .progress-container {
+    padding: 18px 24px;
+    border-top: 1px solid var(--border);
+    display: none;
+  }
+  .progress-container.visible { display: block; }
+  .progress-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.8rem; margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .progress-label span:first-child { color: var(--accent); }
+  .progress-label span:last-child { color: var(--muted); }
+  .progress-bar-track {
+    height: 4px; background: var(--border); border-radius: 4px; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%; border-radius: 4px; width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+    box-shadow: 0 0 10px rgba(0,229,255,0.5);
+    transition: width 0.3s ease;
+  }
+  .progress-steps {
+    display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;
+  }
+  .step-chip {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+    padding: 4px 10px; border-radius: 20px;
+    border: 1px solid var(--border); color: var(--muted);
+    background: var(--glass); transition: all 0.3s;
+  }
+  .step-chip.active { border-color: var(--accent); color: var(--accent); background: rgba(0,229,255,0.1); }
+  .step-chip.done { border-color: var(--accent3); color: var(--accent3); background: rgba(6,255,165,0.1); }
+
+  /* ── Right Panel ── */
+  .right-panel {
+    display: flex; flex-direction: column; gap: 20px;
+  }
+
+  /* ── Results Card ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    backdrop-filter: blur(30px);
+  }
+  .card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card-body { padding: 20px; }
+
+  /* ── Auto-fill Fields ── */
+  .field-group { display: flex; flex-direction: column; gap: 14px; }
+  .field-item label {
+    display: block; font-size: 0.72rem; color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .field-input-wrap { position: relative; }
+  .field-input {
+    width: 100%; padding: 11px 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.88rem;
+    outline: none; transition: all 0.25s;
+  }
+  .field-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,229,255,0.1); }
+  .field-input.filled {
+    border-color: rgba(6,255,165,0.4);
+    background: rgba(6,255,165,0.05);
+    animation: field-fill 0.5s ease;
+  }
+  @keyframes field-fill {
+    0% { transform: scale(0.98); opacity: 0.7; }
+    50% { transform: scale(1.01); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .field-badge {
+    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    font-size: 0.65rem; padding: 2px 7px; border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(6,255,165,0.15); color: var(--accent3);
+    border: 1px solid rgba(6,255,165,0.3);
+    display: none;
+  }
+  .field-badge.visible { display: block; }
+
+  /* ── Raw OCR Text ── */
+  .raw-text-box {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem; color: var(--muted); line-height: 1.6;
+    max-height: 200px; overflow-y: auto; white-space: pre-wrap;
+    word-break: break-word;
+    scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+  }
+  .raw-text-box::-webkit-scrollbar { width: 4px; }
+  .raw-text-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  /* ── Confidence meter ── */
+  .confidence-ring {
+    display: flex; align-items: center; gap: 16px;
+  }
+  .ring-wrap { position: relative; width: 70px; height: 70px; flex-shrink: 0; }
+  .ring-wrap svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: var(--border); stroke-width: 6; }
+  .ring-fill { fill: none; stroke-width: 6; stroke-linecap: round;
+    stroke-dasharray: 175.9; stroke-dashoffset: 175.9;
+    transition: stroke-dashoffset 1s ease, stroke 0.5s ease; }
+  .ring-text {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem;
+  }
+  .confidence-info h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; }
+  .confidence-info p { color: var(--muted); font-size: 0.78rem; margin-top: 4px; }
+
+  /* ── Tips Card ── */
+  .tips-list { display: flex; flex-direction: column; gap: 10px; }
+  .tip-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 0.82rem; color: var(--muted); line-height: 1.5;
+  }
+  .tip-icon { color: var(--accent); font-size: 0.9rem; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── Supported doc chips ── */
+  .doc-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .doc-chip {
+    font-size: 0.72rem; padding: 5px 11px; border-radius: 20px;
+    border: 1px solid var(--border); color: var(--muted);
+    background: var(--glass); font-family: 'JetBrains Mono', monospace;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .doc-chip:hover, .doc-chip.active {
+    border-color: var(--accent); color: var(--accent);
+    background: rgba(0,229,255,0.1);
+  }
+
+  /* ── Toast ── */
+  .toast-container {
+    position: fixed; bottom: 30px; right: 30px; z-index: 999;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .toast {
+    padding: 14px 20px; border-radius: 12px; font-size: 0.85rem;
+    display: flex; align-items: center; gap: 10px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    animation: toast-in 0.35s ease, toast-out 0.35s ease forwards;
+    max-width: 320px;
+  }
+  .toast-success { background: rgba(6,255,165,0.15); border: 1px solid rgba(6,255,165,0.4); color: var(--accent3); }
+  .toast-error { background: rgba(255,77,109,0.15); border: 1px solid rgba(255,77,109,0.4); color: var(--danger); }
+  .toast-info { background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: var(--accent); }
+  @keyframes toast-in { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes toast-out { from { opacity: 1; } to { opacity: 0; transform: translateX(40px); } }
+
+  /* ── Empty state ── */
+  .empty-state {
+    text-align: center; padding: 30px 20px;
+    color: var(--muted); font-size: 0.85rem;
+  }
+  .empty-state .big { font-size: 2.5rem; margin-bottom: 10px; }
+  .empty-state p { line-height: 1.6; }
+
+  /* ── Action row ── */
+  .action-row {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px;
+  }
+
+  /* ── Particle canvas ── */
+  #particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    main { grid-template-columns: 1fr; }
+    header { padding: 16px 20px; }
+    main { padding: 24px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="grid-overlay"></div>
+<canvas id="particles"></canvas>
+
+<!-- Header -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">🔒</div>
+    Locklet<span>Pro</span>
+  </div>
+  <div class="badge">OCR SCANNER v2.4</div>
+  <div class="caps">
+    <div class="cap"><span class="dot"></span>ML Kit Active</div>
+    <div class="cap"><span class="dot" style="background:var(--accent)"></span>Tesseract Engine</div>
+  </div>
+</header>
+
+<main>
+  <!-- Page Title -->
+  <div class="page-title">
+    <div>
+      <h1>AI Document <span>OCR Scanner</span></h1>
+      <p>// Drop any document → Extract text → Auto-fill fields</p>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <div class="doc-chips" id="docTypeChips">
+        <span class="doc-chip active" data-type="auto">🤖 Auto</span>
+        <span class="doc-chip" data-type="aadhaar">🪪 Aadhaar</span>
+        <span class="doc-chip" data-type="pan">💳 PAN Card</span>
+        <span class="doc-chip" data-type="passport">📘 Passport</span>
+        <span class="doc-chip" data-type="license">🚗 License</span>
+        <span class="doc-chip" data-type="cert">📜 Certificate</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scanner Panel -->
+  <div class="scanner-panel">
+    <div class="panel-header">
+      <div class="panel-title"><span class="icon">📡</span> Scan Zone</div>
+      <div class="status-indicator status-idle" id="statusBadge">IDLE</div>
+    </div>
+
+    <!-- Drop Zone -->
+    <div class="drop-zone" id="dropZone">
+      <div class="frame-corners"><span></span></div>
+
+      <!-- Drop Prompt -->
+      <div class="drop-prompt" id="dropPrompt">
+        <div class="drop-icon">📄</div>
+        <h3>Drop Document Here</h3>
+        <p>Supports JPG, PNG, PDF, WEBP · Max 10MB</p>
+        <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+          📂 Browse File
+        </button>
+      </div>
+
+      <!-- Preview -->
+      <div class="preview-wrapper" id="previewWrapper">
+        <img id="previewImg" src="" alt="Document Preview" />
+        <div class="scan-line" id="scanLine"></div>
+      </div>
+
+      <input type="file" id="fileInput" accept="image/*,.pdf" />
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-label">
+        <span id="progressLabel">Initializing OCR engine...</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-steps">
+        <div class="step-chip" id="step1">📥 Load</div>
+        <div class="step-chip" id="step2">🔍 Preprocess</div>
+        <div class="step-chip" id="step3">🤖 OCR Engine</div>
+        <div class="step-chip" id="step4">🔎 Extract Fields</div>
+        <div class="step-chip" id="step5">✅ Auto-fill</div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="scan-controls">
+      <div class="scan-controls-left">
+        <select class="scan-mode-select" id="langSelect">
+          <option value="eng">🌐 English</option>
+          <option value="hin">🇮🇳 Hindi</option>
+          <option value="eng+hin">🔀 Eng + Hindi</option>
+        </select>
+        <button class="btn btn-secondary" onclick="resetAll()">🔄 Reset</button>
+      </div>
+      <button class="btn btn-primary" id="scanBtn" onclick="startScan()" disabled>
+        🔍 Start OCR Scan
+      </button>
+    </div>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="right-panel">
+
+    <!-- Confidence -->
+    <div class="card" id="confidenceCard">
+      <div class="card-header">
+        <div class="card-title">📊 OCR Confidence</div>
+      </div>
+      <div class="card-body">
+        <div class="confidence-ring">
+          <div class="ring-wrap">
+            <svg viewBox="0 0 70 70" width="70" height="70">
+              <circle class="ring-bg" cx="35" cy="35" r="28"/>
+              <circle class="ring-fill" id="ringFill" cx="35" cy="35" r="28"/>
+            </svg>
+            <div class="ring-text" id="ringText">—</div>
+          </div>
+          <div class="confidence-info">
+            <h4 id="confLabel">Awaiting Scan</h4>
+            <p id="confDesc">Upload a document and run OCR to see confidence score.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Auto-fill Fields -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">⚡ Extracted Fields</div>
+        <button class="btn btn-secondary" style="padding:6px 12px;font-size:0.78rem" onclick="clearFields()">Clear</button>
+      </div>
+      <div class="card-body" id="fieldsBody">
+        <div class="empty-state">
+          <div class="big">🔍</div>
+          <p>Extracted data will appear here after scanning. Fields auto-fill based on document type.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Raw Text -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">📝 Raw OCR Output</div>
+        <button class="btn btn-secondary" style="padding:6px 12px;font-size:0.78rem" onclick="copyRaw()">📋 Copy</button>
+      </div>
+      <div class="card-body">
+        <div class="raw-text-box" id="rawTextBox">// OCR extracted text will appear here...</div>
+      </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">💡 Scan Tips</div>
+      </div>
+      <div class="card-body">
+        <div class="tips-list">
+          <div class="tip-item"><span class="tip-icon">💡</span> Use bright, even lighting for best results</div>
+          <div class="tip-item"><span class="tip-icon">📐</span> Keep document flat and within frame corners</div>
+          <div class="tip-item"><span class="tip-icon">🔍</span> Higher resolution images give better accuracy</div>
+          <div class="tip-item"><span class="tip-icon">🎯</span> Select correct document type for smart extraction</div>
+          <div class="tip-item"><span class="tip-icon">🖼️</span> Avoid shadows and glare on document surface</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+  /* ── Particles ── */
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+  for (let i = 0; i < 60; i++) {
+    particles.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 1.5 + 0.5,
+      dx: (Math.random() - 0.5) * 0.3,
+      dy: (Math.random() - 0.5) * 0.3,
+      a: Math.random() * 0.5 + 0.1,
+    });
+  }
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.x += p.dx; p.y += p.dy;
+      if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0,229,255,${p.a})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawParticles);
+  }
+  drawParticles();
+
+  /* ── State ── */
+  let currentFile = null;
+  let rawText = '';
+  let selectedDocType = 'auto';
+
+  /* ── Doc Type Chips ── */
+  document.querySelectorAll('.doc-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.doc-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      selectedDocType = chip.dataset.type;
+      showToast(`📋 Mode: ${chip.textContent}`, 'info');
+    });
+  });
+
+  /* ── Drag & Drop ── */
+  const dropZone = document.getElementById('dropZone');
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault(); dropZone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  });
+  dropZone.addEventListener('click', e => {
+    if (e.target.tagName !== 'BUTTON') document.getElementById('fileInput').click();
+  });
+  document.getElementById('fileInput').addEventListener('change', e => {
+    if (e.target.files[0]) handleFile(e.target.files[0]);
+  });
+
+  function handleFile(file) {
+    if (file.size > 10 * 1024 * 1024) { showToast('❌ File too large (max 10MB)', 'error'); return; }
+    if (!file.type.match(/image\/(jpeg|png|webp|gif)/) && file.type !== 'application/pdf') {
+      showToast('❌ Unsupported file type', 'error'); return;
+    }
+    currentFile = file;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = document.getElementById('previewImg');
+      img.src = e.target.result;
+      document.getElementById('dropPrompt').style.display = 'none';
+      document.getElementById('previewWrapper').classList.add('visible');
+      document.getElementById('scanBtn').disabled = false;
+      setStatus('idle');
+      showToast('✅ Document loaded — ready to scan', 'success');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  /* ── Status ── */
+  function setStatus(s) {
+    const el = document.getElementById('statusBadge');
+    el.className = 'status-indicator';
+    const map = {
+      idle: ['status-idle', 'IDLE'],
+      scanning: ['status-scanning', 'SCANNING...'],
+      done: ['status-done', 'COMPLETE'],
+      error: ['status-error', 'ERROR'],
+    };
+    el.classList.add(map[s][0]); el.textContent = map[s][1];
+  }
+
+  /* ── Progress ── */
+  function setProgress(pct, label, stepIdx) {
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = label;
+    document.getElementById('progressPct').textContent = pct + '%';
+    const steps = ['step1','step2','step3','step4','step5'];
+    steps.forEach((id, i) => {
+      const el = document.getElementById(id);
+      el.classList.remove('active','done');
+      if (i < stepIdx) el.classList.add('done');
+      else if (i === stepIdx) el.classList.add('active');
+    });
+  }
+
+  /* ── Main Scan ── */
+  async function startScan() {
+    if (!currentFile) return;
+    setStatus('scanning');
+    document.getElementById('scanBtn').disabled = true;
+    document.getElementById('progressContainer').classList.add('visible');
+    document.getElementById('scanLine').classList.add('active');
+    clearFields();
+
+    try {
+      setProgress(10, 'Loading document...', 0);
+      await delay(400);
+      setProgress(25, 'Preprocessing image...', 1);
+      await delay(500);
+      setProgress(40, 'Initializing OCR engine...', 2);
+
+      const lang = document.getElementById('langSelect').value;
+
+      const result = await Tesseract.recognize(currentFile, lang, {
+        logger: m => {
+          if (m.status === 'recognizing text') {
+            const p = Math.floor(40 + m.progress * 40);
+            setProgress(p, `OCR Engine: ${Math.floor(m.progress * 100)}%`, 2);
+          }
+        }
+      });
+
+      rawText = result.data.text;
+      const confidence = result.data.confidence;
+
+      setProgress(85, 'Extracting structured fields...', 3);
+      await delay(400);
+
+      document.getElementById('rawTextBox').textContent = rawText || '(No text detected)';
+
+      updateConfidence(confidence);
+      const fields = extractFields(rawText, selectedDocType);
+      renderFields(fields);
+
+      setProgress(100, 'Complete! Fields auto-filled.', 4);
+      await delay(300);
+
+      setStatus('done');
+      document.getElementById('scanLine').classList.remove('active');
+      showToast(`✅ OCR Complete — ${confidence.toFixed(1)}% confidence`, 'success');
+
+    } catch (err) {
+      console.error(err);
+      setStatus('error');
+      document.getElementById('scanLine').classList.remove('active');
+      showToast('❌ OCR failed: ' + err.message, 'error');
+    }
+
+    document.getElementById('scanBtn').disabled = false;
+  }
+
+  /* ── Field Extraction ── */
+  function extractFields(text, docType) {
+    const t = text || '';
+    const fields = {};
+
+    // Name patterns
+    const nameMatch = t.match(/(?:name[:\s]+|Name[:\s]+)([A-Z][a-z]+(?:\s[A-Z][a-z]+)+)/);
+    if (nameMatch) fields['Full Name'] = nameMatch[1].trim();
+
+    // DOB
+    const dobMatch = t.match(/\b(\d{2}[\/-]\d{2}[\/-]\d{2,4})\b/);
+    if (dobMatch) fields['Date of Birth'] = dobMatch[1];
+
+    // Aadhaar
+    const aadhaarMatch = t.match(/\b(\d{4}\s?\d{4}\s?\d{4})\b/);
+    if (aadhaarMatch && (docType === 'aadhaar' || docType === 'auto'))
+      fields['Aadhaar Number'] = aadhaarMatch[1];
+
+    // PAN
+    const panMatch = t.match(/\b([A-Z]{5}[0-9]{4}[A-Z])\b/);
+    if (panMatch) fields['PAN Number'] = panMatch[1];
+
+    // Passport
+    const passMatch = t.match(/\b([A-Z]\d{7})\b/);
+    if (passMatch && (docType === 'passport' || docType === 'auto'))
+      fields['Passport No.'] = passMatch[1];
+
+    // Address
+    const addrMatch = t.match(/(?:address|Address|ADD)[:\s]+([^\n]{10,80})/);
+    if (addrMatch) fields['Address'] = addrMatch[1].trim();
+
+    // PIN Code
+    const pinMatch = t.match(/\b(\d{6})\b/);
+    if (pinMatch) fields['PIN Code'] = pinMatch[1];
+
+    // Gender
+    if (/\bMALE\b|\bFemale\b|\bFEMALE\b/i.test(t))
+      fields['Gender'] = /female/i.test(t) ? 'Female' : 'Male';
+
+    // Phone
+    const phoneMatch = t.match(/\b(?:\+91[\s-]?)?[6-9]\d{9}\b/);
+    if (phoneMatch) fields['Phone'] = phoneMatch[0];
+
+    // Email
+    const emailMatch = t.match(/\b[\w._%+\-]+@[\w.\-]+\.[a-zA-Z]{2,}\b/);
+    if (emailMatch) fields['Email'] = emailMatch[0];
+
+    // Expiry
+    const expMatch = t.match(/(?:expir|valid|EXP)[^\d]*(\d{2}[\/-]\d{4})/i);
+    if (expMatch) fields['Expiry Date'] = expMatch[1];
+
+    return fields;
+  }
+
+  /* ── Render Fields ── */
+  function renderFields(fields) {
+    const body = document.getElementById('fieldsBody');
+    const keys = Object.keys(fields);
+
+    if (keys.length === 0) {
+      body.innerHTML = `<div class="empty-state"><div class="big">🤷</div><p>No structured fields detected. Check raw OCR output and try a clearer image.</p></div>`;
+      return;
+    }
+
+    let html = '<div class="field-group">';
+    keys.forEach((key, i) => {
+      html += `
+        <div class="field-item" style="animation-delay:${i * 0.07}s">
+          <label>${key}</label>
+          <div class="field-input-wrap">
+            <input class="field-input filled" type="text" value="${escHtml(fields[key])}" readonly />
+            <span class="field-badge visible">AI</span>
+          </div>
+        </div>`;
+    });
+    html += '</div>';
+    html += `<div class="action-row">
+      <button class="btn btn-success" onclick="copyAllFields()">📋 Copy All</button>
+      <button class="btn btn-secondary" onclick="exportJSON()">💾 Export JSON</button>
+    </div>`;
+    body.innerHTML = html;
+  }
+
+  /* ── Confidence Ring ── */
+  function updateConfidence(conf) {
+    const pct = Math.round(conf);
+    const circumference = 175.9;
+    const offset = circumference - (pct / 100) * circumference;
+    const ring = document.getElementById('ringFill');
+    ring.style.strokeDashoffset = offset;
+    const color = pct >= 75 ? '#06ffa5' : pct >= 50 ? '#ffd166' : '#ff4d6d';
+    ring.style.stroke = color;
+    document.getElementById('ringText').textContent = pct + '%';
+    document.getElementById('ringText').style.color = color;
+    document.getElementById('confLabel').textContent =
+      pct >= 75 ? 'High Confidence' : pct >= 50 ? 'Medium Confidence' : 'Low Confidence';
+    document.getElementById('confDesc').textContent =
+      pct >= 75 ? 'Extraction results are reliable.' :
+      pct >= 50 ? 'Some fields may need verification.' :
+      'Try a higher resolution image.';
+  }
+
+  /* ── Utils ── */
+  function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+  function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function resetAll() {
+    currentFile = null;
+    rawText = '';
+    document.getElementById('fileInput').value = '';
+    document.getElementById('previewImg').src = '';
+    document.getElementById('previewWrapper').classList.remove('visible');
+    document.getElementById('dropPrompt').style.display = '';
+    document.getElementById('scanBtn').disabled = true;
+    document.getElementById('progressContainer').classList.remove('visible');
+    document.getElementById('scanLine').classList.remove('active');
+    document.getElementById('rawTextBox').textContent = '// OCR extracted text will appear here...';
+    document.getElementById('ringFill').style.strokeDashoffset = 175.9;
+    document.getElementById('ringFill').style.stroke = '';
+    document.getElementById('ringText').textContent = '—';
+    document.getElementById('confLabel').textContent = 'Awaiting Scan';
+    document.getElementById('confDesc').textContent = 'Upload a document and run OCR to see confidence score.';
+    clearFields();
+    setStatus('idle');
+    setProgress(0, 'Initializing...', -1);
+    showToast('🔄 Reset complete', 'info');
+  }
+
+  function clearFields() {
+    document.getElementById('fieldsBody').innerHTML = `
+      <div class="empty-state">
+        <div class="big">🔍</div>
+        <p>Extracted data will appear here after scanning. Fields auto-fill based on document type.</p>
+      </div>`;
+  }
+
+  function copyRaw() {
+    if (!rawText) { showToast('Nothing to copy yet', 'error'); return; }
+    navigator.clipboard.writeText(rawText).then(() => showToast('📋 Copied raw text!', 'success'));
+  }
+
+  function copyAllFields() {
+    const inputs = document.querySelectorAll('#fieldsBody .field-input');
+    const data = Array.from(inputs).map(inp => inp.value).join('\n');
+    navigator.clipboard.writeText(data).then(() => showToast('📋 All fields copied!', 'success'));
+  }
+
+  function exportJSON() {
+    const inputs = document.querySelectorAll('#fieldsBody .field-input');
+    const labels = document.querySelectorAll('#fieldsBody label');
+    const obj = {};
+    labels.forEach((l, i) => { if (inputs[i]) obj[l.textContent] = inputs[i].value; });
+    const blob = new Blob([JSON.stringify(obj, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'lockletpro_ocr_data.json';
+    a.click();
+    showToast('💾 JSON exported!', 'success');
+  }
+
+  /* ── Toast ── */
+  function showToast(msg, type = 'info') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = msg;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'toast-out 0.35s ease forwards';
+      setTimeout(() => toast.remove(), 350);
+    }, 3000);
+  }
+</script>
+</body>
+</html>
