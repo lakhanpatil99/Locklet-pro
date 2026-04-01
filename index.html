@@ -2245,92 +2245,53 @@
 
     .comp-grid {
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1.2fr;
+      grid-template-columns: 1fr 1fr;
       position: relative;
-    }
-
-    @media (max-width: 600px) {
-      .comp-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      .comp-head-label {
-        display: none;
-      }
-      .comp-cell-label {
-        grid-column: span 2;
-        background: rgba(255, 255, 255, 0.05);
-        justify-content: center;
-        font-weight: 600;
-      }
-      .comp-section-label {
-        display: none;
-      }
-    }
-
-    [data-tip] {
-      position: relative;
-      cursor: help;
-    }
-    [data-tip]:hover::after {
-      content: attr(data-tip);
-      position: absolute;
-      bottom: 100%; left: 50%;
-      transform: translateX(-50%);
-      background: rgba(20, 16, 36, 0.95);
-      border: 1px solid var(--gold);
-      color: #fff;
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-size: 11px;
-      white-space: nowrap;
-      z-index: 100;
-      pointer-events: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-      animation: tipFade 0.2s forwards;
-    }
-    @keyframes tipFade {
-      from { opacity: 0; transform: translate(-50%, 5px); }
-      to { opacity: 1; transform: translate(-50%, -5px); }
     }
 
     /* Column headers */
-    .comp-head-label,
     .comp-head-free,
     .comp-head-pro {
       padding: 18px 14px 16px;
       text-align: center;
       border-bottom: 1px solid var(--border);
     }
-    .comp-head-label {
-      background: transparent;
-      border-right: 1px solid var(--border);
-    }
+
     .comp-head-free {
       background: rgba(255, 255, 255, .016);
       border-right: 1px solid var(--border);
     }
+
     .comp-head-pro {
       background: linear-gradient(160deg, rgba(232, 184, 109, .09), rgba(232, 184, 109, .03));
       position: relative;
       overflow: hidden;
-      animation: proColGlow 3s ease-in-out infinite alternate;
     }
-    @keyframes proColGlow {
-      from { box-shadow: inset 0 0 0px rgba(232, 184, 109, 0.0); }
-      to { box-shadow: inset 0 0 40px rgba(232, 184, 109, 0.15); }
-    }
+
     .comp-head-pro::before {
       content: '';
       position: absolute;
-      top: -40px; right: -40px;
-      width: 120px; height: 120px;
+      top: -40px;
+      right: -40px;
+      width: 120px;
+      height: 120px;
       background: radial-gradient(circle, rgba(232, 184, 109, .18), transparent 70%);
       pointer-events: none;
       animation: proOrb 4s ease-in-out infinite;
     }
+
     @keyframes proOrb {
-      0%, 100% { opacity: .6; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.15); }
+
+      0%,
+      100% {
+        opacity: .6;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.15)
+      }
     }
 
     .comp-col-label {
@@ -2341,8 +2302,14 @@
       display: block;
       margin-bottom: 5px;
     }
-    .comp-col-label.free-lbl { color: var(--t2); }
-    .comp-col-label.pro-lbl { color: var(--gold); }
+
+    .comp-col-label.free-lbl {
+      color: var(--t2);
+    }
+
+    .comp-col-label.pro-lbl {
+      color: var(--gold);
+    }
 
     .comp-price {
       font-family: 'Syne', sans-serif;
@@ -2353,9 +2320,21 @@
       line-height: 1;
       margin-bottom: 6px;
     }
-    .comp-price.free-price { color: var(--text); }
-    .comp-price.pro-price { color: var(--gold); }
-    .comp-price sub { font-size: 10px; font-weight: 400; color: var(--t2); vertical-align: middle; }
+
+    .comp-price.free-price {
+      color: var(--text);
+    }
+
+    .comp-price.pro-price {
+      color: var(--gold);
+    }
+
+    .comp-price sub {
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--t2);
+      vertical-align: middle;
+    }
 
     .comp-pro-badge {
       display: inline-flex;
@@ -2373,14 +2352,26 @@
       box-shadow: 0 3px 12px rgba(232, 184, 109, .35);
       animation: badgePop 2.5s ease-in-out infinite;
     }
+
     @keyframes badgePop {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+
+      0%,
+      100% {
+        transform: scale(1)
+      }
+
+      50% {
+        transform: scale(1.05)
+      }
     }
-    .comp-pro-badge svg { width: 8px; height: 8px; fill: currentColor; }
+
+    .comp-pro-badge svg {
+      width: 8px;
+      height: 8px;
+      fill: currentColor;
+    }
 
     /* Section divider rows */
-    .comp-section-label,
     .comp-section-free,
     .comp-section-pro {
       padding: 7px 14px;
@@ -2390,16 +2381,13 @@
       text-transform: uppercase;
       background: rgba(255, 255, 255, .014);
     }
-    .comp-section-label {
-      color: var(--t3);
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
+
     .comp-section-free {
       color: var(--t3);
       border-right: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
+
     .comp-section-pro {
       color: rgba(232, 184, 109, .45);
       background: rgba(232, 184, 109, .025);
@@ -2407,10 +2395,9 @@
     }
 
     /* Feature rows */
-    .comp-cell-label,
     .comp-cell-free,
     .comp-cell-pro {
-      padding: 12px 14px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -2418,106 +2405,130 @@
       transition: background .2s;
       position: relative;
     }
-    .comp-cell-label {
-      border-right: 1px solid var(--border);
-      font-size: 12px;
-      color: #f1ecfc !important;
-      font-weight: 500;
-    }
-    .comp-cell-label svg {
-      width: 14px; height: 14px; fill: var(--gold); opacity: 0.8; flex-shrink: 0;
-    }
+
     .comp-cell-free {
       border-right: 1px solid var(--border);
-      font-size: 11.5px;
-      color: #cbd5e1 !important;
-      font-weight: 400;
     }
+
     .comp-cell-pro {
       background: rgba(232, 184, 109, .018);
-      font-size: 11.5px;
-      color: #f5c76b !important;
-      font-weight: 600;
-      position: relative;
-      overflow: hidden;
-    }
-    .comp-cell-pro::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 50%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(232, 184, 109, 0.1), transparent);
-      animation: scanGlow 3s ease-in-out infinite;
-    }
-    @keyframes scanGlow {
-      0% { left: -100%; }
-      50% { left: 150%; }
-      100% { left: 150%; }
     }
 
-    /* Check / Cross icons */
-    .c-icon {
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
-      margin-right: 4px;
-      fill: currentColor;
-    }
-    .c-icon.yes {
-      fill: var(--green);
-      filter: drop-shadow(0 0 4px var(--green));
-    }
-    .c-icon.no {
-      stroke: var(--red);
-      fill: none;
-      opacity: 0.7;
-    }
-    .c-icon.gold-check {
-      fill: var(--gold);
-      filter: drop-shadow(0 0 6px var(--gold));
-    }
-    .faded-text {
-      opacity: 0.6;
-      color: #888 !important;
-    }
-
-    /* Section labels (STORAGE, AI, etc.) */
-    .comp-section-label {
-      color: #f5c76b !important;
-      font-weight: 600;
-    }
-
-    /* Hover highlight pairs */
-    .comp-cell-label.row-hover,
+    /* Hover highlight pairs — JS-driven via .row-hover */
     .comp-cell-free.row-hover {
-      background: rgba(255, 255, 255, .05);
-    }
-    .comp-cell-pro.row-hover {
-      background: rgba(232, 184, 109, .08);
+      background: rgba(255, 255, 255, .022);
     }
 
-    /* Row hover effect */
-    .comp-row-pair:hover > div {
-      background: rgba(255, 255, 255, 0.02);
-    }
-    .comp-row-pair:hover > .comp-cell-pro {
-      background: rgba(232, 184, 109, .06);
+    .comp-cell-pro.row-hover {
+      background: rgba(232, 184, 109, .055);
     }
 
     /* Last row: no bottom border */
-    .comp-last { border-bottom: none !important; }
+    .comp-last-free,
+    .comp-last-pro {
+      border-bottom: none;
+    }
+
+    .cell-text {
+      flex: 1;
+      font-size: 11.5px;
+      color: var(--t2);
+      font-weight: 300;
+      line-height: 1.3;
+    }
+
+    .cell-text.pro-text {
+      color: var(--text);
+    }
+
+    .cell-val-badge {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 10.5px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .cell-val-badge.dim {
+      color: var(--t3);
+    }
+
+    .cell-val-badge.bright {
+      color: var(--gold);
+    }
+
+    /* Check / Cross icons */
+    .comp-check {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .comp-check.yes {
+      background: var(--green-dim);
+      border: 1px solid rgba(52, 211, 153, .28);
+      animation: checkPop .4s cubic-bezier(.16, 1, .3, 1) both;
+    }
+
+    .comp-check.yes svg {
+      width: 11px;
+      height: 11px;
+      fill: var(--green);
+    }
+
+    .comp-check.gold {
+      background: rgba(232, 184, 109, .1);
+      border: 1px solid rgba(232, 184, 109, .3);
+      animation: checkPop .4s cubic-bezier(.16, 1, .3, 1) both;
+    }
+
+    .comp-check.gold svg {
+      width: 11px;
+      height: 11px;
+      fill: var(--gold);
+    }
+
+    .comp-check.no {
+      background: rgba(255, 255, 255, .035);
+      border: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .comp-check.no svg {
+      width: 10px;
+      height: 10px;
+      stroke: var(--t3);
+    }
+
+    @keyframes checkPop {
+      from {
+        transform: scale(0) rotate(-20deg)
+      }
+
+      to {
+        transform: scale(1) rotate(0deg)
+      }
+    }
 
     /* Row stagger animation */
-    .comp-row-pair { display: contents; }
-    .comp-row-pair > div {
+    .comp-row-pair {
+      display: contents;
+    }
+
+    .comp-row-pair .comp-cell-free,
+    .comp-row-pair .comp-cell-pro {
       opacity: 0;
       transform: translateY(10px);
       transition: opacity .5s cubic-bezier(.16, 1, .3, 1), transform .5s cubic-bezier(.16, 1, .3, 1), background .2s;
     }
-    .comp-row-pair.revealed > div {
-      opacity: 1 !important;
-      transform: translateY(0) !important;
-      visibility: visible !important;
+
+    .comp-row-pair.revealed .comp-cell-free,
+    .comp-row-pair.revealed .comp-cell-pro {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* CTA at bottom of comparison */
@@ -4473,357 +4484,62 @@
       </div>
     </div>
 
-
-    <!-- ══════════════════════════════════
-       FREE vs PRO COMPARISON TABLE
-  ══════════════════════════════════ -->
-    <div class="sl">Free vs Pro</div>
-        overflow: hidden;
-        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        display: flex;
-        flex-direction: column;
-      }
-      .pricing-card:hover {
-        transform: translateY(-5px) scale(1.03);
-        z-index: 2;
-      }
-      .pricing-card.free {
-        background: rgba(20, 16, 36, 0.3);
-      }
-      .pricing-card.free:hover {
-        border-color: rgba(255, 255, 255, 0.4);
-        box-shadow: 0 0 25px rgba(255, 255, 255, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.05);
-      }
-      .pricing-card.pro {
-        background: linear-gradient(160deg, rgba(20, 16, 36, 0.6), rgba(8, 7, 20, 0.8));
-        border: 1px solid rgba(232, 184, 109, 0.4);
-        box-shadow: 0 0 15px rgba(232, 184, 109, 0.15);
-      }
-      .pricing-card.pro::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at top right, rgba(232, 184, 109, 0.25), transparent 60%);
-        pointer-events: none;
-      }
-      .pricing-card.pro::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background-image: radial-gradient(rgba(232, 184, 109, 0.5) 1px, transparent 1px);
-        background-size: 20px 20px;
-        opacity: 0.15;
-        animation: floatBG 15s linear infinite;
-        pointer-events: none;
-      }
-      @keyframes floatBG {
-        from { background-position: 0 0; }
-        to { background-position: 40px 40px; }
-      }
-      /* NEON GLOW BORDER EFFECT */
-      .pricing-card.pro:hover {
-        border-color: #fde68a;
-        box-shadow: 0 0 40px rgba(232, 184, 109, 0.7), 0 0 80px rgba(232, 184, 109, 0.3), inset 0 0 30px rgba(232, 184, 109, 0.3);
-        transform: translateY(-5px) scale(1.05);
-      }
-      .p-badge {
-        position: absolute;
-        top: 14px;
-        right: 14px;
-        background: linear-gradient(135deg, var(--gold2), var(--gold));
-        color: #1a1405;
-        font-size: 9px;
-        font-weight: 800;
-        padding: 5px 12px;
-        border-radius: 20px;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        box-shadow: 0 4px 15px rgba(232, 184, 109, 0.6);
-        z-index: 1;
-      }
-      .p-header {
-        margin-bottom: 20px;
-        text-align: left;
-        position: relative;
-        z-index: 1;
-      }
-      .p-title {
-        font-family: 'Syne', sans-serif;
-        font-weight: 800;
-        font-size: 20px;
-        color: var(--text);
-        margin-bottom: 8px;
-        letter-spacing: -0.02em;
-      }
-      .p-title.pro-title {
-        color: var(--gold);
-        text-shadow: 0 0 10px rgba(232, 184, 109, 0.4);
-      }
-      .p-price {
-        font-family: 'Syne', sans-serif;
-        font-weight: 800;
-        font-size: 32px;
-        color: var(--text);
-        display: flex;
-        align-items: baseline;
-        gap: 6px;
-        margin-bottom: 4px;
-      }
-      .p-price.pro-price {
-        color: var(--gold);
-        text-shadow: 0 0 10px rgba(232, 184, 109, 0.4);
-      }
-      .p-price span {
-        font-family: 'DM Sans', sans-serif;
-        font-weight: 500;
-        font-size: 11px;
-        color: var(--t2);
-        letter-spacing: 0.05em;
-        text-transform: none;
-      }
-      .p-features {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        margin-bottom: 24px;
-        position: relative;
-        z-index: 1;
-      }
-      .p-feat {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        font-size: 13px;
-        color: var(--t2);
-        line-height: 1.5;
-        font-weight: 400;
-      }
-      .p-feat.pro-feat p {
-        color: rgba(255,255,255,0.95);
-      }
-      .p-check {
-        width: 18px;
-        height: 18px;
-        flex-shrink: 0;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 1px;
-      }
-      .p-check.free-check {
-        background: rgba(255, 255, 255, 0.1);
-      }
-      .p-check.free-check svg {
-        fill: var(--text);
-        opacity: 0.8;
-      }
-      .p-check.pro-check {
-        background: rgba(52, 211, 153, 0.2);
-        box-shadow: 0 0 12px rgba(52, 211, 153, 0.3);
-      }
-      .p-check.pro-check svg {
-        fill: var(--green2);
-      }
-      .p-check svg {
-        width: 10px;
-        height: 10px;
-      }
-      .p-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        width: 100%;
-        padding: 14px;
-        border-radius: 14px;
-        font-family: 'Syne', sans-serif;
-        font-weight: 700;
-        font-size: 13.5px;
-        text-decoration: none;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        position: relative;
-        overflow: hidden;
-        z-index: 1;
-      }
-      .p-btn.free-btn {
-        background: rgba(255, 255, 255, 0.02);
-        color: var(--text);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-      }
-      .p-btn.free-btn:hover {
-        background: rgba(255, 255, 255, 0.08);
-        border-color: rgba(255, 255, 255, 0.4);
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-      }
-      /* ANIMATED NEON GRADIENT BUTTON */
-      .p-btn.pro-btn {
-        background: linear-gradient(270deg, var(--gold2), var(--gold), #ffb84d, var(--gold2));
-        background-size: 300% 300%;
-        animation: neonGradient 3s ease infinite;
-        color: #1a1405;
-        border: none;
-        box-shadow: 0 5px 20px rgba(232, 184, 109, 0.5), 0 0 10px rgba(232, 184, 109, 0.2) inset;
-        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
-      }
-      @keyframes neonGradient {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-      }
-      .p-btn.pro-btn::before {
-        content: '';
-        position: absolute;
-        top: 0; left: -150%;
-        width: 100%; height: 100%;
-        background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.8), transparent);
-        transition: left 0.6s ease;
-      }
-      .p-btn.pro-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 35px rgba(232, 184, 109, 0.8), 0 0 20px rgba(232, 184, 109, 0.6);
-      }
-      .p-btn.pro-btn:hover::before {
-        left: 150%;
-      }
-    </style>
-
+    <!-- PREMIUM -->
     <div class="sl">Pricing</div>
-    <div class="pricing-grid">
-      <!-- FREE PLAN -->
-      <div class="pricing-card free sr">
-        <div class="p-header">
-          <div class="p-title">Free</div>
-          <div class="p-price">₹0<span>/forever</span></div>
-        </div>
-        <div class="p-features">
-          <div class="p-feat">
-            <div class="p-check free-check">
-              <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
-            </div>
-            <p>50 MB Cloud Storage</p>
-          </div>
-          <div class="p-feat">
-            <div class="p-check free-check">
-              <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
-            </div>
-            <p>App Biometric Lock</p>
-          </div>
-          <div class="p-feat">
-            <div class="p-check free-check">
-              <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
-            </div>
-            <p>Limited OCR Scans</p>
-          </div>
-        </div>
-        <a href="https://play.google.com/apps/testing/com.lockletpro" target="_blank" class="p-btn free-btn">Current Plan</a>
-      </div>
-
-      <!-- PRO PLAN -->
-      <div class="pricing-card pro sr">
-        <div class="p-badge">★ Best Value</div>
-        <div class="p-header">
-          <div class="p-title pro-title">⚡ Pro</div>
-          <div class="p-price pro-price">₹10<span>/month</span></div>
-        </div>
-        <div class="p-features">
-          <div class="p-feat pro-feat" style="animation-delay: 0.1s">
-            <div class="p-check pro-check">
-              <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
-            </div>
-            <p>500 MB Secure Storage</p>
-          </div>
-          <div class="p-feat pro-feat" style="animation-delay: 0.15s">
-            <div class="p-check pro-check">
-              <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
-            </div>
-            <p>Unlimited OCR &amp; Auto-Fill</p>
-          </div>
-          <div class="p-feat pro-feat" style="animation-delay: 0.2s">
-            <div class="p-check pro-check">
-              <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
-            </div>
-            <p>Full Lucky AI Access</p>
-          </div>
-          <div class="p-feat pro-feat" style="animation-delay: 0.25s">
-            <div class="p-check pro-check">
-              <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
-            </div>
-            <p>Per-Doc Biometric Locks</p>
-          </div>
-          <div class="p-feat pro-feat" style="animation-delay: 0.3s">
-            <div class="p-check pro-check">
-              <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
-            </div>
-            <p>Offline Access</p>
-          </div>
-        </div>
-        <a href="https://play.google.com/apps/testing/com.lockletpro" target="_blank" class="p-btn pro-btn">
-          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor">
-            <path d="M5 3l14 9-14 9V3z"/>
-          </svg>
-          Upgrade to Pro
-        </a>
-      </div>
-    </div>
-
-    <!-- PREMIUM APP INFO SECTION -->
-    <div class="sl">Premium Upgrade</div>
-    <div class="card reveal sr" style="border:1px solid rgba(232, 184, 109, 0.4); backdrop-filter: blur(12px);">
+    <div class="card reveal">
       <div class="ct">
         <div class="ci g"><svg viewBox="0 0 24 24">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
           </svg></div>
-        <span class="cl" style="color:var(--gold);">Locklet Pro Premium</span>
+        <span class="cl">Premium Plan</span>
       </div>
       <div class="cb">
-        <div class="plan-banner" style="background:transparent; border:none; padding: 0 0 16px 0;">
+        <div class="plan-banner">
+          <div class="pi"><svg viewBox="0 0 24 24">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+            </svg></div>
           <div class="pm">
-            <div class="pn" style="color:var(--gold);">Locklet Pro Premium</div>
+            <div class="pn">Locklet Pro Premium</div>
             <div class="ps-plan">Upgrade for full access</div>
           </div>
           <div class="pp">₹10<span>/mo</span></div>
         </div>
         <div class="perk-list">
           <div class="perk">
-            <div class="pck" style="background:rgba(52, 211, 153, .15); box-shadow:0 0 10px rgba(52, 211, 153, .2);"><svg viewBox="0 0 24 24" style="fill:var(--green)">
+            <div class="pck"><svg viewBox="0 0 24 24">
                 <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
-              </svg></div><span style="color:rgba(255,255,255,0.9);">500 MB Secure Cloud Storage</span>
+              </svg></div>500 MB Secure Cloud Storage
           </div>
           <div class="perk">
-            <div class="pck" style="background:rgba(52, 211, 153, .15); box-shadow:0 0 10px rgba(52, 211, 153, .2);"><svg viewBox="0 0 24 24" style="fill:var(--green)">
+            <div class="pck"><svg viewBox="0 0 24 24">
                 <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
-              </svg></div><span style="color:rgba(255,255,255,0.9);">Unlimited OCR Scans &amp; Auto-Fill</span>
+              </svg></div>Unlimited OCR Scans &amp; Auto-Fill
           </div>
           <div class="perk">
-            <div class="pck" style="background:rgba(52, 211, 153, .15); box-shadow:0 0 10px rgba(52, 211, 153, .2);"><svg viewBox="0 0 24 24" style="fill:var(--green)">
+            <div class="pck"><svg viewBox="0 0 24 24">
                 <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
-              </svg></div><span style="color:rgba(255,255,255,0.9);">Full Lucky AI Access — unlimited chats</span>
+              </svg></div>Full Lucky AI Access — unlimited chats
           </div>
           <div class="perk">
-            <div class="pck" style="background:rgba(52, 211, 153, .15); box-shadow:0 0 10px rgba(52, 211, 153, .2);"><svg viewBox="0 0 24 24" style="fill:var(--green)">
+            <div class="pck"><svg viewBox="0 0 24 24">
                 <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
-              </svg></div><span style="color:rgba(255,255,255,0.9);">Per-Document Biometric Locks</span>
+              </svg></div>Per-Document Biometric Locks
           </div>
           <div class="perk">
-            <div class="pck" style="background:rgba(52, 211, 153, .15); box-shadow:0 0 10px rgba(52, 211, 153, .2);"><svg viewBox="0 0 24 24" style="fill:var(--green)">
+            <div class="pck"><svg viewBox="0 0 24 24">
                 <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
-              </svg></div><span style="color:rgba(255,255,255,0.9);">Offline Access — no internet needed</span>
+              </svg></div>Offline Access — no internet needed
           </div>
           <div class="perk">
-            <div class="pck" style="background:rgba(52, 211, 153, .15); box-shadow:0 0 10px rgba(52, 211, 153, .2);"><svg viewBox="0 0 24 24" style="fill:var(--green)">
+            <div class="pck"><svg viewBox="0 0 24 24">
                 <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
-              </svg></div><span style="color:rgba(255,255,255,0.9);">Priority Support 24/7</span>
+              </svg></div>Priority Support 24/7
           </div>
         </div>
-        <a class="p-btn pro-btn" href="https://play.google.com/apps/testing/com.lockletpro" target="_blank" rel="noopener" style="margin-top: 24px;">
-          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor">
+        <a class="btn-upgrade" href="https://play.google.com/apps/testing/com.lockletpro" target="_blank"
+          rel="noopener"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor">
             <path d="M5 3l14 9-14 9V3z" />
-          </svg>Upgrade on App
-        </a>
+          </svg>Upgrade on App</a>
       </div>
     </div>
 
@@ -4852,9 +4568,6 @@
             <div class="comp-grid" id="compGrid">
 
               <!-- ── Column Headers ── -->
-              <div class="comp-head-label">
-                <span class="comp-col-label free-lbl" style="visibility: hidden;">Features</span>
-              </div>
               <div class="comp-head-free">
                 <span class="comp-col-label free-lbl">Free</span>
                 <span class="comp-price free-price">₹0 <sub>/forever</sub></span>
@@ -4872,87 +4585,102 @@
               </div>
 
               <!-- ── STORAGE ── -->
-              <div class="comp-section-label">Storage</div>
-              <div class="comp-section-free">Free</div>
-              <div class="comp-section-pro">Pro</div>
+              <div class="comp-section-free">Storage</div>
+              <div class="comp-section-pro">Storage</div>
 
               <div class="comp-row-pair" data-pair="1">
-                <div class="comp-cell-label" data-tip="Total space for your encrypted documents">
-                  <svg viewBox="0 0 24 24"><path d="M4 4h16v4H4zm0 6h16v4H4zm0 6h16v4H4zm2-10h2v2H6zm0 6h2v2H6zm0 6h2v2H6z" stroke="none"/></svg>
-                  Cloud Storage
+                <div class="comp-cell-free"><span class="cell-text">Cloud Storage</span><span
+                    class="cell-val-badge dim">50 MB</span></div>
+                <div class="comp-cell-pro"><span class="cell-text pro-text">Cloud Storage</span><span
+                    class="cell-val-badge bright">500 MB</span></div>
+              </div>
+              <div class="comp-row-pair" data-pair="2">
+                <div class="comp-cell-free"><span class="cell-text">Offline Access</span>
+                  <div class="comp-check yes"><svg viewBox="0 0 24 24">
+                      <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+                    </svg></div>
                 </div>
-                <div class="comp-cell-free">100 MB Storage</div>
-                <div class="comp-cell-pro">500 MB Secure Cloud Storage</div>
+                <div class="comp-cell-pro"><span class="cell-text pro-text">Offline Access</span>
+                  <div class="comp-check gold"><svg viewBox="0 0 24 24">
+                      <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+                    </svg></div>
+                </div>
               </div>
 
               <!-- ── AI FEATURES ── -->
-              <div class="comp-section-label">AI Features</div>
-              <div class="comp-section-free">Free</div>
-              <div class="comp-section-pro">Pro</div>
-
-              <div class="comp-row-pair" data-pair="2">
-                <div class="comp-cell-label" data-tip="Ask Lucky AI questions about your documents">
-                  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/></svg>
-                  Lucky AI Chat
-                </div>
-                <div class="comp-cell-free">Limited AI (5 chats/day)</div>
-                <div class="comp-cell-pro">Unlimited AI + Lucky AI access</div>
-              </div>
-
-              <!-- ── OCR ── -->
-              <div class="comp-section-label">OCR</div>
-              <div class="comp-section-free">Free</div>
-              <div class="comp-section-pro">Pro</div>
+              <div class="comp-section-free">AI Features</div>
+              <div class="comp-section-pro">AI Features</div>
 
               <div class="comp-row-pair" data-pair="3">
-                <div class="comp-cell-label" data-tip="Extract text from ID cards and auto-fill forms">
-                  <svg viewBox="0 0 24 24"><path d="M3 4V1h3v3H3zm15-3v3h3V1h-3zM3 23v-3h3v3H3zm15-3v3h3v-3h-3zM8 8h8v8H8z"/></svg>
-                  Auto-scan &amp; Fill
-                </div>
-                <div class="comp-cell-free">5 scans/day</div>
-                <div class="comp-cell-pro">Unlimited OCR scans &amp; Auto-fill</div>
+                <div class="comp-cell-free"><span class="cell-text">OCR Scans</span><span
+                    class="cell-val-badge dim">5/month</span></div>
+                <div class="comp-cell-pro"><span class="cell-text pro-text">OCR Scans</span><span
+                    class="cell-val-badge bright">Unlimited</span></div>
+              </div>
+              <div class="comp-row-pair" data-pair="4">
+                <div class="comp-cell-free"><span class="cell-text">Auto-Fill</span><span
+                    class="cell-val-badge dim">5/month</span></div>
+                <div class="comp-cell-pro"><span class="cell-text pro-text">Auto-Fill</span><span
+                    class="cell-val-badge bright">Unlimited</span></div>
+              </div>
+              <div class="comp-row-pair" data-pair="5">
+                <div class="comp-cell-free"><span class="cell-text">Lucky AI Chat</span><span
+                    class="cell-val-badge dim">10/day</span></div>
+                <div class="comp-cell-pro"><span class="cell-text pro-text">Lucky AI Chat</span><span
+                    class="cell-val-badge bright">Unlimited</span></div>
               </div>
 
               <!-- ── SECURITY ── -->
-              <div class="comp-section-label">Security</div>
-              <div class="comp-section-free">Free</div>
-              <div class="comp-section-pro">Pro</div>
+              <div class="comp-section-free">Security</div>
+              <div class="comp-section-pro">Security</div>
 
-              <div class="comp-row-pair" data-pair="4">
-                <div class="comp-cell-label" data-tip="Lock individual documents with fingerprint/face">
-                  <svg viewBox="0 0 24 24"><path d="M12 1C8.676 1 6 3.676 6 7v1H4v15h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
-                  App/Doc Lock
+              <div class="comp-row-pair" data-pair="6">
+                <div class="comp-cell-free"><span class="cell-text">App Biometric Lock</span>
+                  <div class="comp-check yes"><svg viewBox="0 0 24 24">
+                      <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+                    </svg></div>
                 </div>
-                <div class="comp-cell-free">Basic app lock</div>
-                <div class="comp-cell-pro">Per-document biometric lock</div>
+                <div class="comp-cell-pro"><span class="cell-text pro-text">App Biometric Lock</span>
+                  <div class="comp-check gold"><svg viewBox="0 0 24 24">
+                      <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+                    </svg></div>
+                </div>
               </div>
-
-              <!-- ── OFFLINE ACCESS ── -->
-              <div class="comp-section-label">Offline Access</div>
-              <div class="comp-section-free">Free</div>
-              <div class="comp-section-pro">Pro</div>
-
-              <div class="comp-row-pair" data-pair="5">
-                <div class="comp-cell-label" data-tip="Access encrypted documents without internet">
-                  <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-                  Works offline
+              <div class="comp-row-pair" data-pair="7">
+                <div class="comp-cell-free"><span class="cell-text">Per-Doc Lock</span>
+                  <div class="comp-check no"><svg viewBox="0 0 24 24">
+                      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.2" fill="none"
+                        stroke-linecap="round" />
+                    </svg></div>
                 </div>
-                <div class="comp-cell-free faded-text"><svg class="c-icon no" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-width="2.2" stroke-linecap="round"/></svg> Not available</div>
-                <div class="comp-cell-pro"><svg class="c-icon gold-check" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Available</div>
+                <div class="comp-cell-pro"><span class="cell-text pro-text">Per-Doc Lock</span>
+                  <div class="comp-check gold"><svg viewBox="0 0 24 24">
+                      <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+                    </svg></div>
+                </div>
+              </div>
+              <div class="comp-row-pair" data-pair="8">
+                <div class="comp-cell-free"><span class="cell-text">Screenshot Block</span>
+                  <div class="comp-check yes"><svg viewBox="0 0 24 24">
+                      <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+                    </svg></div>
+                </div>
+                <div class="comp-cell-pro"><span class="cell-text pro-text">Screenshot Block</span>
+                  <div class="comp-check gold"><svg viewBox="0 0 24 24">
+                      <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+                    </svg></div>
+                </div>
               </div>
 
               <!-- ── SUPPORT ── -->
-              <div class="comp-section-label">Support</div>
-              <div class="comp-section-free">Free</div>
-              <div class="comp-section-pro">Pro</div>
+              <div class="comp-section-free">Support</div>
+              <div class="comp-section-pro">Support</div>
 
-              <div class="comp-row-pair comp-last" data-pair="6">
-                <div class="comp-cell-label comp-last" data-tip="Get help when you need it">
-                  <svg viewBox="0 0 24 24"><path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zm0 2c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM11 15h2v2h-2zm0-8h2v6h-2z"/></svg>
-                  Assistance
-                </div>
-                <div class="comp-cell-free comp-last">Email support</div>
-                <div class="comp-cell-pro comp-last"><svg class="c-icon gold-check" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Priority support 24/7</div>
+              <div class="comp-row-pair comp-last-free comp-last-pro" data-pair="9">
+                <div class="comp-cell-free comp-last-free"><span class="cell-text">Support</span><span
+                    class="cell-val-badge dim">Community</span></div>
+                <div class="comp-cell-pro comp-last-pro"><span class="cell-text pro-text">Support</span><span
+                    class="cell-val-badge bright">Priority 24/7</span></div>
               </div>
 
             </div><!-- /comp-grid -->
@@ -5354,47 +5082,31 @@
     // ── COMPARISON TABLE — ROW STAGGER + HOVER PAIRS ──
     (function () {
       const pairs = document.querySelectorAll('.comp-row-pair');
-      if (!pairs.length) return;
 
-      function revealPair(pair) {
-        if (pair.classList.contains('revealed')) return;
-        const idx = parseInt(pair.dataset.pair) || 1;
-        const allCells = pair.querySelectorAll('.comp-cell-label, .comp-cell-free, .comp-cell-pro');
-        allCells.forEach((cell, i) => {
-          cell.style.transitionDelay = (idx * 0.055 + i * 0.025) + 's';
-        });
-        pair.classList.add('revealed');
-        // Force inline styles as failsafe
-        allCells.forEach(cell => {
-          cell.style.opacity = '1';
-          cell.style.transform = 'translateY(0)';
-          cell.style.visibility = 'visible';
-        });
-      }
-
-      // Stagger reveal on scroll — more aggressive threshold
+      // Stagger reveal on scroll
       const compObs = new IntersectionObserver((entries) => {
         entries.forEach(e => {
           if (e.isIntersecting) {
-            revealPair(e.target);
-            compObs.unobserve(e.target);
+            const pair = e.target;
+            const idx = parseInt(pair.dataset.pair) || 1;
+            const cells = pair.querySelectorAll('.comp-cell-free, .comp-cell-pro');
+            cells.forEach((cell, i) => {
+              cell.style.transitionDelay = (idx * 0.055 + i * 0.025) + 's';
+            });
+            pair.classList.add('revealed');
+            compObs.unobserve(pair);
           }
         });
-      }, { threshold: 0.01, rootMargin: '50px 0px' });
+      }, { threshold: 0.15 });
 
       pairs.forEach(p => compObs.observe(p));
 
-      // Failsafe: force reveal all rows after 2 seconds
-      setTimeout(() => {
-        pairs.forEach(pair => revealPair(pair));
-      }, 2000);
-
       // Paired hover highlight
       pairs.forEach(pair => {
-        const allCells = pair.querySelectorAll('.comp-cell-label, .comp-cell-free, .comp-cell-pro');
-        allCells.forEach(cell => {
-          cell.addEventListener('mouseenter', () => allCells.forEach(c => c.classList.add('row-hover')));
-          cell.addEventListener('mouseleave', () => allCells.forEach(c => c.classList.remove('row-hover')));
+        const cells = pair.querySelectorAll('.comp-cell-free, .comp-cell-pro');
+        cells.forEach(cell => {
+          cell.addEventListener('mouseenter', () => cells.forEach(c => c.classList.add('row-hover')));
+          cell.addEventListener('mouseleave', () => cells.forEach(c => c.classList.remove('row-hover')));
         });
       });
     })();
