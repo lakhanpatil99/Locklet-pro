@@ -744,6 +744,25 @@ crossorigin="anonymous"></script>
       fill: var(--violet);
     }
 
+    /* ── AD UNIT ── */
+    .ad-unit {
+      width: 100%;
+      margin: 4px 0 18px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255,255,255,.018);
+      border: 1px solid var(--border);
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ad-unit ins {
+      display: block;
+      width: 100%;
+    }
+
     /* ── SECTION LABEL ── */
     .sl {
       font-size: 9px;
@@ -4005,7 +4024,7 @@ crossorigin="anonymous"></script>
         <a href="faq.html" class="drawer-link green">
           <div class="dl-icon green"><svg viewBox="0 0 24 24">
               <path
-                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z" />
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm0-4h-2V7h2v6z" />
             </svg></div>
           <div class="dl-text"><span class="dl-title">FAQ</span><span class="dl-sub">Common questions answered</span>
           </div>
@@ -4135,6 +4154,17 @@ crossorigin="anonymous"></script>
         </div>
       </div>
 
+      <!-- ── AD UNIT 1: Below hero stats, above download button ── -->
+      <div class="ad-unit">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-8602333070445192"
+             data-ad-slot="auto"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+
       <div class="play-wrap">
         <a class="play-btn" href="https://play.google.com/store/apps/details?id=com.lockletpro" target="_blank" rel="noopener">
           <div class="ps-icon-box">
@@ -4260,6 +4290,17 @@ crossorigin="anonymous"></script>
       </div>
     </div>
 
+    <!-- ── AD UNIT 2: Between How It Works and App Mockup ── -->
+    <div class="ad-unit">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8602333070445192"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
     <!-- APP MOCKUP -->
     <div class="mockup-card reveal glow-card">
       <div class="mh">
@@ -4369,6 +4410,17 @@ crossorigin="anonymous"></script>
             <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
           </svg>Ask Lucky</div>
       </div>
+    </div>
+
+    <!-- ── AD UNIT 3: Between Lucky AI and About ── -->
+    <div class="ad-unit">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8602333070445192"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
     <!-- ABOUT -->
@@ -4610,6 +4662,17 @@ crossorigin="anonymous"></script>
               class="si-sub">Lucky always ready</span></div>
         </div>
       </div>
+    </div>
+
+    <!-- ── AD UNIT 4: Between Security and Free vs Pro ── -->
+    <div class="ad-unit">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8602333070445192"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
     <!-- ══════════════════════════════════
@@ -5218,8 +5281,6 @@ crossorigin="anonymous"></script>
           cell.style.visibility = 'visible';
         });
       }
-
-
 
       // Stagger reveal on scroll — more aggressive threshold
       const compObs = new IntersectionObserver((entries) => {
