@@ -6,7 +6,14 @@
   <title>FAQ — Locklet Pro</title>
   <meta name="description" content="Frequently asked questions about Locklet Pro — security, features, premium plans, and account management."/>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8602333070445192"
+    crossorigin="anonymous"></script>
   <style>
+    :root { color-scheme: dark; }
+    ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
+    .ad-container:has(ins[data-ad-status="unfilled"]) { display: none !important; }
+    iframe { color-scheme: dark; background: transparent !important; }
+
     :root{--bg:#03020a;--s1:#080714;--s2:#0d0b1c;--s3:#131126;--s4:#1a1830;--border:rgba(255,255,255,.055);--border-hi:rgba(255,255,255,.1);--gold:#e8b86d;--gold2:#fde68a;--gold3:#c8922e;--gold-dim:rgba(232,184,109,.07);--violet:#9b6dff;--violet2:#c4b5fd;--violet-dim:rgba(155,109,255,.07);--green:#34d399;--green2:#6ee7b7;--green-dim:rgba(52,211,153,.07);--blue:#60a5fa;--text:#f1ecfc;--t2:#8b80a8;--t3:#3d3660}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
     body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
@@ -113,6 +120,14 @@
     .cta-btn:active, .back-btn:active, .card:active, .drawer-link:active, .drawer-download-btn:active, .accordion-btn:active { transform: scale(0.96) !important; transition: transform 0.1s cubic-bezier(0.16,1,0.3,1) !important; }
     #pb { position: fixed; inset: 0; background: var(--bg); z-index: 9999; pointer-events: none; opacity: 1; transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1); }
     #pb.loaded { opacity: 0; }
+    /* AdSense Containers */
+    .ad-container{margin:24px 0;padding:0;border-radius:18px;overflow:hidden;background:rgba(8,7,20,0.5);border:1px solid rgba(255,255,255,0.04);position:relative;min-height:100px;opacity:0;transform:translateY(16px);animation:adFadeIn .8s cubic-bezier(.16,1,.3,1) .5s forwards}
+    .ad-container::before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(155,109,255,.02),transparent 50%,rgba(232,184,109,.015));pointer-events:none;border-radius:inherit}
+    .ad-container-label{display:block;text-align:center;font-size:8px;color:rgba(139,128,168,.35);letter-spacing:.18em;text-transform:uppercase;font-weight:600;padding:8px 0 4px}
+    .ad-container ins{border-radius:14px}
+    .ad-container-multiplex{margin:32px 0 24px;min-height:250px}
+    @keyframes adFadeIn{to{opacity:1;transform:translateY(0)}}
+    .ad-container:empty{display:none}
   </style>
 </head>
 <body>
@@ -137,8 +152,13 @@
       <div class="drawer-section-label">Legal</div>
       <a href="privacy.html" class="drawer-link"><div class="dl-icon violet"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div><div class="dl-text"><span class="dl-title">Privacy</span><span class="dl-sub">Data policy</span></div><div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div></a>
       <a href="terms.html" class="drawer-link"><div class="dl-icon gold"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg></div><div class="dl-text"><span class="dl-title">Terms</span><span class="dl-sub">Usage rules</span></div><div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div></a>
-    </div>
-    <div class="drawer-footer"><a href="https://play.google.com/apps/testing/com.lockletpro" target="_blank" class="drawer-download-btn"><svg viewBox="0 0 512 512"><path d="M48 421.3V90.7c0-13.5 14.6-21.9 26.3-15.1L416 256 74.3 436.4C62.6 443.2 48 434.8 48 421.3z" fill="#4285F4"/><path d="M416 256 74.3 75.6 262 201.4z" fill="#EA4335"/><path d="M416 256 262 310.6 74.3 436.4z" fill="#FBBC04"/><path d="M262 201.4 416 256 262 310.6z" fill="#34A853"/></svg>Download on Google Play</a></div>
+        <a href="refund.html" class="drawer-link violet">
+          <div class="dl-icon violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
+          <div class="dl-text"><span class="dl-title">Refund Policy</span><span class="dl-sub">Cancellations &amp; refunds</span></div>
+          <div class="dl-arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" fill="currentColor"/></svg></div>
+        </a>
+</div>
+    <div class="drawer-footer"><a href="https://play.google.com/store/apps/details?id=com.lockletpro" target="_blank" class="drawer-download-btn"><svg viewBox="0 0 512 512"><path d="M48 421.3V90.7c0-13.5 14.6-21.9 26.3-15.1L416 256 74.3 436.4C62.6 443.2 48 434.8 48 421.3z" fill="#4285F4"/><path d="M416 256 74.3 75.6 262 201.4z" fill="#EA4335"/><path d="M416 256 262 310.6 74.3 436.4z" fill="#FBBC04"/><path d="M262 201.4 416 256 262 310.6z" fill="#34A853"/></svg>Download on Google Play</a></div>
   </div>
 
   <nav>
@@ -189,7 +209,19 @@
     <div class="acc-body"><p>No. Locklet Pro uses Android's FLAG_SECURE to completely block screenshots, screen recordings, and screen mirroring while the app is open. Your documents remain completely private.</p></div>
   </div>
 
-  <div class="sl">Premium & Billing</div>
+  <!-- AD: Display Ad between sections -->
+  <div class="ad-container">
+    <span class="ad-container-label">Sponsored</span>
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-8602333070445192"
+      data-ad-slot="5005822770"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <div class="sl">Premium &amp; Billing</div>
 
   <div class="acc sr">
     <div class="acc-head"><div class="acc-icon g">💎</div><span class="acc-q">How much does Premium cost?</span><div class="acc-arrow"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg></div></div>
@@ -223,6 +255,18 @@
     <div class="cta-sub">Reach out to us and we'll be happy to help.</div>
     <a href="mailto:lockletpro@gmail.com" class="cta-btn"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>Contact Us</a>
   </div>
+  </div>
+
+  <!-- AD: Multiplex Ad before Footer -->
+  <div class="ad-container ad-container-multiplex">
+    <span class="ad-container-label">Recommended for You</span>
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-format="autorelaxed"
+      data-ad-client="ca-pub-8602333070445192"
+      data-ad-slot="7911187717"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
 
   <footer>© 2026 Locklet Pro. All rights reserved.<br/><a href="index.html">Home</a> · <a href="features.html">Features</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></footer>
 </div>
@@ -244,7 +288,7 @@
   (function(){var h=document.getElementById('hamBtn'),d=document.getElementById('menuDrawer'),b=document.getElementById('menuBackdrop'),c=document.getElementById('drawerClose');if(!h||!d||!b)return;function o(){h.classList.add('open');d.classList.add('open');b.classList.add('open');document.body.style.overflow='hidden'}function x(){h.classList.remove('open');d.classList.remove('open');b.classList.remove('open');document.body.style.overflow=''}h.addEventListener('click',function(e){e.stopPropagation();d.classList.contains('open')?x():o()});if(c)c.addEventListener('click',x);b.addEventListener('click',x);document.addEventListener('keydown',function(e){if(e.key==='Escape')x()})})();
 </script>
 <script>
-  window.addEventListener('load', () => { setTimeout(() => { document.getElementById('pb')?.classList.add('loaded'); }, 50); });
+  window.addEventListener('DOMContentLoaded', () => { setTimeout(() => { document.getElementById('pb')?.classList.add('loaded'); }, 150); }); window.addEventListener('load', () => { setTimeout(() => { document.getElementById('pb')?.classList.add('loaded'); }, 50); }); setTimeout(() => { document.getElementById('pb')?.classList.add('loaded'); }, 1500);
   document.querySelectorAll('a[href]').forEach(a => {
     a.addEventListener('click', e => {
       const href = a.getAttribute('href');
