@@ -11,6 +11,11 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8602333070445192"
     crossorigin="anonymous"></script>
   <style>
+    :root { color-scheme: dark; }
+    ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
+    .ad-container:has(ins[data-ad-status="unfilled"]) { display: none !important; }
+    iframe { color-scheme: dark; background: transparent !important; }
+
     :root {
       --bg: #03020a;
       --s1: #080714;
@@ -5357,7 +5362,7 @@
   </script>
 
   <script>
-    window.addEventListener('load', () => { setTimeout(() => { document.getElementById('pb')?.classList.add('loaded'); }, 50); });
+    window.addEventListener('DOMContentLoaded', () => { setTimeout(() => { document.getElementById('pb')?.classList.add('loaded'); }, 150); }); window.addEventListener('load', () => { setTimeout(() => { document.getElementById('pb')?.classList.add('loaded'); }, 50); }); setTimeout(() => { document.getElementById('pb')?.classList.add('loaded'); }, 1500);
     document.querySelectorAll('a[href]').forEach(a => {
       a.addEventListener('click', e => {
         const href = a.getAttribute('href');
