@@ -2,19 +2,14 @@
 <html lang="en">
 
 <head>
-
-  <script async
-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8602333070445192"
-crossorigin="anonymous"></script>
-
-
-  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Locklet Pro — Secure Digital Document Storage</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
     rel="stylesheet" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8602333070445192"
+    crossorigin="anonymous"></script>
   <style>
     :root {
       --bg: #03020a;
@@ -3930,6 +3925,62 @@ crossorigin="anonymous"></script>
     .sticky-cta-btn:active {
       transform: scale(0.95);
     }
+
+    /* ── ADSENSE CONTAINERS ── */
+    .ad-container {
+      margin: 24px 0;
+      padding: 0;
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(8, 7, 20, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      position: relative;
+      min-height: 100px;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: adFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+    }
+
+    .ad-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, rgba(155, 109, 255, 0.02), transparent 50%, rgba(232, 184, 109, 0.015));
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
+    .ad-container-label {
+      display: block;
+      text-align: center;
+      font-size: 8px;
+      color: rgba(139, 128, 168, 0.35);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 8px 0 4px;
+    }
+
+    .ad-container ins {
+      border-radius: 14px;
+    }
+
+    .ad-container-multiplex {
+      margin: 32px 0 24px;
+      min-height: 250px;
+    }
+
+    @keyframes adFadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Hide empty ad containers */
+    .ad-container:empty {
+      display: none;
+    }
   </style>
 </head>
 
@@ -3970,7 +4021,7 @@ crossorigin="anonymous"></script>
       </div>
       <div class="drawer-nav">
         <div class="drawer-section-label">App</div>
-        <a href="https://play.google.com/store/apps/details?id=com.lockletpro" target="_blank" class="drawer-link green">
+        <a href="https://play.google.com/apps/testing/com.lockletpro" target="_blank" class="drawer-link green">
           <div class="dl-icon green"><svg viewBox="0 0 24 24">
               <path d="M5 3l14 9-14 9V3z" />
             </svg></div>
@@ -4067,21 +4118,9 @@ crossorigin="anonymous"></script>
               <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
             </svg></div>
         </a>
-
-        <a href="refund.html" class="drawer-link violet">
-          <div class="dl-icon violet"><svg viewBox="0 0 24 24">
-              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
-            </svg></div>
-          <div class="dl-text"><span class="dl-title">Refund Policy</span><span class="dl-sub">Refund Your Subscription </span></div>
-          <div class="dl-arrow"><svg viewBox="0 0 24 24">
-              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-            </svg></div>
-        </a>
-
-        
       </div>
       <div class="drawer-footer">
-        <a href="https://play.google.com/store/apps/details?id=com.lockletpro" target="_blank" class="drawer-download-btn">
+        <a href="https://play.google.com/apps/testing/com.lockletpro" target="_blank" class="drawer-download-btn">
           <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
             <path d="M48 421.3V90.7c0-13.5 14.6-21.9 26.3-15.1L416 256 74.3 436.4C62.6 443.2 48 434.8 48 421.3z"
               fill="#4285F4" />
@@ -4148,7 +4187,7 @@ crossorigin="anonymous"></script>
       </div>
 
       <div class="play-wrap">
-        <a class="play-btn" href="https://play.google.com/store/apps/details?id=com.lockletpro" target="_blank" rel="noopener">
+        <a class="play-btn" href="https://play.google.com/apps/testing/com.lockletpro" target="_blank" rel="noopener">
           <div class="ps-icon-box">
             <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
               <path d="M48 421.3V90.7c0-13.5 14.6-21.9 26.3-15.1L416 256 74.3 436.4C62.6 443.2 48 434.8 48 421.3z"
@@ -4221,6 +4260,18 @@ crossorigin="anonymous"></script>
           Early Access · Currently in Testing Phase
         </div>
       </div>
+    </div>
+
+    <!-- AD: Display Ad after Hero -->
+    <div class="ad-container">
+      <span class="ad-container-label">Sponsored</span>
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-8602333070445192"
+        data-ad-slot="5005822770"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
     <!-- HOW IT WORKS -->
@@ -4622,6 +4673,18 @@ crossorigin="anonymous"></script>
               class="si-sub">Lucky always ready</span></div>
         </div>
       </div>
+    </div>
+
+    <!-- AD: Display Ad between sections -->
+    <div class="ad-container">
+      <span class="ad-container-label">Sponsored</span>
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-8602333070445192"
+        data-ad-slot="5005822770"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
     <!-- ══════════════════════════════════
@@ -5053,11 +5116,21 @@ crossorigin="anonymous"></script>
       </div>
     </div>
 
+    <!-- AD: Multiplex Ad before Footer -->
+    <div class="ad-container ad-container-multiplex">
+      <span class="ad-container-label">Recommended for You</span>
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-8602333070445192"
+        data-ad-slot="7911187717"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
     <!-- FOOTER -->
     <footer>
       © 2026 Locklet Pro. All rights reserved.<br />
       <a href="features.html">Features</a><span class="fsep"> · </span>
-       <a href="refund.html">Refund Policy</a><span class="fsep"> · </span>
       <a href="about.html">About</a><span class="fsep"> · </span>
       <a href="faq.html">FAQ</a><span class="fsep"> · </span>
       <a href="contact.html">Contact</a><span class="fsep"> · </span>
@@ -5231,8 +5304,6 @@ crossorigin="anonymous"></script>
           cell.style.visibility = 'visible';
         });
       }
-
-
 
       // Stagger reveal on scroll — more aggressive threshold
       const compObs = new IntersectionObserver((entries) => {
